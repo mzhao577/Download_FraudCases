@@ -56,6 +56,15 @@ thumbnails and Ctrl-F search inside the document come free.
 - **Top**: `SchemeSummary`, set large and readable — the thing you actually read
 - **Bottom**: every remaining column, dollar amounts formatted
 
+**FraudType tabs** — one tab per value in the `FraudType` column, most common
+first, each with a live count. Click to filter the list; **All** clears it.
+
+    All 679 │ Phantom Claims 134 │ kickback_Bribery For Referral 105 │ Drug_Prescriptions 90 │ …
+
+The counts follow the current search rather than being fixed, so searching
+`hospice` re-labels the tabs with how those 21 hits split across schemes — the
+tab strip doubles as a distribution readout.
+
 **Navigation bar** — for working through cases one at a time:
 
     ⇤ First │ −50 │ −10 │ ← Previous │ Next → │ +10 │ +50 │ Last ⇥    12 / 679   [go to #]

@@ -22,6 +22,7 @@
   header {
     display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
     padding: 8px 12px; background: var(--panel); border-bottom: 1px solid var(--line);
+    flex: 0 0 auto;              /* never let the column layout squash it */
   }
   header .grow { flex: 1 1 auto; }
   select, input[type=search], button {
@@ -39,11 +40,35 @@
     border-radius: 4px; padding: 2px 5px;
   }
 
+  /* ------------------------------------------------------- fraud type tabs */
+  #tabs {
+    display: flex; align-items: stretch; gap: 4px; overflow-x: auto;
+    padding: 0 12px; background: var(--panel);
+    border-bottom: 1px solid var(--line); scrollbar-width: thin;
+    flex: 0 0 auto; min-height: 42px;   /* pinned: otherwise the tabs clip */
+  }
+  #tabs::-webkit-scrollbar { height: 6px; }
+  #tabs::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+  .tab {
+    flex: 0 0 auto; cursor: pointer; white-space: nowrap;
+    padding: 9px 12px 8px; border: 0; background: none; color: var(--muted);
+    border-bottom: 3px solid transparent; border-radius: 0; font: inherit;
+  }
+  .tab:hover { color: var(--ink); background: #f7f9fb; }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+  .tab .n {
+    font-size: 11px; font-variant-numeric: tabular-nums; margin-left: 6px;
+    background: #eef1f5; color: var(--muted); border-radius: 999px; padding: 1px 7px;
+  }
+  .tab.active .n { background: var(--accent-soft); color: var(--accent); }
+  .tab:disabled { opacity: .35; cursor: default; }
+
   /* ------------------------------------------------------------- nav strip */
   #nav {
     display: flex; align-items: center; gap: 0; flex-wrap: wrap;
-    padding: 6px 12px; background: var(--panel);
+    padding: 6px 12px 9px; background: var(--panel);
     border-bottom: 1px solid var(--line);
+    flex: 0 0 auto;
   }
   .navgroup { display: flex; align-items: center; }
   .navgroup button {
@@ -148,10 +173,11 @@
   <button id="toggleList" title="Show/hide the case list">&#9776; Cases</button>
   <select id="dataset"></select>
   <input type="search" id="q" placeholder="Search every field (e.g. 99215, overtime, hospice)…" autocomplete="off">
-  <select id="ftype"><option value="">All fraud types</option></select>
   <span class="grow"></span>
   <span class="counter" id="counter">—</span>
 </header>
+
+<div id="tabs"></div>
 
 <div id="nav">
   <div class="navgroup">
@@ -224,12 +250,7 @@ async function loadCases(keepPos = false) {
   const data = await (await fetch("/api/cases?" + p)).json();
   state.cases = data.cases;
 
-  const sel = $("#ftype");
-  if (sel.options.length <= 1 && data.fraud_types.length) {
-    sel.innerHTML = '<option value="">All fraud types</option>' +
-      data.fraud_types.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join("");
-    sel.value = state.ftype;
-  }
+  renderTabs(data);
 
   $("#list").innerHTML = state.cases.map((c, i) => `
     <div class="case ${c.has_pdf ? "" : "nopdf"}" data-i="${i}">
@@ -264,6 +285,26 @@ function syncNav() {
     // takes you to the last case.
     else b.disabled = (+j < 0) ? at === 0 : at === n - 1;
   });
+}
+
+// One tab per FraudType value, most common first, with live counts that follow
+// the current search. "All" is always present so you can get back.
+function renderTabs(data) {
+  const total = data.searched_total ?? data.total;
+  const tabs = [`<button class="tab ${state.ftype ? "" : "active"}" data-ft="">All${
+    `<span class="n">${total}</span>`}</button>`];
+  for (const t of data.fraud_types) {
+    tabs.push(`<button class="tab ${state.ftype === t.value ? "active" : ""}" data-ft="${esc(t.value)}"
+      title="${esc(t.value)} — ${t.count} case${t.count === 1 ? "" : "s"}">${esc(t.value)}<span class="n">${t.count}</span></button>`);
+  }
+  // A tab that is selected but has no hits under the current search would
+  // otherwise disappear and leave nothing highlighted.
+  if (state.ftype && !data.fraud_types.some(t => t.value === state.ftype)) {
+    tabs.push(`<button class="tab active" data-ft="${esc(state.ftype)}">${esc(state.ftype)}<span class="n">0</span></button>`);
+  }
+  $("#tabs").innerHTML = tabs.join("");
+  const act = $("#tabs .tab.active");
+  if (act) act.scrollIntoView({ block: "nearest", inline: "nearest" });
 }
 
 async function render() {
@@ -342,10 +383,14 @@ $("#goto").addEventListener("keydown", e => {
   if (!isNaN(v)) { goTo(v - 1); e.target.value = ""; e.target.blur(); }
 });
 $("#dataset").addEventListener("change", e => {
-  state.dataset = e.target.value; $("#ftype").innerHTML = '<option value="">All fraud types</option>';
-  state.ftype = ""; loadCases();
+  state.dataset = e.target.value; state.ftype = ""; loadCases();
 });
-$("#ftype").addEventListener("change", e => { state.ftype = e.target.value; loadCases(); });
+$("#tabs").addEventListener("click", e => {
+  const t = e.target.closest(".tab");
+  if (!t) return;
+  state.ftype = t.dataset.ft;   // "" on the All tab
+  loadCases();
+});
 
 let timer;
 $("#q").addEventListener("input", e => {

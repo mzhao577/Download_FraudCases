@@ -76,8 +76,6 @@ def api_cases(
     ftype = ds._resolve(d.columns, "FraudType")
 
     rows = d.rows
-    if fraud_type:
-        rows = [r for r in rows if (r.get(ftype) or "") == fraud_type]
     if q:
         needle = q.lower()
         # Search every column: the point of the tool is to spot a pattern such
@@ -85,14 +83,33 @@ def api_cases(
         rows = [r for r in rows
                 if any(needle in str(v).lower() for k, v in r.items() if not k.startswith("_"))]
 
+    # Tab counts are taken after the search but before the type filter, so the
+    # tabs show how the current search splits across fraud types - and picking a
+    # tab does not make the other tabs' counts vanish.
+    counts: dict[str, int] = {}
+    if ftype:
+        for r in rows:
+            v = (r.get(ftype) or "").strip()
+            if v:
+                counts[v] = counts.get(v, 0) + 1
+    searched_total = len(rows)
+
+    if fraud_type:
+        rows = [r for r in rows if (r.get(ftype) or "") == fraud_type]
+
     out = [{
         "index": r["_index"],
         "doc": r.get(doc, ""),
         "has_pdf": r["_has_pdf"],
         **{c: r.get(c, "") for c in title_cols},
     } for r in rows]
-    types = sorted({(r.get(ftype) or "") for r in d.rows if r.get(ftype)}) if ftype else []
+    # Most common first - that ordering is itself a finding when you are
+    # looking for which schemes dominate.
+    types = [{"value": v, "count": n}
+             for v, n in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))]
     return JSONResponse({"total": len(d.rows), "count": len(out),
+                         "searched_total": searched_total,
+                         "fraud_type_column": ftype,
                          "fraud_types": types, "cases": out})
 
 
