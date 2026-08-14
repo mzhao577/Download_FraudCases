@@ -5,14 +5,6 @@ My goal is to find some insight concerning how to identify ways to identify frau
 for such kind of investigation.. 
 
 
-Thoughts and Inspirations:
-The inspirations are like this:  
- - If I see many fraudsters  uplcoded the 15-minute Evaluation proicedures such as 99213 ( 15-minute) tp 99215 (45 minutes), I want to create a 
-   procedure checker to specifically monitor the ratio of 99215 against all 99212-99215 types of services.  
- - If I see many reported cases about the over-capacity issue for services such as home heath, physical therapy, speeh therapy etc,, such as one clinic with 
-   5 employees charge a payer of workload more than 8 employee can handle,  I want to check the total hours of one clinic.
- - 
-
 Instruction:
 Input: 
  - There should be one input folder that contains the following:: 
