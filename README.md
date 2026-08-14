@@ -251,3 +251,33 @@ extract_patterns.py   the CLI
   document count.
 - Refusals and API errors are handled per document — one bad document never fails
   the run, and `stop_reason` is checked before any content is read.
+
+---
+
+# Moving the corpus between machines
+
+`downloaded/` (4.7 GB) and `state/` (1.5 GB) are gitignored, so a clone gets the
+code but no documents. Ship them as **GitHub Release assets** — they live outside
+git history, so the repo stays small.
+
+```bash
+./corpus_push.sh                 # this machine: archive, split, upload
+./corpus_push.sh --dry-run       # build the parts, upload nothing
+./corpus_push.sh --no-state      # ./downloaded only
+
+# on the other laptop
+git clone https://github.com/mzhao577/Download_FraudCases.git
+cd Download_FraudCases
+./corpus_pull.sh                 # newest snapshot; --list to choose, --tag to pin
+python verify.py                 # confirm the corpus is complete
+```
+
+GitHub allows **2 GiB per asset, 1000 assets per release, no total-size or
+bandwidth limit**, so the archive is streamed through `split` into 1900 MB parts.
+Every part is SHA-256 checksummed; `corpus_pull.sh` verifies before unpacking and
+refuses to continue on a mismatch. Assets on a private repo are private — `gh`
+supplies the credentials, so a plain browser or `curl` download will not work.
+
+**Alternatives:** if both laptops are on the same network, `rsync -avh --progress`
+is faster and has no 2 GiB chunking. If you only need *a* corpus rather than
+*this exact* corpus, skip the transfer and re-run `discover.py && download.py`.
