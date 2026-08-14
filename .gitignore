@@ -45,3 +45,9 @@ downloaded/webtools/
 
 # Office lock files, created while a workbook/deck is open
 ~$*
+
+# Editor swap/backup files
+*.swp
+*.swo
+*~
+.*.sw?
