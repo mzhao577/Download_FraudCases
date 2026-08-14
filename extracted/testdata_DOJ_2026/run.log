@@ -1,0 +1,21 @@
+20:15:29 INFO    extracting 13 case documents from downloaded/testdata_DOJ_2026 (effort=medium)
+20:15:29 INFO    output -> /Users/max-imac/MaxWork/AgentWork/Download_FraudCases/extracted/testdata_DOJ_2026
+20:15:42 INFO    1/13 ceo-of-bay-area-home-health-agency-convicted-of-health-care-fraud-conspiracy-targeting-medicare_a0258572f2c4.pdf
+20:15:51 INFO    2/13 former-sober-home-owner-and-operator-sentenced-for-kickback-conspiracy-and-health-care-fraud_d360d4832b94.pdf
+20:15:53 INFO    3/13 home-health-care-operator-admits-defrauding-missouri-medicaid_3a443eafa6e2.pdf
+20:15:53 INFO    4/13 home-health-care-operator-sentenced-for-defrauding-missouri-medicaid_01d34517791b.pdf
+20:15:53 INFO    5/13 local-home-healthcare-company-owner-admits-over-200-000-fraud_62eeef80cf7e.pdf
+20:15:56 INFO    6/13 michigan-home-health-care-agency-owner-convicted-of-1-6m-medicare-fraud-scheme-and-kickback-conspiracy_aa10bdfe096a.pdf
+20:15:56 INFO    7/13 philadelphia-in-home-care-services-provider-agrees-to-pay-1-million-to-resolve-allegations-of-false-claims-act_08acfb6ec1b7.pdf
+20:15:57 INFO    8/13 queens-home-care-agency-and-home-health-aide-training-center-to-pay-2-3-million-to-settle-claims-that-they-def_3e5bcfb7e565.pdf
+20:16:00 INFO    9/13 st-louis-county-home-healthcare-company-owner-associates-accused-of-1-46-million-fraud_b7fd6865df0e.pdf
+20:16:01 INFO    10/13 traditions-health-agrees-to-pay-34m-to-resolve-false-claims-act-liability-relating-to-home-health-services-fol_8801c4f3369c.pdf
+20:16:03 INFO    11/13 two-home-health-providers-agree-to-pay-702-541-to-resolve-self-referral-allegations_9ef0bd636963.pdf
+20:16:06 INFO    12/13 two-individuals-plead-guilty-to-68-million-fraud-scheme-at-brooklyn-based-adult-day-cares-and-home-health-care_bc8bc0b2df76.pdf
+20:16:09 INFO    13/13 u-s-attorney-moore-capito-announces-fraud-conspiracy-charges-against-sober-living-home-founder-and-spouse_69a9a3ca911a.pdf
+20:16:09 INFO    extracted 13 documents in 0.7 min
+20:17:59 INFO    ------------------------------------------------------------
+20:17:59 INFO    13/13 documents extracted
+20:17:59 INFO    -> /Users/max-imac/MaxWork/AgentWork/Download_FraudCases/extracted/testdata_DOJ_2026/cases.csv
+20:17:59 INFO    -> /Users/max-imac/MaxWork/AgentWork/Download_FraudCases/extracted/testdata_DOJ_2026/cases.json
+20:17:59 INFO    -> /Users/max-imac/MaxWork/AgentWork/Download_FraudCases/extracted/testdata_DOJ_2026/patterns.md

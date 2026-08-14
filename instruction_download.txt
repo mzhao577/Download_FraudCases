@@ -1,0 +1,282 @@
+================================================================================
+DOWNLOAD MAJOR MEDICAL FRAUD CASES - FINAL INSTRUCTIONS
+================================================================================
+Project      : Download_FraudCases
+Status       : Final - consolidates the original brief and every instruction
+               given during the build
+Last updated : 2026-08-13
+Original     : the first draft of this file is kept as
+               instruction_download.original.txt
+
+
+--------------------------------------------------------------------------------
+1. GOAL
+--------------------------------------------------------------------------------
+Write Python scripts that find and download all major medical fraud cases and
+related reports. The cases may involve Medicare, Medicaid or commercial/private
+payers. The sources are federal agencies: FBI, CMS, HHS-OIG (including LEIE),
+DOJ and GAO.
+
+Note on terminology: "IELE" in the original brief is read as LEIE - the HHS-OIG
+List of Excluded Individuals and Entities.
+
+
+--------------------------------------------------------------------------------
+2. COVERAGE
+--------------------------------------------------------------------------------
+2.1  Download the reports and documents of the last 5 years - that is, anything
+     dated 1 January 2021 or later.
+
+2.2  Documents dated before 2021-01-01 are excluded. Program and index pages
+     that carry no publication date are kept and filed under "undated".
+
+2.3  The cut-off is a parameter, not a hard-coded constant, so the window can be
+     moved later (--since).
+
+
+--------------------------------------------------------------------------------
+3. SOURCES
+--------------------------------------------------------------------------------
+3.1  Find the major sources first, before downloading anything.
+
+3.2  Save the list of websites that will be used for the search. Two artefacts
+     are required:
+
+       sources.json         machine-readable registry that the scrapers read at
+                            run time; for each source it records the key, name,
+                            why it is used, the websites, how it is harvested,
+                            the exact endpoints requested, and the document
+                            types expected
+       listofWebsites.txt   plain-text list for reading, generated from
+                            sources.json by list_sources.py
+
+     A markdown rendering (SOURCES.md) is produced from the same registry.
+
+3.3  Also record the sources considered and rejected, with the reason for each
+     (members-only, paywalled, already syndicated elsewhere).
+
+3.4  Sources used in the final run:
+
+       DOJ       Department of Justice - Main Justice and all 93 U.S.
+                 Attorney's Offices. Health-care-fraud press releases: charges,
+                 convictions, sentencings, False Claims Act settlements,
+                 national takedowns.
+       HHS-OIG   HHS Office of Inspector General - enforcement-action database
+                 (criminal, civil, CMP, state Medicaid Fraud Control Unit
+                 cases), fraud and improper-payment audits and evaluations,
+                 LEIE exclusions data.
+       FBI       FBI national office and 55 field offices - health-care-fraud
+                 press releases and stories.
+       CMS       Centers for Medicare & Medicaid Services - program-integrity
+                 press releases, fact sheets and reports.
+       GAO       Government Accountability Office - reports and testimony on
+                 Medicare/Medicaid fraud risk, improper payments and program
+                 integrity.
+
+
+--------------------------------------------------------------------------------
+4. OUTPUT LAYOUT
+--------------------------------------------------------------------------------
+4.1  Organise the output year by year, then source by source:
+
+       downloaded/<year>/<Source>/<slug>_<hash>.html
+       downloaded/<year>/<Source>/<slug>_<hash>.pdf
+       downloaded/<year>/<Source>/<slug>_<hash>_attachments/*.pdf
+
+     For example: downloaded/2026/FBI/, downloaded/2021/DOJ/.
+
+     <Source> is the agency the document was found on: DOJ, HHS-OIG, FBI, CMS
+     or GAO. <hash> is a short hash of the source URL so that identical titles
+     from different offices cannot collide.
+
+     (This supersedes the earlier ./downloaded/<Source>/<year>/ arrangement.)
+
+4.2  If the report is in web/HTML format, save it as HTML and at the same time
+     save a PDF format of that HTML file. The PDF must be a rendering of the
+     saved page, not a separately downloaded file.
+
+4.3  Documents that are already PDF/CSV/ZIP - full-text reports, indictments,
+     settlement agreements, the LEIE database - are saved as-is in their native
+     format.
+
+4.4  Exhibits linked from a page (indictments, complaints, settlement
+     agreements, full-text report PDFs) are downloaded into an
+     <document>_attachments/ folder beside the page.
+
+4.5  Each saved .html file begins with a provenance comment recording the
+     source, original URL, resolved URL if it redirected, title, publication
+     date, category and retrieval timestamp, and carries a <base href> so the
+     local copy still renders.
+
+
+--------------------------------------------------------------------------------
+5. SUMMARY FILE
+--------------------------------------------------------------------------------
+5.1  Create a summary file listing the number of downloaded documents from each
+     year and each source.
+
+5.2  Produced as summary/summary.md, summary/summary.csv and
+     summary/summary.json, with a copy of the markdown at ./SUMMARY.md.
+
+5.3  The summary contains:
+       - a year x source matrix of document counts, with row and column totals
+       - a file-type breakdown (HTML, PDF, other data files, attachments, size)
+       - document categories per source
+       - the list of websites searched
+
+
+--------------------------------------------------------------------------------
+6. HOW TO RUN THE WORK
+--------------------------------------------------------------------------------
+6.1  TEST BEFORE THE FULL RUN.
+     Do a small test run that actually downloads documents from every source,
+     and inspect the results, before launching the full multi-hour run.
+
+     (In practice this caught two real defects: CMS publication dates were being
+     read from the page's related-items rail instead of the article itself, and
+     DOJ publishes each release under two URLs - /opa/pr/... and
+     /usao-xx/pr/... - which had to be deduplicated.)
+
+6.2  DOWNLOAD YEAR BY YEAR, NEWEST FIRST.
+     Do not download the whole corpus in one undifferentiated pass. Work one
+     year at a time starting with the most recent year (2026), then 2025, 2024,
+     2023, 2022, 2021, refreshing the summary after each year so the corpus is
+     usable at every stage.
+
+       ./run_by_year.sh 2026 2025 2024 2023 2022 2021
+
+6.3  OUTPUT LOGS AND INTERMEDIATE SUMMARIES DURING THE FULL SCRAPING PROCESS.
+       - every stage writes a timestamped log to logs/
+       - discovery logs each source, each listing page batch, and how many
+         documents were kept
+       - the downloader logs progress every 25 documents with a running
+         ok / skipped / partial / error tally
+       - summarize.py runs after each year, so SUMMARY.md is refreshed
+         throughout the run rather than only at the end
+       - state/manifest.jsonl and state/download_log.jsonl record, per
+         document, what was found and what happened to it
+
+6.4  SHOW RESULTS EARLY.
+     The discovery manifest is written incrementally - after each source
+     completes, not only at the very end - so downloading can start on what has
+     already been found.
+
+6.5  Report progress honestly while long jobs run, including what has not yet
+     started.
+
+
+--------------------------------------------------------------------------------
+7. TECHNICAL REQUIREMENTS
+--------------------------------------------------------------------------------
+7.1  Pipeline stages, each runnable on its own:
+
+       list_sources.py   render sources.json -> listofWebsites.txt, SOURCES.md
+       discover.py       find documents      -> state/manifest.jsonl
+       download.py       fetch HTML/PDF      -> downloaded/
+       verify.py         report gaps in the corpus
+       summarize.py      counts per year and per source
+       run_all.py        discover -> download -> summarize
+       run_by_year.sh    download one year at a time, newest first
+
+7.2  Resumable. Rerunning skips whatever is already complete on disk and retries
+     only the gaps. Ctrl-C is safe. Listing pages, API responses and fetched
+     page HTML are cached under state/.
+
+7.3  Polite. Per-host rate limiting, retries with backoff, and a real
+     User-Agent. The same throttle applies whether a page is fetched over plain
+     HTTP or through the browser.
+
+7.4  Bot walls. justice.gov, cms.gov and gao.gov refuse plain HTTP clients, so
+     those are fetched with headless Chrome (Selenium). Chrome also renders
+     saved HTML to PDF and pulls binaries from those hosts. If a DOJ page cannot
+     be fetched at all, the release is rebuilt from the official justice.gov
+     press-release API body, and the saved file says so in its footer.
+
+7.5  Relevance matching. A four-tier keyword matcher decides what counts as a
+     medical fraud document, deliberately avoiding both "every fraud case" and
+     "every Medicare press release":
+
+       tier 1  strong phrases (health care fraud, Medicare fraud, Medicaid
+               Fraud Control Unit, ...) - accepted on their own
+       tier 2  payer/program context (Medicare, Medicaid, TRICARE, health plan,
+               named commercial insurers) AND any fraud term
+       tier 3  clinical/provider context (hospice, home health, pharmacy,
+               laboratory, DME, telehealth, ...) AND a billing-style fraud term
+       tier 4  generic prosecution verbs (indicted, convicted, sentenced,
+               guilty, conspiracy) are excluded from the fraud axis, because
+               they appear in nearly every press release
+
+     For DOJ this runs in addition to the official "Healthcare Fraud" topic tag,
+     which on its own catches only about half of the relevant releases.
+
+7.6  Deduplicate. Collapse the same release published under more than one URL,
+     keyed on source + date + title.
+
+7.7  Adding a source means: write one discover(since, limit=None) function,
+     register it in fraudscrape/discovery/__init__.py, and add the entry to
+     sources.json. Nothing else.
+
+7.8  Dependencies: requests, beautifulsoup4, selenium, and Google Chrome.
+
+
+--------------------------------------------------------------------------------
+8. DELIVERABLES
+--------------------------------------------------------------------------------
+     listofWebsites.txt            list of websites used for the search
+     sources.json                  machine-readable source registry
+     SOURCES.md                    markdown rendering of the registry
+     SUMMARY.md                    counts per year and per source
+     summary/summary.{md,csv,json}
+     downloaded/<year>/<Source>/   the corpus (HTML + PDF + attachments)
+     state/manifest.jsonl          every document discovered, with metadata
+     state/download_log.jsonl      per-document outcome
+     logs/                         run logs for discovery and each year
+     README.md                     how to install, run and extend
+     fraudscrape/                  the package
+     discover.py, download.py, verify.py, summarize.py, run_all.py,
+     list_sources.py, run_by_year.sh
+
+
+--------------------------------------------------------------------------------
+9. ACCEPTANCE - RESULT OF THE FULL RUN (2026-08-13)
+--------------------------------------------------------------------------------
+     9,741 documents, 0 gaps, 4.3 GB
+     9,740 HTML + 9,740 PDF + 2,237 attachments + LEIE database (CSV)
+
+     Year      HHS-OIG    DOJ    FBI   CMS   GAO     Total
+     2021          869    805     24     1     -     1,699
+     2022          845    834     37     -     -     1,716
+     2023          929    807     38     1     -     1,775
+     2024          914    810     43     1     -     1,768
+     2025          983    679     45     1     3     1,711
+     2026          530    463     44     5     9     1,051
+     undated         7      3      4     5     2        21
+     Total       5,077  4,401    235    14    14     9,741
+
+     2026 is lower because it is year-to-date (through August).
+
+     Known limitations:
+       - 112 DOJ releases (2.5%) were rebuilt from the justice.gov API because
+         the live page was unreachable. The text is complete; the styling is a
+         clean template. Each such file says so in its footer.
+       - Some FBI URLs redirect to justice.gov, so part of the FBI set
+         duplicates DOJ content. Those are filed under FBI because that is where
+         they were found, per section 4.1.
+       - CMS and GAO are small by nature: CMS publishes few fraud press releases
+         and GAO's contribution is context reports rather than cases. The case
+         volume is in DOJ and HHS-OIG.
+       - NHCAA commercial-payer case material is members-only and was not
+         scraped. Commercial-payer cases are covered indirectly, through DOJ,
+         FBI and HHS-OIG prosecutions of schemes against private insurers.
+
+
+--------------------------------------------------------------------------------
+10. TO REFRESH LATER
+--------------------------------------------------------------------------------
+     python3 discover.py            # picks up anything published since last run
+     python3 download.py            # fetches only what is missing
+     python3 summarize.py
+
+     a single year:                 ./run_by_year.sh 2026
+     everything from scratch:       python3 run_all.py
+================================================================================

@@ -1,0 +1,488 @@
+{
+  "generated_at": "2026-08-13T16:24:17-04:00",
+  "coverage_start": "2021-01-01",
+  "download_root": "/Users/max-imac/MaxWork/AgentWork/Download_FraudCases/downloaded",
+  "documents_total": 9741,
+  "documents_by_source": {
+    "CMS": 14,
+    "DOJ": 4401,
+    "FBI": 235,
+    "GAO": 14,
+    "HHS-OIG": 5077
+  },
+  "documents_by_year": {
+    "2021": 1699,
+    "2022": 1716,
+    "2023": 1775,
+    "2024": 1768,
+    "2025": 1711,
+    "2026": 1051,
+    "undated": 21
+  },
+  "documents_by_source_and_year": {
+    "CMS": {
+      "2021": 1,
+      "2022": 0,
+      "2023": 1,
+      "2024": 1,
+      "2025": 1,
+      "2026": 5,
+      "undated": 5
+    },
+    "DOJ": {
+      "2021": 805,
+      "2022": 834,
+      "2023": 807,
+      "2024": 810,
+      "2025": 679,
+      "2026": 463,
+      "undated": 3
+    },
+    "FBI": {
+      "2021": 24,
+      "2022": 37,
+      "2023": 38,
+      "2024": 43,
+      "2025": 45,
+      "2026": 44,
+      "undated": 4
+    },
+    "GAO": {
+      "2021": 0,
+      "2022": 0,
+      "2023": 0,
+      "2024": 0,
+      "2025": 3,
+      "2026": 9,
+      "undated": 2
+    },
+    "HHS-OIG": {
+      "2021": 869,
+      "2022": 845,
+      "2023": 929,
+      "2024": 914,
+      "2025": 983,
+      "2026": 530,
+      "undated": 7
+    }
+  },
+  "files": {
+    "html": 9740,
+    "pdf": 9740,
+    "other": 1,
+    "attachments": 2237,
+    "bytes": 4543814413
+  },
+  "detail": {
+    "CMS": {
+      "2021": {
+        "documents": 1,
+        "html": 1,
+        "pdf": 1,
+        "other": 0,
+        "attachments": 0,
+        "bytes": 177877
+      },
+      "2023": {
+        "documents": 1,
+        "html": 1,
+        "pdf": 1,
+        "other": 0,
+        "attachments": 0,
+        "bytes": 215078
+      },
+      "2024": {
+        "documents": 1,
+        "html": 1,
+        "pdf": 1,
+        "other": 0,
+        "attachments": 0,
+        "bytes": 189068
+      },
+      "2025": {
+        "documents": 1,
+        "html": 1,
+        "pdf": 1,
+        "other": 0,
+        "attachments": 0,
+        "bytes": 225533
+      },
+      "2026": {
+        "documents": 5,
+        "html": 5,
+        "pdf": 5,
+        "other": 0,
+        "attachments": 0,
+        "bytes": 898088
+      },
+      "undated": {
+        "documents": 5,
+        "html": 5,
+        "pdf": 5,
+        "other": 0,
+        "attachments": 5,
+        "bytes": 2485606
+      }
+    },
+    "DOJ": {
+      "2021": {
+        "documents": 805,
+        "html": 805,
+        "pdf": 805,
+        "other": 0,
+        "attachments": 98,
+        "bytes": 379576312
+      },
+      "2022": {
+        "documents": 834,
+        "html": 834,
+        "pdf": 834,
+        "other": 0,
+        "attachments": 107,
+        "bytes": 397712383
+      },
+      "2023": {
+        "documents": 807,
+        "html": 807,
+        "pdf": 807,
+        "other": 0,
+        "attachments": 94,
+        "bytes": 392897466
+      },
+      "2024": {
+        "documents": 810,
+        "html": 810,
+        "pdf": 810,
+        "other": 0,
+        "attachments": 87,
+        "bytes": 349701775
+      },
+      "2025": {
+        "documents": 679,
+        "html": 679,
+        "pdf": 679,
+        "other": 0,
+        "attachments": 112,
+        "bytes": 435472573
+      },
+      "2026": {
+        "documents": 463,
+        "html": 463,
+        "pdf": 463,
+        "other": 0,
+        "attachments": 42,
+        "bytes": 235522215
+      },
+      "undated": {
+        "documents": 3,
+        "html": 3,
+        "pdf": 3,
+        "other": 0,
+        "attachments": 0,
+        "bytes": 1363004
+      }
+    },
+    "FBI": {
+      "2021": {
+        "documents": 24,
+        "html": 24,
+        "pdf": 24,
+        "other": 0,
+        "attachments": 3,
+        "bytes": 13131176
+      },
+      "2022": {
+        "documents": 37,
+        "html": 37,
+        "pdf": 37,
+        "other": 0,
+        "attachments": 0,
+        "bytes": 15724882
+      },
+      "2023": {
+        "documents": 38,
+        "html": 38,
+        "pdf": 38,
+        "other": 0,
+        "attachments": 0,
+        "bytes": 16249657
+      },
+      "2024": {
+        "documents": 43,
+        "html": 43,
+        "pdf": 43,
+        "other": 0,
+        "attachments": 2,
+        "bytes": 20167409
+      },
+      "2025": {
+        "documents": 45,
+        "html": 45,
+        "pdf": 45,
+        "other": 0,
+        "attachments": 1,
+        "bytes": 20725447
+      },
+      "2026": {
+        "documents": 44,
+        "html": 44,
+        "pdf": 44,
+        "other": 0,
+        "attachments": 1,
+        "bytes": 32976332
+      },
+      "undated": {
+        "documents": 4,
+        "html": 4,
+        "pdf": 4,
+        "other": 0,
+        "attachments": 4,
+        "bytes": 8567492
+      }
+    },
+    "HHS-OIG": {
+      "2021": {
+        "documents": 869,
+        "html": 869,
+        "pdf": 869,
+        "other": 0,
+        "attachments": 367,
+        "bytes": 422974719
+      },
+      "2022": {
+        "documents": 845,
+        "html": 845,
+        "pdf": 845,
+        "other": 0,
+        "attachments": 266,
+        "bytes": 381024321
+      },
+      "2023": {
+        "documents": 929,
+        "html": 929,
+        "pdf": 929,
+        "other": 0,
+        "attachments": 260,
+        "bytes": 300955668
+      },
+      "2024": {
+        "documents": 914,
+        "html": 914,
+        "pdf": 914,
+        "other": 0,
+        "attachments": 281,
+        "bytes": 393782997
+      },
+      "2025": {
+        "documents": 983,
+        "html": 983,
+        "pdf": 983,
+        "other": 0,
+        "attachments": 311,
+        "bytes": 395339335
+      },
+      "2026": {
+        "documents": 530,
+        "html": 530,
+        "pdf": 530,
+        "other": 0,
+        "attachments": 143,
+        "bytes": 222970788
+      },
+      "undated": {
+        "documents": 7,
+        "html": 6,
+        "pdf": 6,
+        "other": 1,
+        "attachments": 22,
+        "bytes": 39237027
+      }
+    },
+    "GAO": {
+      "2025": {
+        "documents": 3,
+        "html": 3,
+        "pdf": 3,
+        "other": 0,
+        "attachments": 7,
+        "bytes": 11260703
+      },
+      "2026": {
+        "documents": 9,
+        "html": 9,
+        "pdf": 9,
+        "other": 0,
+        "attachments": 23,
+        "bytes": 49820307
+      },
+      "undated": {
+        "documents": 2,
+        "html": 2,
+        "pdf": 2,
+        "other": 0,
+        "attachments": 1,
+        "bytes": 2469175
+      }
+    }
+  },
+  "manifest_total": 9739,
+  "categories": {
+    "DOJ": {
+      "program page": 3,
+      "press release": 4398
+    },
+    "HHS-OIG": {
+      "index page": 1,
+      "program page": 5,
+      "exclusions data": 1,
+      "enforcement action": 4508,
+      "report": 562
+    },
+    "FBI": {
+      "news": 161,
+      "press release": 72
+    },
+    "GAO": {
+      "program page": 2,
+      "report or testimony": 12
+    },
+    "CMS": {
+      "index page": 1,
+      "program page": 4,
+      "blog": 1,
+      "fact sheet": 2,
+      "press release": 6
+    }
+  },
+  "subsources": {
+    "DOJ": {
+      "USAO - New Jersey": 306,
+      "USAO - Massachusetts": 249,
+      "USAO - New York, Southern": 128,
+      "Civil Division": 113,
+      "USAO - Florida, Southern": 107,
+      "USAO - Texas, Southern": 105,
+      "USAO - Connecticut": 99,
+      "USAO - Florida, Middle": 98,
+      "USAO - California, Central": 93,
+      "USAO - New York, Eastern": 92,
+      "Criminal Division; Criminal - Criminal Fraud Section": 92,
+      "USAO - Pennsylvania, Eastern": 89,
+      "USAO - Pennsylvania, Western": 62,
+      "Criminal Division; Criminal - Criminal Fraud Section; Federal Bureau of Investigation (FBI)": 62,
+      "USAO - Michigan, Eastern": 61,
+      "USAO - California, Eastern": 58,
+      "USAO - Maryland": 52,
+      "USAO - Washington, Eastern": 49,
+      "USAO - North Carolina, Western": 49,
+      "USAO - Pennsylvania, Middle": 47,
+      "USAO - Virginia, Western": 45,
+      "USAO - North Carolina, Eastern": 43,
+      "USAO - Washington, Western": 43,
+      "USAO - Georgia, Northern": 42,
+      "USAO - South Carolina": 42
+    },
+    "HHS-OIG": {
+      "Criminal and Civil Actions": 2425,
+      "State Enforcement Agencies": 1091,
+      "Fraud Self-Disclosures": 474,
+      "CMS": 472,
+      "CMP and Affirmative Exclusions": 269,
+      "COVID-19; Criminal and Civil Actions": 143,
+      "CMP and Affirmative Exclusions; EMTALA/Patient Dumping": 39,
+      "MFCU": 26,
+      "CIA Reportable Events": 24,
+      "OS": 16,
+      "SAMHSA": 12,
+      "HHS-OIG": 10,
+      "Grant and Contractor Fraud Self-Disclosures": 10,
+      "HRSA": 9,
+      "ACF": 9,
+      "CMP and Affirmative Exclusions; COVID-19": 8,
+      "COVID-19; State Enforcement Agencies": 8,
+      "Stipulated Penalties and Material Breaches": 6,
+      "NIH": 6,
+      "ACL": 5,
+      "Criminal and Civil Actions; State Enforcement Agencies": 4,
+      "COVID-19; Fraud Self-Disclosures": 3,
+      "Criminal and Civil Actions; Grant and Contractor Fraud Self-Disclosures": 2,
+      "CDC": 2,
+      "Criminal and Civil Actions; Fraud Self-Disclosures": 1
+    },
+    "FBI": {
+      "FBI Boston": 51,
+      "FBI Atlanta": 17,
+      "FBI National Press Office": 16,
+      "FBI Miami": 14,
+      "FBI Detroit": 12,
+      "FBI Charlotte": 11,
+      "FBI Houston": 11,
+      "FBI Birmingham": 10,
+      "FBI Losangeles": 10,
+      "FBI Baltimore": 9,
+      "FBI Albany": 8,
+      "FBI Chicago": 8,
+      "FBI Cleveland": 7,
+      "FBI Dallas": 7,
+      "FBI Columbia": 5,
+      "FBI Neworleans": 5,
+      "FBI Buffalo": 4,
+      "FBI Minneapolis": 4,
+      "FBI Anchorage": 3,
+      "FBI Elpaso": 3,
+      "FBI Louisville": 3,
+      "FBI Philadelphia": 2,
+      "FBI Albuquerque": 1,
+      "FBI Indianapolis": 1,
+      "FBI Jackson": 1
+    },
+    "GAO": {
+      "GAO": 14
+    },
+    "CMS": {
+      "CMS": 14
+    }
+  },
+  "manifest_by_year": {
+    "DOJ": {
+      "2021": 805,
+      "2022": 834,
+      "2023": 807,
+      "2024": 810,
+      "2025": 679,
+      "2026": 463,
+      "undated": 3
+    },
+    "HHS-OIG": {
+      "2021": 869,
+      "2022": 845,
+      "2023": 929,
+      "2024": 914,
+      "2025": 983,
+      "2026": 530,
+      "undated": 7
+    },
+    "FBI": {
+      "2021": 24,
+      "2022": 37,
+      "2023": 38,
+      "2024": 43,
+      "2025": 45,
+      "2026": 44,
+      "undated": 2
+    },
+    "GAO": {
+      "2025": 3,
+      "2026": 9,
+      "undated": 2
+    },
+    "CMS": {
+      "2021": 1,
+      "2023": 1,
+      "2024": 1,
+      "2025": 1,
+      "2026": 5,
+      "undated": 5
+    }
+  }
+}

@@ -1,0 +1,35 @@
+# --------------------------------------------------------------------------
+# Downloaded corpus and caches - regenerate with the scripts, never commit.
+# GitHub caps a single file at 100 MB; these are 6.2 GB together.
+#   downloaded/  4.7 GB  rebuild: python discover.py && python download.py
+#   state/       1.5 GB  manifest + cached API responses and page HTML
+# NOTE: .gitignore does not support trailing comments on a pattern line -
+# anything after the pattern becomes part of the pattern and silently matches
+# nothing. Keep comments on their own lines.
+# --------------------------------------------------------------------------
+downloaded/
+state/
+logs/
+
+# Per-document extraction caches (rebuilt on re-run; the results are kept)
+extracted/**/.cache/
+extracted/.cache/
+
+# --------------------------------------------------------------------------
+# Python
+# --------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+.ipynb_checkpoints/
+
+# --------------------------------------------------------------------------
+# Local tooling and OS cruft
+# --------------------------------------------------------------------------
+.DS_Store
+.claude/
+chrome-prof/
+cp[0-9]*/

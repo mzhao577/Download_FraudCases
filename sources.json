@@ -1,0 +1,110 @@
+{
+  "_comment": "Canonical list of websites used to find major medical / health care fraud cases (Medicare, Medicaid and commercial payers). Edit this file to add, remove or disable a source; the scrapers read it at run time. 'key' maps to a discovery module in fraudscrape/discovery/ and to the folder name used under ./downloaded/.",
+  "generated_for": "instruction_download.txt",
+  "coverage_start": "2021-01-01",
+  "sources": [
+    {
+      "key": "DOJ",
+      "enabled": true,
+      "name": "U.S. Department of Justice (Main Justice + all 93 U.S. Attorney's Offices)",
+      "why": "Primary publisher of federal health care fraud criminal charges, convictions, sentencings, False Claims Act civil settlements and the annual National Health Care Fraud Takedowns. Covers Medicare, Medicaid, TRICARE and private/commercial insurers.",
+      "websites": [
+        "https://www.justice.gov/news",
+        "https://www.justice.gov/criminal/criminal-fraud/health-care-fraud-unit",
+        "https://www.justice.gov/civil/false-claims-act",
+        "https://www.justice.gov/opa/pr"
+      ],
+      "harvest": {
+        "method": "official JSON API, paginated newest-first, then filtered on the 'Healthcare Fraud' topic tag and on health-care-fraud keywords",
+        "endpoint": "https://www.justice.gov/api/v1/press_releases.json?pagesize=50&page={n}&sort=date&direction=DESC",
+        "healthcare_fraud_topic_uuid": "cce5d791-6b0b-462d-9a42-768179164d43",
+        "notes": "justice.gov HTML is behind an Akamai bot-manager interstitial, so pages are fetched with headless Chrome; if that fails the press release is rebuilt from the API 'body' field. PDF attachments (indictments, complaints, settlement agreements) are downloaded as well."
+      },
+      "document_types": ["press release", "indictment/complaint PDF", "settlement agreement PDF"]
+    },
+    {
+      "key": "HHS-OIG",
+      "enabled": true,
+      "name": "U.S. Department of Health and Human Services, Office of Inspector General",
+      "why": "Publishes the government-wide enforcement-action database (criminal, civil and Civil Monetary Penalty actions, including state Medicaid Fraud Control Unit cases), audits and evaluations of Medicare/Medicaid improper payments, and the LEIE exclusions list.",
+      "websites": [
+        "https://oig.hhs.gov/fraud/enforcement/",
+        "https://oig.hhs.gov/reports/all/",
+        "https://oig.hhs.gov/exclusions/",
+        "https://oig.hhs.gov/fraud/medicaid-fraud-control-units-mfcu/"
+      ],
+      "harvest": {
+        "method": "paginated HTML listings (20 items/page, newest first) walked until the coverage cut-off date; reports are keyword-filtered and their full-text PDFs are downloaded too",
+        "endpoints": [
+          "https://oig.hhs.gov/fraud/enforcement/?page={n}",
+          "https://oig.hhs.gov/reports/all/?page={n}"
+        ]
+      },
+      "document_types": ["enforcement action", "audit report", "evaluation report", "CMP action", "MFCU annual report", "LEIE data file"]
+    },
+    {
+      "key": "FBI",
+      "enabled": true,
+      "name": "Federal Bureau of Investigation (national + 55 field offices)",
+      "why": "Lead investigative agency for federal health care fraud; field-office press releases cover cases against Medicare, Medicaid and private/commercial insurers.",
+      "websites": [
+        "https://www.fbi.gov/news/press-releases",
+        "https://www.fbi.gov/investigate/white-collar-crime/healthcare-fraud",
+        "https://www.fbi.gov/contact-us/field-offices"
+      ],
+      "harvest": {
+        "method": "full site sitemap is downloaded and every /news/press-releases/ and field-office press-release URL is keyword-matched, then each candidate page is fetched and filtered on its published date",
+        "endpoint": "https://www.fbi.gov/sitemap.xml.gz"
+      },
+      "document_types": ["press release", "story", "program page"]
+    },
+    {
+      "key": "CMS",
+      "enabled": true,
+      "name": "Centers for Medicare & Medicaid Services",
+      "why": "Payer-side program-integrity announcements, Medicare/Medicaid improper-payment and fraud-prevention reporting, provider-enrollment moratoria and Strike Force partnership news.",
+      "websites": [
+        "https://www.cms.gov/about-cms/contact/newsroom",
+        "https://www.cms.gov/data-research/monitoring-programs/medicare-fee-service-compliance-programs",
+        "https://www.cms.gov/data-research/monitoring-programs/improper-payment-measurement-programs"
+      ],
+      "harvest": {
+        "method": "newsroom sitemap is downloaded and press releases / fact sheets / news alerts are keyword-matched, then fetched with headless Chrome (cms.gov blocks plain HTTP clients) and filtered on published date",
+        "endpoint": "https://www.cms.gov/sitemap-newsroom.xml"
+      },
+      "document_types": ["press release", "fact sheet", "news alert", "program-integrity report"]
+    },
+    {
+      "key": "GAO",
+      "enabled": true,
+      "name": "U.S. Government Accountability Office",
+      "why": "Independent audits and testimony on Medicare/Medicaid fraud risk, improper payments and program-integrity oversight - useful context documents for the case corpus.",
+      "websites": [
+        "https://www.gao.gov/reports-testimonies",
+        "https://www.gao.gov/health-care"
+      ],
+      "harvest": {
+        "method": "faceted reports-and-testimonies listing browsed with headless Chrome (gao.gov blocks plain HTTP clients); each product page plus its full-text PDF is saved",
+        "endpoint": "https://www.gao.gov/reports-testimonies?page={n}"
+      },
+      "document_types": ["report", "testimony", "report PDF"]
+    }
+  ],
+  "considered_but_not_scraped": [
+    {
+      "name": "NHCAA (National Health Care Anti-Fraud Association)",
+      "url": "https://www.nhcaa.org/",
+      "reason": "Commercial-payer case material is behind a members-only login; only high-level statistics are public."
+    },
+    {
+      "name": "State Medicaid Fraud Control Unit websites (50 states)",
+      "url": "https://oig.hhs.gov/fraud/medicaid-fraud-control-units-mfcu/",
+      "reason": "State MFCU press releases are already syndicated into the HHS-OIG enforcement database, which is scraped instead."
+    },
+    {
+      "name": "PACER / CourtListener dockets",
+      "url": "https://www.courtlistener.com/",
+      "reason": "Underlying court filings are useful but require per-document fees or a separate API key; DOJ press-release attachments cover the key filings."
+    }
+  ]
+}

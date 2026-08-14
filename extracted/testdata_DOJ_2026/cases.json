@@ -1,0 +1,467 @@
+{
+  "generated_at": "2026-08-13T20:17:59-04:00",
+  "model": "claude-opus-5",
+  "counts": {
+    "documents": 13,
+    "extracted": 13,
+    "failed": 0,
+    "distinct_cases": 12,
+    "repeat_coverage": [
+      {
+        "entity": "Camille S. Childress (operator/owner of Inspiring Angels LLC); Inspiring Angels LLC",
+        "documents": [
+          "home-health-care-operator-admits-defrauding-missouri-medicaid_3a443eafa6e2.pdf",
+          "home-health-care-operator-sentenced-for-defrauding-missouri-medicaid_01d34517791b.pdf"
+        ],
+        "statuses": [
+          "pleaded guilty",
+          "sentenced"
+        ]
+      }
+    ],
+    "fraud_types": [
+      [
+        "Phantom Claims",
+        10
+      ],
+      [
+        "Falsify certificate",
+        8
+      ],
+      [
+        "kickback_Bribery For Referral",
+        5
+      ],
+      [
+        "FakeEncounter",
+        4
+      ],
+      [
+        "Benefit & Eligibility Fraud",
+        4
+      ],
+      [
+        "Wire Fraud",
+        3
+      ],
+      [
+        "IdentityFraud",
+        2
+      ],
+      [
+        "Covid or General Loan Fraud",
+        1
+      ]
+    ],
+    "fraud_type_combinations": [
+      [
+        "Benefit & Eligibility Fraud + Falsify certificate + Phantom Claims",
+        3
+      ],
+      [
+        "Benefit & Eligibility Fraud + FakeEncounter + Falsify certificate + Phantom Claims",
+        1
+      ],
+      [
+        "FakeEncounter + IdentityFraud + Phantom Claims + kickback_Bribery For Referral",
+        1
+      ],
+      [
+        "Falsify certificate + Phantom Claims + Wire Fraud",
+        1
+      ],
+      [
+        "Falsify certificate + IdentityFraud + Phantom Claims + kickback_Bribery For Referral",
+        1
+      ],
+      [
+        "Falsify certificate + Phantom Claims",
+        1
+      ],
+      [
+        "FakeEncounter + kickback_Bribery For Referral",
+        1
+      ],
+      [
+        "Phantom Claims + Wire Fraud + kickback_Bribery For Referral",
+        1
+      ],
+      [
+        "FakeEncounter + Falsify certificate + Phantom Claims + Wire Fraud",
+        1
+      ]
+    ],
+    "payers": [
+      [
+        "Medicaid",
+        8
+      ],
+      [
+        "Medicare",
+        5
+      ],
+      [
+        "U.S. Department of Veterans Affairs Community Care Network",
+        1
+      ],
+      [
+        "Small Business Administration (Paycheck Protection Program)",
+        1
+      ],
+      [
+        "Veterans Administration Community Health program",
+        1
+      ]
+    ],
+    "states": [
+      [
+        "Missouri",
+        4
+      ],
+      [
+        "New York",
+        2
+      ],
+      [
+        "California",
+        1
+      ],
+      [
+        "Kentucky",
+        1
+      ],
+      [
+        "Michigan",
+        1
+      ],
+      [
+        "Pennsylvania",
+        1
+      ],
+      [
+        "Oklahoma",
+        1
+      ],
+      [
+        "Florida",
+        1
+      ],
+      [
+        "West Virginia",
+        1
+      ]
+    ],
+    "case_status": [
+      [
+        "civil settlement",
+        4
+      ],
+      [
+        "pleaded guilty",
+        3
+      ],
+      [
+        "convicted at trial",
+        2
+      ],
+      [
+        "sentenced",
+        2
+      ],
+      [
+        "charged",
+        2
+      ]
+    ],
+    "fraud_amount": {
+      "cases_with_amount": 9,
+      "total": 78987938.0,
+      "median": 1600000.0,
+      "min": 174496.0,
+      "max": 68000000.0
+    },
+    "settlement_amount": {
+      "cases_with_amount": 9,
+      "total": 40112300.0
+    },
+    "jail_months": {
+      "cases_sentenced": 4,
+      "median": 24,
+      "min": 15,
+      "max": 60
+    }
+  },
+  "cases": [
+    {
+      "DocumentName": "ceo-of-bay-area-home-health-agency-convicted-of-health-care-fraud-conspiracy-targeting-medicare_a0258572f2c4.pdf",
+      "ReportDT": "2026-07-23",
+      "JurisdictionName": "U.S. Attorney's Office, Northern District of California",
+      "OccurDt": "2018-10 to 2020-11",
+      "FraudEntity": "Simon Katz; Veronica Katz (former CEO of HealthNow Home Healthcare); HealthNow Home Healthcare; Vennesa Herrera (former employee); Pharadja Andrews (former employee)",
+      "Service": "HomeHealth",
+      "State_County": "California - Alameda County (Hayward)",
+      "PayerName": "Medicare",
+      "FraudAmt": 3000000.0,
+      "SettlementAmt": 593634.0,
+      "JailTime": 24,
+      "FraudType": "Falsify certificate",
+      "FraudTypeAll": [
+        "Falsify certificate",
+        "Phantom Claims",
+        "FakeEncounter",
+        "Benefit & Eligibility Fraud"
+      ],
+      "CaseStatus": "convicted at trial",
+      "SchemeSummary": "HealthNow Home Healthcare used unqualified staff to perform home health patient assessments outside their scope of practice, altered medical records and forged physician signatures, billed Medicare for services never provided, and submitted falsified documents to California Department of Public Health inspectors to preserve Medicare billing privileges; the agency received over $3 million and Simon Katz personally received $300,000. Figures span multiple defendants: Veronica Katz was sentenced to 2 years plus $543,634.34 restitution and a $50,000 fine, while Simon Katz awaits sentencing."
+    },
+    {
+      "DocumentName": "former-sober-home-owner-and-operator-sentenced-for-kickback-conspiracy-and-health-care-fraud_d360d4832b94.pdf",
+      "ReportDT": "2026-04-24",
+      "JurisdictionName": "U.S. Attorney's Office, Eastern District of Kentucky",
+      "OccurDt": "2019-08 to 2022-03",
+      "FraudEntity": "Delores Jordan (owner, Serenity Keeper's, LLC); Ernest Williams (sober home operator); Serenity Keeper's, LLC; Jerome Davis (co-defendant, X-Tremly for Christ, LLC); Dashawn Dawkins; Lily Bell (kickback payer)",
+      "Service": "SubstanceUseTreatment; Laboratory; BehavioralHealth",
+      "State_County": "Kentucky - Fayette County (Lexington)",
+      "PayerName": "Medicaid (Kentucky); Medicare",
+      "FraudAmt": 2569946.0,
+      "SettlementAmt": null,
+      "JailTime": 60,
+      "FraudType": "kickback_Bribery For Referral",
+      "FraudTypeAll": [
+        "kickback_Bribery For Referral",
+        "FakeEncounter",
+        "Phantom Claims",
+        "IdentityFraud"
+      ],
+      "CaseStatus": "sentenced",
+      "SchemeSummary": "Sober home owner Jordan solicited kickbacks (checks, cash, ACH/'consulting' payments up to $5,000, some routed through co-defendant Davis's company) in exchange for referring residents' urine drug tests to three labs, which billed Medicaid and Medicare about $2,569,946 for tests not ordered or reviewed by a medical provider; Serenity Keepers also billed Medicaid for six hours per day of peer support services that were not provided and not delivered by licensed peer support specialists, with Williams receiving $365,374.72 as a percentage of billings. Jordan got 60 months, Williams five years' probation, Davis 12 months and a day; Bell pled guilty to aggravated identity theft involving a nurse practitioner's stolen identifiers."
+    },
+    {
+      "DocumentName": "home-health-care-operator-admits-defrauding-missouri-medicaid_3a443eafa6e2.pdf",
+      "ReportDT": "2026-03-20",
+      "JurisdictionName": "U.S. Attorney's Office, Eastern District of Missouri",
+      "OccurDt": "2021 to 2022",
+      "FraudEntity": "Camille S. Childress (operator/owner of Inspiring Angels LLC); Inspiring Angels LLC",
+      "Service": "HomeHealth",
+      "State_County": "Missouri - St. Louis County",
+      "PayerName": "Medicaid (Missouri Medicaid)",
+      "FraudAmt": 174496.0,
+      "SettlementAmt": 174496.0,
+      "JailTime": 15,
+      "FraudType": "Phantom Claims",
+      "FraudTypeAll": [
+        "Phantom Claims",
+        "Benefit & Eligibility Fraud",
+        "Falsify certificate"
+      ],
+      "CaseStatus": "pleaded guilty",
+      "SchemeSummary": "Childress enrolled her home health company with Missouri Medicaid using paperwork falsely naming another person as owner to conceal her ownership after a 2012 conviction, then billed Missouri Medicaid for home health services never provided, including for clients who were hospitalized at the time and for visits with no timesheets or documentation; Medicaid paid at least $174,496 in 2021-2022. A related release notes she was later sentenced to 15 months and ordered to repay $174,496."
+    },
+    {
+      "DocumentName": "home-health-care-operator-sentenced-for-defrauding-missouri-medicaid_01d34517791b.pdf",
+      "ReportDT": "2026-07-21",
+      "JurisdictionName": "U.S. Attorney's Office, Eastern District of Missouri",
+      "OccurDt": "2021 to 2022",
+      "FraudEntity": "Camille S. Childress (operator/owner); Inspiring Angels LLC",
+      "Service": "HomeHealth",
+      "State_County": "Missouri - St. Louis",
+      "PayerName": "Medicaid (Missouri Medicaid)",
+      "FraudAmt": 174496.0,
+      "SettlementAmt": 174496.0,
+      "JailTime": 15,
+      "FraudType": "Phantom Claims",
+      "FraudTypeAll": [
+        "Phantom Claims",
+        "Benefit & Eligibility Fraud",
+        "Falsify certificate"
+      ],
+      "CaseStatus": "sentenced",
+      "SchemeSummary": "Childress enrolled her home health company with Missouri Medicaid using paperwork falsely naming another owner to hide her disqualifying 2012 conviction, then billed for home health services never provided - including for clients who were hospitalized at the time and claims with no timesheets or documentation - collecting $174,496 in 2021-2022."
+    },
+    {
+      "DocumentName": "local-home-healthcare-company-owner-admits-over-200-000-fraud_62eeef80cf7e.pdf",
+      "ReportDT": "2026-02-17",
+      "JurisdictionName": "U.S. Attorney's Office, Eastern District of Missouri; U.S. District Court in St. Louis",
+      "OccurDt": "2020-06 to 2024-11",
+      "FraudEntity": "Natavia Boyd-Wells (owner, Touch of the Heart Home Health Care LLC); Touch of the Heart Home Health Care LLC",
+      "Service": "HomeHealth",
+      "State_County": "Missouri - St. Louis",
+      "PayerName": "Medicaid (Missouri Medicaid Program); U.S. Department of Veterans Affairs Community Care Network",
+      "FraudAmt": 209000.0,
+      "SettlementAmt": null,
+      "JailTime": null,
+      "FraudType": "Phantom Claims",
+      "FraudTypeAll": [
+        "Phantom Claims",
+        "Falsify certificate",
+        "Wire Fraud"
+      ],
+      "CaseStatus": "pleaded guilty",
+      "SchemeSummary": "Owner of a home health company submitted hundreds of fraudulent reimbursement claims to Missouri Medicaid and the VA Community Care Network for home health services never provided, including services claimed on dates when veteran patients were hospitalized, and submitted fabricated documentation during a 2022 Medicaid audit; losses were at least $109,751 to Medicaid and $100,563 to the VA."
+    },
+    {
+      "DocumentName": "michigan-home-health-care-agency-owner-convicted-of-1-6m-medicare-fraud-scheme-and-kickback-conspiracy_aa10bdfe096a.pdf",
+      "ReportDT": "2026-05-15",
+      "JurisdictionName": "U.S. District Court for the Eastern District of Michigan; U.S. Department of Justice, Criminal Division, Fraud Section / National Fraud Enforcement Division",
+      "OccurDt": "2018 to 2024",
+      "FraudEntity": "Ruby Scott (nurse; owner of Delta Home Health Care LLC); Delta Home Health Care LLC",
+      "Service": "HomeHealth",
+      "State_County": "Michigan - Oakland County (Farmington Hills); Michigan - Wayne County (Detroit)",
+      "PayerName": "Medicare",
+      "FraudAmt": 1600000.0,
+      "SettlementAmt": null,
+      "JailTime": null,
+      "FraudType": "kickback_Bribery For Referral",
+      "FraudTypeAll": [
+        "kickback_Bribery For Referral",
+        "Falsify certificate",
+        "IdentityFraud",
+        "Phantom Claims"
+      ],
+      "CaseStatus": "convicted at trial",
+      "SchemeSummary": "Scott bribed a Detroit hospital discharge nurse (over $130,000, about $300 per billed patient, paid via CashApp, PayPal, check and cash) to fax confidential Medicare patient records to her home health agency, then used those stolen patient profiles to bill Medicare for home health services, falsely representing that physicians had certified patients as homebound and using real doctors' identities to fabricate evaluations; some patients never received services and files were missing for over a third of billed patients, causing about $1.6 million in Medicare losses ($1.2 million paid)."
+    },
+    {
+      "DocumentName": "philadelphia-in-home-care-services-provider-agrees-to-pay-1-million-to-resolve-allegations-of-false-claims-act_08acfb6ec1b7.pdf",
+      "ReportDT": "2026-08-04",
+      "JurisdictionName": "U.S. Attorney's Office, Eastern District of Pennsylvania",
+      "OccurDt": "2015-01 to 2023-12",
+      "FraudEntity": "Blessings 4 Ever Home Care Agency LLC; V&V Management Solutions LLC (related management entity)",
+      "Service": "PersonalCare; HomeHealth",
+      "State_County": "Pennsylvania - Philadelphia County (Philadelphia)",
+      "PayerName": "Medicaid (Pennsylvania Medicaid)",
+      "FraudAmt": null,
+      "SettlementAmt": 1000000.0,
+      "JailTime": null,
+      "FraudType": "Falsify certificate",
+      "FraudTypeAll": [
+        "Falsify certificate",
+        "Phantom Claims"
+      ],
+      "CaseStatus": "civil settlement",
+      "SchemeSummary": "Home care agency allegedly fabricated or backdated 181 training certificates and personnel documents to falsely certify that personal care attendants met state and Medicaid training requirements, then billed Medicaid for their services; it also billed 1,141 claims for in-home personal care for 209 beneficiaries on days they were hospital inpatients all day. Resolved for $1 million in a qui tam action, with the relator receiving 21% of the federal recovery."
+    },
+    {
+      "DocumentName": "queens-home-care-agency-and-home-health-aide-training-center-to-pay-2-3-million-to-settle-claims-that-they-def_3e5bcfb7e565.pdf",
+      "ReportDT": "2026-05-19",
+      "JurisdictionName": "U.S. Attorney's Office, Eastern District of New York",
+      "OccurDt": null,
+      "FraudEntity": "Kris Agency & Home Care, Inc. (home care agency); Career Development Center of Queens, Inc. (home health aide training center)",
+      "Service": "HomeHealth",
+      "State_County": "New York - Queens County",
+      "PayerName": "Small Business Administration (Paycheck Protection Program)",
+      "FraudAmt": 1800000.0,
+      "SettlementAmt": 2347133.0,
+      "JailTime": null,
+      "FraudType": "Covid or General Loan Fraud",
+      "FraudTypeAll": [
+        "Covid or General Loan Fraud"
+      ],
+      "CaseStatus": "civil settlement",
+      "SchemeSummary": "A Queens home care agency and an affiliated home health aide training center allegedly obtained over $1.8 million in second-draw PPP loans and loan forgiveness by falsely certifying they had fewer than 300 employees, including affiliates, and by failing to disclose their affiliation with each other; they agreed to pay $2,347,133.10 to resolve FCA claims brought by whistleblowers."
+    },
+    {
+      "DocumentName": "st-louis-county-home-healthcare-company-owner-associates-accused-of-1-46-million-fraud_b7fd6865df0e.pdf",
+      "ReportDT": "2026-02-17",
+      "JurisdictionName": "U.S. Attorney's Office, Eastern District of Missouri",
+      "OccurDt": "2020-07 to 2026-02",
+      "FraudEntity": "Daniell Green (owner and operator of A&L Angels Home Healthcare Services LLC); Dejuan Bingham; Kimberly Diazascencio; Thomas Keith; A&L Angels Home Healthcare Services LLC",
+      "Service": "HomeHealth",
+      "State_County": "Missouri - St. Louis County (Bridgeton)",
+      "PayerName": "Medicaid (Missouri Medicaid Program)",
+      "FraudAmt": 1460000.0,
+      "SettlementAmt": null,
+      "JailTime": null,
+      "FraudType": "Phantom Claims",
+      "FraudTypeAll": [
+        "Phantom Claims",
+        "Falsify certificate",
+        "Benefit & Eligibility Fraud"
+      ],
+      "CaseStatus": "charged",
+      "SchemeSummary": "Owner of a Bridgeton home health company and her associates allegedly created false timesheets showing home health services never provided, including for dates when patients were hospitalized or when listed workers were working elsewhere, and recruited Medicaid patients to lend their names for fraudulent claims totaling $1.46 million; Green also allegedly filed a false Medicaid participation agreement claiming registry enrollment and background checks and concealed her co-defendant's felony drug conviction, spending proceeds on vacations, furniture and luxury goods."
+    },
+    {
+      "DocumentName": "traditions-health-agrees-to-pay-34m-to-resolve-false-claims-act-liability-relating-to-home-health-services-fol_8801c4f3369c.pdf",
+      "ReportDT": "2026-01-22",
+      "JurisdictionName": "U.S. Department of Justice, Civil Division and U.S. Attorney's Office for the Eastern District of Oklahoma",
+      "OccurDt": "2019 to 2024",
+      "FraudEntity": "Traditions Health LLC (home health provider)",
+      "Service": "HomeHealth",
+      "State_County": "Oklahoma - McAlester (Pittsburg County); Texas",
+      "PayerName": "Medicare",
+      "FraudAmt": null,
+      "SettlementAmt": 34000000.0,
+      "JailTime": null,
+      "FraudType": "FakeEncounter",
+      "FraudTypeAll": [
+        "FakeEncounter",
+        "kickback_Bribery For Referral"
+      ],
+      "CaseStatus": "civil settlement",
+      "SchemeSummary": "Traditions self-disclosed that from 2021 to 2024 its McAlester, Oklahoma location billed Medicare for home health services that were not medically necessary, and that from 2019 to 2024 it paid remuneration to physician-medical directors in Oklahoma and Texas who referred Medicare beneficiaries for home health services, potentially violating the Anti-Kickback Statute and Stark Law."
+    },
+    {
+      "DocumentName": "two-home-health-providers-agree-to-pay-702-541-to-resolve-self-referral-allegations_9ef0bd636963.pdf",
+      "ReportDT": "2026-01-26",
+      "JurisdictionName": "U.S. Attorney's Office, Southern District of Florida",
+      "OccurDt": "2017-02 to 2025-02",
+      "FraudEntity": "Medical Services of America, Inc.; Traditional Home Care, Inc. d/b/a Community Home Health Services",
+      "Service": "HomeHealth",
+      "State_County": "Florida - Miami-Dade County (Miami)",
+      "PayerName": "Medicare",
+      "FraudAmt": null,
+      "SettlementAmt": 702541.0,
+      "JailTime": null,
+      "FraudType": "kickback_Bribery For Referral",
+      "FraudTypeAll": [
+        "kickback_Bribery For Referral"
+      ],
+      "CaseStatus": "civil settlement",
+      "SchemeSummary": "Home health providers paid bonuses to an employee based on the volume of Medicare patient referrals made by the employee's physician spouse, then billed Medicare for designated health services from those referrals in violation of the Stark Law; resolved via a $702,541.20 FCA settlement (including $379,752 restitution) arising from a qui tam suit."
+    },
+    {
+      "DocumentName": "two-individuals-plead-guilty-to-68-million-fraud-scheme-at-brooklyn-based-adult-day-cares-and-home-health-care_bc8bc0b2df76.pdf",
+      "ReportDT": "2026-01-15",
+      "JurisdictionName": "U.S. Attorney's Office, Eastern District of New York",
+      "OccurDt": "2017-10 to 2024-07",
+      "FraudEntity": "Elaine Antao (marketer/recruiter); Manal Wasef (marketer/recruiter); Happy Family Social Adult Day Care Center Inc.; Family Social Adult Day Care Center Inc.; Responsible Care Staffing Inc. (home health fiscal intermediary); Amran Hashmi; Joseph Helmy; Amal Ismail; Zakia Khan; Seema Memon",
+      "Service": "AdultDayCare; HomeHealth",
+      "State_County": "New York - Kings County (Brooklyn)",
+      "PayerName": "Medicaid (New York)",
+      "FraudAmt": 68000000.0,
+      "SettlementAmt": 1000000.0,
+      "JailTime": null,
+      "FraudType": "kickback_Bribery For Referral",
+      "FraudTypeAll": [
+        "kickback_Bribery For Referral",
+        "Phantom Claims",
+        "Wire Fraud"
+      ],
+      "CaseStatus": "pleaded guilty",
+      "SchemeSummary": "Antao and Wasef acted as marketers/recruiters who referred Medicaid recipients to two Brooklyn social adult day cares and a home health fiscal intermediary in exchange for kickbacks, and paid cash bribes to beneficiaries for adult day care and home health services that were billed to Medicaid (over $68 million) but never provided or were kickback-induced; they used multiple business entities to launder proceeds and generate the cash for bribes. Five other defendants previously pleaded guilty; the two agreed to forfeit approximately $1 million collectively."
+    },
+    {
+      "DocumentName": "u-s-attorney-moore-capito-announces-fraud-conspiracy-charges-against-sober-living-home-founder-and-spouse_69a9a3ca911a.pdf",
+      "ReportDT": "2026-06-23",
+      "JurisdictionName": "U.S. Attorney's Office, Southern District of West Virginia",
+      "OccurDt": "2016-01 to 2020-01",
+      "FraudEntity": "Raymond C. \"Rocky\" Meadows II (founder and director, Lifehouse Inc.); Helen Crutcher Meadows (collector supervisor, Lifehouse Inc.); West Virginia Sleep Centers, LLC (sleep laboratory)",
+      "Service": "SubstanceUseTreatment; Laboratory",
+      "State_County": "West Virginia - Cabell County (Huntington); West Virginia - Raleigh County (Beckley)",
+      "PayerName": "Medicaid (West Virginia); Veterans Administration Community Health program",
+      "FraudAmt": null,
+      "SettlementAmt": 120000.0,
+      "JailTime": null,
+      "FraudType": "Falsify certificate",
+      "FraudTypeAll": [
+        "Falsify certificate",
+        "Wire Fraud",
+        "Phantom Claims",
+        "FakeEncounter"
+      ],
+      "CaseStatus": "charged",
+      "SchemeSummary": "Lifehouse founder Raymond Meadows and his wife Helen, a collector supervisor, allegedly conspired to falsify and submit timesheets to a drug testing laboratory for drug testing work never performed - including 32 hours of overtime weekly and hours billed while on out-of-state vacations - and the lab paid on those timesheets and then obtained reimbursement from federal and state health programs. Separately announced in the same document, West Virginia Sleep Centers LLC paid $120,000 to resolve allegations it billed Medicaid and the VA Community Health program for sleep studies and polysomnogram reports prepared and signed by unqualified non-physician staff (Jan. 1, 2016 - Jan. 9, 2020)."
+    }
+  ]
+}

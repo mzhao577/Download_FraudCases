@@ -1,0 +1,334 @@
+================================================================================
+FIND FRAUD PATTERNS IN DOWNLOADED CASE DOCUMENTS - FINAL INSTRUCTIONS
+================================================================================
+Project      : Download_FraudCases  (part 2 of 2)
+Status       : Final - consolidates the original brief, the 18-type taxonomy
+               added in revision 2, and everything learned building the code
+Last updated : 2026-08-13
+Original     : the earlier drafts of this file are kept as
+               instruction_findpattern.original.txt
+Part 1       : instruction_download.txt (how the case documents were downloaded)
+
+
+--------------------------------------------------------------------------------
+1. GOAL
+--------------------------------------------------------------------------------
+Build models to predict medical fraud against Medicare, Medicaid or any
+commercial payer. Many fraud cases have already been downloaded from DOJ and
+HHS-OIG (see instruction_download.txt).
+
+Summarise those reported fraud cases: extract a structured record from each, and
+identify the patterns - the common ways these fraudsters carried out their
+illegal behaviour.
+
+
+--------------------------------------------------------------------------------
+2. INPUT
+--------------------------------------------------------------------------------
+2.1  A folder of PDF files. Each PDF is one fraud case.
+
+2.2  The reference/test folder is ./downloaded/testdata_DOJ_2026 . Any folder of
+     case PDFs works - the folder is a command-line argument, not a constant.
+
+2.3  Documents that yield no extractable text are reported as errors, not
+     silently dropped.
+
+
+--------------------------------------------------------------------------------
+3. OUTPUT FIELDS
+--------------------------------------------------------------------------------
+One row per input PDF.
+
+  DocumentName      the name of the pdf file (taken from the filename, not
+                    asked of the model)
+  ReportDT          publication date of the document, yyyy-mm-dd
+  JurisdictionName  the prosecuting office and/or court named in the document
+  OccurDt           when the fraud occurred: "yyyy-mm to yyyy-mm", or a single
+                    value if only one date is given. This is the CONDUCT period,
+                    not the charge/plea/sentencing date
+  FraudEntity       the individual(s) and/or company(ies) that committed the
+                    fraud, semicolon-separated, with roles in parentheses
+  Service           type of service involved - HomeHealth, PersonalCare,
+                    NursingHome, Hospice, AdultDayCare, BehavioralHealth,
+                    SubstanceUseTreatment, Pharmacy, Laboratory, GeneticTesting,
+                    DME, Telehealth, PhysicianPractice, Hospital, Dental,
+                    Ambulance, Transportation, Optometry, Chiropractic,
+                    Podiatry, Other. Semicolon-separated if several
+  State_County      state and county/city, combined into one string if several
+  PayerName         Medicare, Medicaid (name the state programme), TRICARE, or a
+                    named commercial payer; semicolon-separated if several
+  FraudAmt          amount of money involved, in whole US dollars
+  SettlementAmt     amount of the settlement, in whole US dollars
+  JailTime          number of months in jail if sentenced to jail
+  FraudType         one value from the taxonomy in section 4
+
+Three fields are added beyond the brief:
+
+  FraudTypeAll      every scheme type present, most central first. A single case
+                    routinely runs two schemes at once (kickbacks AND phantom
+                    claims); one label per case throws most of that signal away,
+                    and the signal is the point of the exercise
+  CaseStatus        charged / pleaded guilty / convicted at trial / sentenced /
+                    civil settlement / other
+  SchemeSummary     one or two sentences on the actual mechanics: what was
+                    billed, to whom, and how the money was obtained
+
+Two field names are corrected: `urisdictionName` is read as `JurisdictionName`
+(dropped J), and `jailTime` is normalised to `JailTime` so every column is
+PascalCase.
+
+
+--------------------------------------------------------------------------------
+4. FRAUDTYPE TAXONOMY  (closed set of 18)
+--------------------------------------------------------------------------------
+FraudType must be one of these. If nothing matches, use "Other - Unknown".
+Do NOT invent a label outside the list.
+
+Choose by the MECHANISM that made the money, not by the statute charged: a case
+charged as wire fraud but built on billing for visits that never happened is
+Phantom Claims, not Wire Fraud.
+
+ 1) Phantom Claims        billing for encounters, visits or items that never
+                          happened at all, including billing for dead,
+                          incarcerated, hospitalised or absent patients
+ 2) FakeEncounter         an encounter did occur but was fabricated or staged to
+                          create a billable event: sham visits, recruited or paid
+                          patients, services by unlicensed or unqualified staff,
+                          services not medically necessary
+ 3) Upcoding              a real service billed under a higher-paying code, level
+                          of care, acuity or risk-adjustment diagnosis than what
+                          was actually delivered
+ 4) Unbundling            one bundled/global service split into component codes
+                          to collect more than the bundled rate
+ 5) Falsify certificate   falsified certifications, plans of care, physician
+                          orders, timesheets, licences, training certificates or
+                          medical records used to make an otherwise unpayable
+                          claim payable
+ 6) kickback_Bribery For Referral
+                          payments, bribes or anything of value for patient
+                          referrals or to induce ordering of services; includes
+                          Anti-Kickback Statute and Stark Law self-referral
+ 7) Drug_Prescriptions    anything centred on drugs or prescriptions: pill mills,
+                          diversion, medically unnecessary prescribing,
+                          compounding schemes, prescription forgery, adulteration
+                          or misbranding
+ 8) Benefit & Eligibility Fraud
+                          fraud about who is entitled to participate or be
+                          covered: concealed ownership, nominee owners, enrolment
+                          by an excluded or disqualified person, false enrolment
+                          or participation certifications, false beneficiary
+                          eligibility
+ 9) Wire Fraud            laundering or moving the proceeds: shell companies,
+                          structured transfers, wire/mail fraud counts centred on
+                          moving money
+10) Covid or General Loan Fraud
+                          PPP, EIDL, Provider Relief Fund, COVID testing or
+                          vaccine funds, other government loan/grant fraud
+11) Tax, Payroll or Coupon Fraud
+                          tax evasion, employment-tax and payroll fraud, ghost
+                          employees, coupon or rebate fraud
+12) IdentityFraud         theft or misuse of patient, provider or beneficiary
+                          identities, including aggravated identity theft and
+                          stolen Medicare numbers
+13) Device, DME           durable medical equipment, orthotics, prosthetics,
+                          braces, medical device schemes
+14) Other - Embezzlement of federal grant funds
+15) Other - FDA Submission Fraud
+16) Other - Arson insurance fraud
+17) Retention of Overpayment
+                          knowingly keeping a payment known to be unearned,
+                          including failure to report and return an identified
+                          overpayment
+18) Other - Unknown       use ONLY when nothing above fits
+
+4.1  Spelling is corrected against earlier drafts, because these strings become
+     categorical values in a model and must not carry typos:
+       "Upcodiong"   -> "Upcoding"
+       "Device, DE"  -> "Device, DME"
+       "Other - Unknow" -> "Other - Unknown"
+     Long descriptive entries are shortened to a stable key (for example
+     "Wire Fraud: Fraud in laundering or money transferring" -> "Wire Fraud");
+     the full description stays in the list above as the definition.
+
+4.2  The taxonomy is enforced, not merely requested: it is declared as a closed
+     enum in the output schema, so a label outside the list cannot be returned.
+
+4.3  This file is the source of truth for the taxonomy. When it changes here,
+     update FRAUD_TYPES and FRAUD_TYPE_GUIDE in fraudextract/schema.py to match.
+
+
+--------------------------------------------------------------------------------
+5. EXTRACTION RULES
+--------------------------------------------------------------------------------
+5.1  Use only what the document states. Never infer, estimate, or fill from
+     general knowledge. If the document does not say, the value is null. A wrong
+     value is worse than a null.
+
+5.2  Dates are yyyy-mm-dd; a conduct period is "yyyy-mm to yyyy-mm".
+
+5.3  Money is a plain number of whole US dollars: $1.6 million -> 1600000.
+     Keep FraudAmt (money taken) and SettlementAmt (money paid back) distinct.
+     Where the document gives both a billed and a paid/loss figure for FraudAmt,
+     use the larger (billed).
+
+5.4  JailTime is in months, and only for custody actually imposed. "Faces up to
+     10 years" is a maximum penalty, not a sentence - that is null. Probation and
+     supervised release are not custody.
+
+5.5  Multi-defendant cases roll up consistently: one document is one case, all
+     defendants go in FraudEntity, SettlementAmt is the TOTAL owed across them,
+     and JailTime is the LONGEST custodial sentence imposed on any of them.
+     SchemeSummary says when the figures span more than one defendant.
+
+5.6  Repeat coverage is expected and must be visible. A case is announced more
+     than once - charge, then plea, then sentencing - so "one PDF = one case"
+     overcounts. Documents sharing a lead defendant are grouped and a distinct-
+     case count is reported next to the document count. Rows are NOT merged.
+
+
+--------------------------------------------------------------------------------
+6. HOW TO RUN
+--------------------------------------------------------------------------------
+6.1  One folder in, one folder out:
+
+       ./ExtractedAll_in1InputFolder.sh testdata_DOJ_2026
+       ./ExtractedAll_in1InputFolder.sh testdata_DOJ_2026 --effort high
+
+     The input folder is resolved as a full path, a path relative to the
+     project, or a bare name under ./downloaded/ . Results go to
+     ./extracted/<folder name>/ . Extra arguments pass through to the Python CLI.
+
+6.2  Or call the Python CLI directly:
+
+       python extract_patterns.py --input-dir DIR --output-dir DIR
+       python extract_patterns.py --limit 3            # smoke test
+       python extract_patterns.py --effort high        # deeper reading
+       python extract_patterns.py --no-analysis        # fields only
+       python extract_patterns.py --force              # ignore the cache
+
+6.3  Outputs, in ./extracted/<folder name>/ :
+
+       cases.csv     one row per case, the fields in section 3
+       cases.json    the same rows plus the computed counts
+       patterns.md   counts, a case table, and the pattern analysis
+       errors.json   written only if a document failed
+       run.log       console output of the run
+
+6.4  patterns.md must contain: recurring scheme patterns, what the schemes have
+     in common, detection signals visible in claims data, and caveats/sample
+     limits. Every claim cites the specific cases supporting it.
+
+
+--------------------------------------------------------------------------------
+7. TECHNICAL REQUIREMENTS
+--------------------------------------------------------------------------------
+7.1  Extraction uses the Claude API (claude-opus-5) with structured outputs -
+     `messages.parse` against a Pydantic schema - so every record validates.
+     No JSON repair, no regex fallback, no invalid taxonomy labels.
+
+7.2  Counting is done in code, not by the model. Totals, medians, ranges, type
+     and payer frequencies, and duplicate detection are all deterministic. The
+     model is asked only for the judgement layer: reading each document, and
+     interpreting what the schemes have in common.
+
+7.3  The system prompt (taxonomy + rules) is identical across documents and is
+     prompt-cached. The first document runs alone so the rest read its cache;
+     firing all of them at once would make every request a cache miss.
+
+7.4  PDF text is read on ONE thread. PDFium is not thread-safe - reading inside
+     the worker pool raises "Failed to load page" or kills the interpreter
+     outright. Only the API calls are parallel.
+
+7.5  Resumable. Each document's result is cached under <output>/.cache/ ;
+     rerunning skips what is done, --force re-extracts. The cache lives with the
+     outputs, so each input folder keeps its own state.
+
+7.6  Per-document error isolation. No single document may abort the run.
+     `stop_reason` is checked before any content is read; refusals fall back to a
+     second model; a schema violation is repaired (an out-of-taxonomy label is
+     dropped and the record kept) rather than discarded; and any unhandled
+     exception in a worker becomes an error row. Failures land in errors.json.
+
+     This matters at scale: a run over 679 documents once died at document 676
+     because the model put a Service value ("GeneticTesting") into FraudTypeAll
+     and the resulting pydantic ValidationError was not caught. The cache meant
+     no completed work was lost, but the run produced no output at all.
+
+7.7  Layout:
+
+       ExtractedAll_in1InputFolder.sh   one folder in, one folder out
+       extract_patterns.py              the Python CLI
+       fraudextract/
+         config.py      paths, model, effort, fallback model
+         schema.py      the record + the 18-type taxonomy (keep in sync with 4)
+         pdftext.py     PDF -> text, strips site chrome
+         extract.py     one Claude call per document
+         patterns.py    counts -> narrative analysis -> output files
+
+7.8  Dependencies: anthropic, pydantic, pypdfium2. Requires ANTHROPIC_API_KEY or
+     an `ant auth login` profile.
+
+
+--------------------------------------------------------------------------------
+8. RESULT ON THE REFERENCE FOLDER (2026-08-13)
+--------------------------------------------------------------------------------
+./downloaded/testdata_DOJ_2026 - 13 documents, 13 extracted, 0 failures,
+12 distinct cases (one case appears twice: plea and sentencing).
+
+FraudType across the 13 (a case may carry several):
+     10  Phantom Claims
+      8  Falsify certificate
+      5  kickback_Bribery For Referral
+      4  FakeEncounter
+      4  Benefit & Eligibility Fraud
+      3  Wire Fraud
+      2  IdentityFraud
+      1  Covid or General Loan Fraud
+
+Service: HomeHealth 11, SubstanceUseTreatment 2, Laboratory 2,
+BehavioralHealth 1, PersonalCare 1, AdultDayCare 1.
+
+Fraud amounts stated in 9 cases totalling $78,987,938 (median $1.6M);
+settlements in 9 cases totalling $40,112,300; custodial sentences in 4 cases
+(median 24 months, range 15-60).
+
+Headline patterns: Phantom Claims and Falsify certificate co-occur almost
+perfectly - falsification is not a separate offence, it is the operational
+requirement that makes phantom billing survivable. Nearly every case sits in
+home- and community-based care, where the service is unobservable and the only
+evidence of it is documentation the defendant controls. Compliance touchpoints
+(inspection, audit request, enrolment application) generated more fraud rather
+than stopping it. Several schemes ran five to nine years before detection.
+
+Values were spot-checked against source text: the 60-month sentence, the
+$2,569,946 fraud amount, and the Oct 2018 - Nov 2020 conduct period all match
+their documents exactly.
+
+
+--------------------------------------------------------------------------------
+9. COST
+--------------------------------------------------------------------------------
+Measured at ~$0.037 per document at --effort high, ~$0.026 at the default
+medium. Roughly two thirds of the cost is output tokens, so effort is the main
+cost lever; prompt caching of the taxonomy saves about 25% on a large folder.
+
+  13 documents  (reference folder) : about $0.30
+  463 documents (a full year of DOJ): about $18 at high effort, $13 at medium
+
+Start at medium and escalate only where the extractions show errors.
+
+
+--------------------------------------------------------------------------------
+10. KNOWN LIMITATIONS
+--------------------------------------------------------------------------------
+- These are press releases, not claims data. The detection signals in
+  patterns.md are reconstructions of what would have been visible in claims;
+  none has been tested against actual claim lines.
+- Selection bias runs one way: every case here was detected and prosecuted.
+  Signals derived from them are signals of schemes that got caught.
+- Small samples cannot support prevalence or ranking claims. The reference
+  folder is 12 distinct cases, all home- and community-based care; it says
+  nothing about DME, telehealth, pharmacy, hospital or genetic-testing risk.
+- Charged cases are allegations, not findings. CaseStatus carries this - filter
+  on it before treating a row as established fact.
+================================================================================

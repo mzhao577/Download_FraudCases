@@ -1,0 +1,22 @@
+
+Goal:
+
+Write Python scripts that download all major medical fraud cases. These cases could be for Medicare, medicad or commerical payers.
+And the sources could be from FBI, CMS or OIG, IELE etc.
+
+Save every document under ./downloaded/<Source>/, with source being FBI, CMS or other sources where the documents are found.
+If the report is in web/html format, please save them as html nad in the same time, save a PDF fomrat of the html file.
+
+
+HOW TO FIND THE DOCUMENTS
+
+1.  Fnd the major sourcs first,  Please save the list of websites that will be used for the search.
+
+2.  Download the reports or documents in the last 5 years, in other words any reports or documents that are dated from Jan. 2021
+
+3. Please download the files year by year, source by source.  Please contruct the output in this way as well, such as Downloaded/2026/FBI.
+
+3.  Create a summary file that list the numbers of downloaded documents from eahc year and each source.
+
+4.  Please output some logs/intermediate summary when run the full scrping process.
+

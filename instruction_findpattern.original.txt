@@ -1,0 +1,43 @@
+
+Goal:
+I would like to build models to predictv the medical fraud towards Medicare, Medicaid or any commerical payers. I have downloaded many fraud cases from DOJ and HHS-OIG.
+I woulkd like to do some summary about these reported fraud cases. WHat are the patterns or common ways these fraudster used for their illegal bahavior.
+
+Instruction:
+Input: 
+ - The input files are at this directory: "./downloaded/testdata_DOJ_2026".
+ - Each pdf file represents one fraud cases.
+
+Please summarize all the cases in the data input folder as given above,
+Output: Please extract the following features and summary:
+Output Fields:
+  - DocumentName: the name of the pdf file.
+  - ReportDT: yyyy-mm-dd
+  - urisdictionName: The name of the state and district court.
+  - OccurDt: The time period of Fraud occurrence: Typically a time period in terms of starting yyyymm to ending yyyy-mm. If there is just one time, then just output one time.
+  - FraudEntity: The Entitity or individual(s) that committed this fraud cases.
+  - Service: Type of service involved such as HomeHealth, NursingHome, Hospice etc.
+  - State_County: State and County Name. If there are multiple states, please paste them into one.
+  - PayerName: Midicare, Medicaid, or other commercial Payer Name, 
+  - FraudAmt: The amount of mondy invilved in dollor.
+  - SettlementAmt: The amount of the settlement 
+  - jailTime: number of months in jail if sentenced to Jail
+  - FraudType: The type has to be one of the following. If nothing matches, then choose "Other - Unknown".
+       1) Phantom Claims or claim with non-existent encounters
+       2) FakeEncounter
+       3) Upcodiong
+       4) Unbundling
+       5) Falsify certificate
+       6) kickback_Bribery For Referral
+       7) Drug_Prescriptions: Anyhting related to Drug or Prescription fraud
+       8) Benefit & Eligibility Fraud
+       9) Wire Fraud: Fraud in laundering or money transferrring
+       10) Covid or General Loan Fraud
+       11) Tax Fraud,  Payrol fraud, or Coupon Fraud
+       12) IdentityFraud
+       13) Device, DE
+       14) Other - Embezzlement of federal grant funds
+       15) Other - FDA Submission Fraud
+       16) Other - Arson insurance fraud
+       17) Retention of Overpayment
+       18) Other - Unknow
