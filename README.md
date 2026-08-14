@@ -4,7 +4,7 @@ Two pipelines:
 
 1. **Download** (`instruction_download.txt`) — find and download major medical /
    health care fraud cases and reports from U.S. federal sources since 1 Jan 2021.
-2. **Extract patterns** (`instruction_findpattern.txt`) — turn a folder of case PDFs
+2. **Extract patterns** (`instruction_extractInfo.md`) — turn a folder of case PDFs
    into a structured feature table plus an analysis of the recurring fraud schemes.
    See [Part 2](#part-2--extracting-case-features-and-fraud-patterns) below.
 
@@ -180,7 +180,7 @@ entry to `sources.json`.
 
 # Part 2 — Extracting case features and fraud patterns
 
-Implements `instruction_findpattern.txt`: read a folder of case PDFs (one case per
+Implements `instruction_extractInfo.md`: read a folder of case PDFs (one case per
 file), extract a structured record from each with Claude, and analyse the recurring
 schemes — input for a model that predicts fraud against Medicare, Medicaid and
 commercial payers.
@@ -216,7 +216,7 @@ Two notes on the brief's field list: `urisdictionName` is read as `JurisdictionN
 a single case routinely combines two schemes (kickbacks *and* phantom claims) and one
 label per case throws most of that signal away.
 
-`FraudType` uses the **closed 18-type taxonomy** in `instruction_findpattern.txt`
+`FraudType` uses the **closed 18-type taxonomy** in `instruction_extractInfo.md`
 §4. It is declared as an enum in the output schema, so a label outside the list
 cannot be returned; anything that fits none of them is `Other - Unknown`. That file
 is the source of truth — when the taxonomy changes there, update `FRAUD_TYPES` and

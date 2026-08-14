@@ -7,7 +7,7 @@
 | **Last updated** | 2026-08-14 |
 | **Implementation** | [`webtool/`](webtool/) |
 | **Earlier drafts** | `instruction_APIAnalisys_v0.txt` |
-| **Related** | [`instruction_download.txt`](instruction_download.txt) (part 1) · [`instruction_findpattern.txt`](instruction_findpattern.txt) (part 2) |
+| **Related** | [`instruction_download.txt`](instruction_download.txt) (part 1) · [`instruction_extractInfo.md`](instruction_extractInfo.md) (part 2) |
 
 ---
 

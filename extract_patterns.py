@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Extract case features and fraud patterns from a folder of case PDFs.
 
-Implements instruction_findpattern.txt: one PDF per fraud case in, one row per
+Implements instruction_extractInfo.md: one PDF per fraud case in, one row per
 case out, plus an analysis of the recurring schemes.
 
     python extract_patterns.py                          # ./downloaded/testdata_DOJ_2026

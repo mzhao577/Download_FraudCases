@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-# Input: one PDF per fraud case (instruction_findpattern.txt).
+# Input: one PDF per fraud case (instruction_extractInfo.md).
 DEFAULT_INPUT_DIR = ROOT / "downloaded" / "testdata_DOJ_2026"
 
 EXTRACTED_ROOT = ROOT / "extracted"

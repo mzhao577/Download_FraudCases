@@ -1,6 +1,6 @@
 """The extraction schema.
 
-Field names and the FraudType taxonomy come from instruction_findpattern.txt.
+Field names and the FraudType taxonomy come from instruction_extractInfo.md.
 That file is the source of truth: when the taxonomy changes there, change
 FRAUD_TYPES and FRAUD_TYPE_GUIDE here to match.
 
@@ -23,7 +23,7 @@ from typing import List, Literal, Optional
 
 from pydantic import BaseModel, Field
 
-# The 18-type taxonomy from instruction_findpattern.txt. This is a CLOSED set:
+# The 18-type taxonomy from instruction_extractInfo.md. This is a CLOSED set:
 # anything that fits none of these is "Other - Unknown". Declaring it as a
 # Literal makes structured outputs enforce it, so an invalid label cannot be
 # returned at all.
@@ -208,7 +208,7 @@ class CaseRecord(BaseModel):
     )
 
 
-# CSV column order follows the field order in instruction_findpattern.txt.
+# CSV column order follows the field order in instruction_extractInfo.md.
 # DocumentName is filled in from the filename, not by the model.
 CSV_COLUMNS = [
     "DocumentName",
