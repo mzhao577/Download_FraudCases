@@ -35,6 +35,35 @@ REPO="${REPO:-}"
 usage() { awk 'NR<3 {next} /^#/ {sub(/^# ?/, ""); print; next} {exit}' "${BASH_SOURCE[0]}"; exit "${1:-0}"; }
 die()   { printf 'error: %s\n' "$*" >&2; exit 1; }
 
+# `gh release list --json` and `gh repo view --json` are not in older gh builds
+# (they fail with "unknown flag: --json"). Everything below therefore tries the
+# JSON form first and falls back to output every gh version can produce, so the
+# script does not require a particular gh version on the receiving machine.
+
+repo_from_git_remote() {
+  local url
+  url=$(git remote get-url origin 2>/dev/null) || return 1
+  url="${url%.git}"
+  case "$url" in
+    *github.com[:/]*) printf '%s\n' "${url#*github.com}" | sed 's|^[:/]||' ;;
+    *) return 1 ;;
+  esac
+}
+
+resolve_repo() {
+  gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null && return 0
+  repo_from_git_remote
+}
+
+# Every release tag, newest first, on any gh version.
+list_tags() {
+  gh release list "${GH_REPO_ARGS[@]}" --limit 50 --json tagName -q '.[].tagName' 2>/dev/null && return 0
+  # Plain output is columns separated by tabs; the column order has shifted
+  # between gh versions, so scan every field rather than assuming a position.
+  gh release list "${GH_REPO_ARGS[@]}" --limit 50 2>/dev/null \
+    | awk -F'\t' '{for (i = 1; i <= NF; i++) if ($i ~ /^[A-Za-z0-9._-]+$/ && $i != "") print $i}'
+}
+
 LIST_ONLY=0
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -52,7 +81,7 @@ gh auth status >/dev/null 2>&1 || die "gh is not authenticated - run: gh auth lo
 
 # ---------------------------------------------------------------- which repo
 if [[ -z "$REPO" ]]; then
-  REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null || true)
+  REPO=$(resolve_repo 2>/dev/null || true)
 fi
 if [[ -z "$REPO" ]]; then
   printf 'error: cannot tell which GitHub repository to use.\n\n' >&2
@@ -77,18 +106,15 @@ fi
 
 # ---------------------------------------------------------------- which tag
 if [[ -z "$TAG" ]]; then
-  # Do not hide gh's stderr here: a version too old for `--json`, a permissions
-  # problem, or a network failure all look like "no releases" if suppressed.
-  LIST_ERR=$(mktemp)
-  TAG=$(gh release list "${GH_REPO_ARGS[@]}" --limit 50 --json tagName \
-          -q '[.[].tagName | select(startswith("corpus-"))] | .[0]' 2>"$LIST_ERR" || true)
-  if [[ -s "$LIST_ERR" ]]; then
-    printf 'gh reported a problem listing releases in %s:\n' "$REPO" >&2
-    sed 's/^/  /' "$LIST_ERR" >&2
-    rm -f "$LIST_ERR"
+  TAGS=$(list_tags || true)
+  if [[ -z "$TAGS" ]]; then
+    # Nothing came back from either form - show gh's own error rather than
+    # guessing, since auth, network and permissions all land here too.
+    printf 'gh could not list releases in %s:\n' "$REPO" >&2
+    gh release list "${GH_REPO_ARGS[@]}" --limit 5 2>&1 | sed 's/^/  /' >&2
     exit 1
   fi
-  rm -f "$LIST_ERR"
+  TAG=$(printf '%s\n' "$TAGS" | grep -m1 '^corpus-' || true)
   if [[ -z "$TAG" || "$TAG" == "null" ]]; then
     printf 'error: %s has no release tagged corpus-*\n\n' "$REPO" >&2
     printf '  Releases that do exist:\n' >&2

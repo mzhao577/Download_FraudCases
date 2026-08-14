@@ -56,7 +56,12 @@ for d in "${SOURCES[@]}"; do [[ -d "$d" ]] && PRESENT+=("$d"); done
 
 RAW_KB=$(du -sk "${PRESENT[@]}" | awk '{s+=$1} END {print s}')
 FREE_KB=$(df -k . | tail -1 | awk '{print $4}')
-REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
+# `--json` is absent from older gh builds; fall back to the git remote.
+REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null || true)
+if [[ -z "$REPO" ]]; then
+  REPO=$(git remote get-url origin 2>/dev/null | sed -e 's|\.git$||' -e 's|.*github\.com[:/]||')
+fi
+[[ -n "$REPO" ]] || die "cannot determine the GitHub repo from this directory"
 
 printf '=======================================================================\n'
 printf ' repo       : %s\n' "$REPO"
@@ -133,6 +138,6 @@ Verify with SHA256SUMS. See MANIFEST.txt for what this snapshot contains."
 fi
 
 printf '\n=======================================================================\n'
-printf ' done: %s\n' "$(gh release view "$TAG" --json url -q .url)"
+printf ' done: https://github.com/%s/releases/tag/%s\n' "$REPO" "$TAG"
 printf ' staging kept at %s - delete with: rm -rf %s\n' "$STAGE_DIR" "$STAGE_DIR"
 printf '=======================================================================\n'
