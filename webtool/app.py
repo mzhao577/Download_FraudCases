@@ -78,8 +78,8 @@ def api_cases(
     rows = d.rows
     if q:
         needle = q.lower()
-        # Search every column: the point of the tool is to spot a pattern such
-        # as "99215" or "overtime" wherever it happens to be recorded.
+        # Search every column, not just the summary: a term may appear in any
+        # field, and the caller decides what is worth searching for.
         rows = [r for r in rows
                 if any(needle in str(v).lower() for k, v in r.items() if not k.startswith("_"))]
 

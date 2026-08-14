@@ -1,9 +1,8 @@
 # Case Review Web Tool
 
 A two-panel reader for going through reported fraud cases one at a time: the raw
-source document on the left, its extracted summary on the right. Built to support
-the workflow in `instruction_APIAnalisys.txt` — read enough real cases to spot the
-recurring mechanics, then turn each mechanic into a concrete claims check.
+source document on the left, its extracted summary on the right. Built to the
+input and display spec in `instruction_APIAnalisys.txt`.
 
 ## Run it
 
@@ -61,9 +60,9 @@ first, each with a live count. Click to filter the list; **All** clears it.
 
     All 679 │ Phantom Claims 134 │ kickback_Bribery For Referral 105 │ Drug_Prescriptions 90 │ …
 
-The counts follow the current search rather than being fixed, so searching
-`hospice` re-labels the tabs with how those 21 hits split across schemes — the
-tab strip doubles as a distribution readout.
+The counts follow the current search rather than being fixed, so a search
+re-labels the tabs with how its hits split across schemes — the tab strip
+doubles as a distribution readout.
 
 **Navigation bar** — for working through cases one at a time:
 
@@ -90,17 +89,14 @@ buttons rather than on a shift combination that cannot be distinguished.)
 The case list on the far left toggles with the **☰ Cases** button, so you can
 have the two panels alone when reading.
 
-## Search is the point
+## Search
 
 The search box scans **every column of every row**, including `SchemeSummary`,
-and highlights hits. That is what turns a pile of cases into a hypothesis:
+and highlights hits in the case list and in the right-hand panel. Matching is
+plain case-insensitive substring, so partial words work.
 
-- `upcod` → 80 cases in DOJ 2025, of which 33 are classified `Upcoding`
-- `hospice`, `overtime`, `unlicensed`, `hours` → the over-capacity pattern
-- a CPT code such as `99215` → cases naming a specific procedure
-
-Read the hits, find the shared mechanic, and write the check. The
-fraud-type filter narrows the same way when you want one scheme at a time.
+Search and the FraudType tabs compose: pick a tab to narrow to one scheme, and
+search within it.
 
 ## Layout
 
