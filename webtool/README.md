@@ -56,14 +56,27 @@ thumbnails and Ctrl-F search inside the document come free.
 - **Top**: `SchemeSummary`, set large and readable — the thing you actually read
 - **Bottom**: every remaining column, dollar amounts formatted
 
-**Toolbar** — search, fraud-type filter, case counter, prev/next.
+**Navigation bar** — for working through cases one at a time:
+
+    ⇤ First │ −50 │ −10 │ ← Previous │ Next → │ +10 │ +50 │ Last ⇥    12 / 679   [go to #]
+
+Steps **clamp instead of refusing**: `+50` with 12 cases left lands on the last
+one rather than doing nothing. Buttons grey out at the ends, a progress bar
+tracks position, and the `go to #` box jumps straight to a case number.
 
 | Key | Action |
 |---|---|
 | `j` / `→` / `↓` | next case |
 | `k` / `←` / `↑` | previous case |
+| `J` / `K` | ±10 |
+| `shift`+`PageDown` / `PageUp` | ±50 |
+| `Home` / `End` | first / last case |
+| `g` | jump to the go-to box |
 | `/` | jump to the search box |
-| `Esc` | leave the search box |
+| `Esc` | leave a text box |
+
+(`J` is literally shift+`j`, so ±50 lives on shift+PageDown/PageUp and on the
+buttons rather than on a shift combination that cannot be distinguished.)
 
 The case list on the far left toggles with the **☰ Cases** button, so you can
 have the two panels alone when reading.

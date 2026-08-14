@@ -39,6 +39,36 @@
     border-radius: 4px; padding: 2px 5px;
   }
 
+  /* ------------------------------------------------------------- nav strip */
+  #nav {
+    display: flex; align-items: center; gap: 0; flex-wrap: wrap;
+    padding: 6px 12px; background: var(--panel);
+    border-bottom: 1px solid var(--line);
+  }
+  .navgroup { display: flex; align-items: center; }
+  .navgroup button {
+    border-radius: 0; border-right-width: 0; white-space: nowrap;
+  }
+  .navgroup button:first-child { border-radius: 6px 0 0 6px; }
+  .navgroup button:last-child  { border-radius: 0 6px 6px 0; border-right-width: 1px; }
+  .navgroup button.step  { font-variant-numeric: tabular-nums; color: var(--muted); }
+  .navgroup button.main  { font-weight: 600; color: var(--accent); }
+  .navgroup button.edge  { color: var(--muted); }
+  #position {
+    margin: 0 14px; font-variant-numeric: tabular-nums; white-space: nowrap;
+    font-weight: 600;
+  }
+  #position .of { color: var(--muted); font-weight: 400; }
+  #goto {
+    width: 74px; text-align: center; font-variant-numeric: tabular-nums;
+  }
+  #nav .hint { color: var(--muted); font-size: 12px; margin-left: auto; }
+  #progress {
+    height: 3px; background: var(--line); flex: 0 0 100%; margin: 6px 0 -6px;
+    border-radius: 2px; overflow: hidden;
+  }
+  #progress > div { height: 100%; background: var(--accent); width: 0; transition: width .15s; }
+
   /* ------------------------------------------------------------------ layout */
   main { flex: 1 1 auto; display: flex; min-height: 0; }
 
@@ -121,10 +151,30 @@
   <select id="ftype"><option value="">All fraud types</option></select>
   <span class="grow"></span>
   <span class="counter" id="counter">—</span>
-  <button id="prev" title="Previous case (k or ←)">&#8592;</button>
-  <button id="next" title="Next case (j or →)">&#8594;</button>
-  <span class="counter"><kbd>j</kbd>/<kbd>k</kbd> to move</span>
 </header>
+
+<div id="nav">
+  <div class="navgroup">
+    <button data-jump="first" class="edge" title="First case (Home)">&#8676; First</button>
+    <button data-jump="-50" class="step" title="Back 50 (shift+PageUp)">&minus;50</button>
+    <button data-jump="-10" class="step" title="Back 10 (K or PageUp)">&minus;10</button>
+    <button data-jump="-1" class="main" title="Previous case (k or &larr;)">&#8592; Previous</button>
+    <button data-jump="1" class="main" title="Next case (j or &rarr;)">Next &#8594;</button>
+    <button data-jump="10" class="step" title="Forward 10 (J or PageDown)">+10</button>
+    <button data-jump="50" class="step" title="Forward 50 (shift+PageDown)">+50</button>
+    <button data-jump="last" class="edge" title="Last case (End)">Last &#8677;</button>
+  </div>
+
+  <span id="position">—</span>
+  <input type="number" id="goto" min="1" placeholder="go to #" title="Jump to a case number, then Enter">
+
+  <span class="hint">
+    <kbd>j</kbd>/<kbd>k</kbd> &plusmn;1 &nbsp; <kbd>J</kbd>/<kbd>K</kbd> &plusmn;10 &nbsp;
+    <kbd>shift</kbd>+<kbd>PgDn</kbd>/<kbd>PgUp</kbd> &plusmn;50 &nbsp;
+    <kbd>g</kbd> go to &nbsp; <kbd>/</kbd> search
+  </span>
+  <div id="progress"><div></div></div>
+</div>
 
 <main>
   <div id="list"></div>
@@ -195,11 +245,31 @@ async function loadCases(keepPos = false) {
   render();
 }
 
+// Position readout, progress bar, and which nav buttons make sense right now.
+function syncNav() {
+  const n = state.cases.length, at = state.pos;
+  $("#position").innerHTML = n
+    ? `${at + 1} <span class="of">/ ${n}</span>`
+    : `<span class="of">no cases</span>`;
+  $("#progress > div").style.width = n ? `${((at + 1) / n) * 100}%` : "0";
+  $("#goto").max = n || 1;
+
+  document.querySelectorAll("#nav button[data-jump]").forEach(b => {
+    const j = b.dataset.jump;
+    if (!n || at < 0) { b.disabled = true; return; }
+    if (j === "first") b.disabled = at === 0;
+    else if (j === "last") b.disabled = at === n - 1;
+    // A step button stays enabled while there is anywhere to go in that
+    // direction - it clamps rather than refusing, so +50 near the end still
+    // takes you to the last case.
+    else b.disabled = (+j < 0) ? at === 0 : at === n - 1;
+  });
+}
+
 async function render() {
   document.querySelectorAll(".case").forEach(e =>
     e.classList.toggle("active", +e.dataset.i === state.pos));
-  $("#prev").disabled = state.pos <= 0;
-  $("#next").disabled = state.pos < 0 || state.pos >= state.cases.length - 1;
+  syncNav();
 
   if (state.pos < 0) return;
   const active = document.querySelector(".case.active");
@@ -241,9 +311,19 @@ async function render() {
     </section>`;
 }
 
-function move(d) {
-  const n = state.pos + d;
-  if (n >= 0 && n < state.cases.length) { state.pos = n; render(); }
+// Clamp rather than refuse: "+50" with 12 cases left should land on the last
+// one, not do nothing.
+function goTo(i) {
+  if (!state.cases.length) return;
+  const n = Math.max(0, Math.min(state.cases.length - 1, i));
+  if (n !== state.pos) { state.pos = n; render(); }
+}
+function move(d) { goTo(state.pos + d); }
+
+function jump(what) {
+  if (what === "first") return goTo(0);
+  if (what === "last") return goTo(state.cases.length - 1);
+  move(+what);
 }
 
 // ------------------------------------------------------------------- events
@@ -252,8 +332,15 @@ $("#list").addEventListener("click", e => {
   if (el) { state.pos = +el.dataset.i; render(); }
 });
 $("#toggleList").addEventListener("click", () => $("#list").classList.toggle("hidden"));
-$("#prev").addEventListener("click", () => move(-1));
-$("#next").addEventListener("click", () => move(1));
+$("#nav").addEventListener("click", e => {
+  const b = e.target.closest("button[data-jump]");
+  if (b) jump(b.dataset.jump);
+});
+$("#goto").addEventListener("keydown", e => {
+  if (e.key !== "Enter") return;
+  const v = parseInt(e.target.value, 10);
+  if (!isNaN(v)) { goTo(v - 1); e.target.value = ""; e.target.blur(); }
+});
 $("#dataset").addEventListener("change", e => {
   state.dataset = e.target.value; $("#ftype").innerHTML = '<option value="">All fraud types</option>';
   state.ftype = ""; loadCases();
@@ -271,9 +358,20 @@ document.addEventListener("keydown", e => {
     if (e.key === "Escape") e.target.blur();
     return;
   }
-  if (e.key === "j" || e.key === "ArrowDown" || e.key === "ArrowRight") { e.preventDefault(); move(1); }
-  if (e.key === "k" || e.key === "ArrowUp"   || e.key === "ArrowLeft")  { e.preventDefault(); move(-1); }
-  if (e.key === "/") { e.preventDefault(); $("#q").focus(); }
+  const k = e.key;
+  // shift+J / shift+K step 50, plain J / K step 10, lowercase steps 1.
+  if (k === "j" || k === "ArrowDown" || k === "ArrowRight") { e.preventDefault(); move(1); }
+  else if (k === "k" || k === "ArrowUp" || k === "ArrowLeft") { e.preventDefault(); move(-1); }
+  // `J` IS shift+j, so the two cannot be told apart - +-50 lives on
+  // shift+PageDown/PageUp and on the buttons instead.
+  else if (k === "J") { e.preventDefault(); move(10); }
+  else if (k === "K") { e.preventDefault(); move(-10); }
+  else if (k === "PageDown") { e.preventDefault(); move(e.shiftKey ? 50 : 10); }
+  else if (k === "PageUp")   { e.preventDefault(); move(e.shiftKey ? -50 : -10); }
+  else if (k === "Home") { e.preventDefault(); jump("first"); }
+  else if (k === "End")  { e.preventDefault(); jump("last"); }
+  else if (k === "/")    { e.preventDefault(); $("#q").focus(); }
+  else if (k === "g")    { e.preventDefault(); $("#goto").focus(); }
 });
 
 loadDatasets();
