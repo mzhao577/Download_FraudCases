@@ -39,3 +39,9 @@ venv/
 .claude/
 chrome-prof/
 cp[0-9]*/
+
+# Web tool input folder (symlinks + a copied CSV, rebuilt by setup_input.py)
+downloaded/webtools/
+
+# Office lock files, created while a workbook/deck is open
+~$*
