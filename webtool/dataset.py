@@ -1,6 +1,6 @@
 """Find and load the case datasets that back the web tool.
 
-Input convention (instruction_APIAnalisys.txt):
+Input convention (instruction_APIAnalisys.md):
 
     <input dir>/
         DOJ_2025/                             raw PDFs, one per case

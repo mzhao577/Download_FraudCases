@@ -2,7 +2,7 @@
 
 A two-panel reader for going through reported fraud cases one at a time: the raw
 source document on the left, its extracted summary on the right. Built to the
-input and display spec in `instruction_APIAnalisys.txt`.
+input and display spec in [`../instruction_APIAnalisys.md`](../instruction_APIAnalisys.md).
 
 ## Run it
 
