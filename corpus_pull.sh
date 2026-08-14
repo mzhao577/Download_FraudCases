@@ -10,6 +10,10 @@
 #   ./corpus_pull.sh --tag corpus-2026-08-13
 #   ./corpus_pull.sh --list             # show available snapshots
 #   ./corpus_pull.sh --keep             # keep the downloaded parts afterwards
+#   ./corpus_pull.sh --repo OWNER/NAME  # when not run from inside the clone
+#
+# gh works out which repository to use from the git remote of the current
+# directory. Run this from inside the cloned repo, or pass --repo.
 #
 # The repo is private, so `gh` supplies the credentials - plain curl or a
 # browser download will not work without a token.
@@ -23,16 +27,22 @@ STAGE_DIR="${STAGE_DIR:-.corpus_download}"
 PREFIX="corpus.tar.gz.part-"
 TAG=""
 KEEP=0
+# gh works out which repo to talk to from the git remote of the current
+# directory. Run this script outside a clone and every gh call fails, so allow
+# an explicit override via --repo or the REPO environment variable.
+REPO="${REPO:-}"
 
 usage() { awk 'NR<3 {next} /^#/ {sub(/^# ?/, ""); print; next} {exit}' "${BASH_SOURCE[0]}"; exit "${1:-0}"; }
 die()   { printf 'error: %s\n' "$*" >&2; exit 1; }
 
+LIST_ONLY=0
 while [[ $# -gt 0 ]]; do
   case "$1" in
     -h|--help) usage 0 ;;
     --tag)     TAG="${2:?--tag needs a value}"; shift 2 ;;
+    --repo)    REPO="${2:?--repo needs OWNER/NAME}"; shift 2 ;;
     --keep)    KEEP=1; shift ;;
-    --list)    gh release list --limit 30; exit 0 ;;
+    --list)    LIST_ONLY=1; shift ;;
     *)         die "unknown argument: $1  (try --help)" ;;
   esac
 done
@@ -40,14 +50,57 @@ done
 command -v gh >/dev/null || die "gh not found - install the GitHub CLI"
 gh auth status >/dev/null 2>&1 || die "gh is not authenticated - run: gh auth login"
 
-# Default to the most recent corpus-* tag.
+# ---------------------------------------------------------------- which repo
+if [[ -z "$REPO" ]]; then
+  REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null || true)
+fi
+if [[ -z "$REPO" ]]; then
+  printf 'error: cannot tell which GitHub repository to use.\n\n' >&2
+  printf '  gh infers the repo from the git remote of the current directory, and\n' >&2
+  printf '  this directory is not a clone with a GitHub remote:\n    %s\n\n' "$SCRIPT_DIR" >&2
+  printf '  Fix it in one of these ways:\n' >&2
+  printf '    1. Run the script from inside the cloned repo:\n' >&2
+  printf '         gh repo clone OWNER/NAME && cd NAME && ./corpus_pull.sh\n' >&2
+  printf '    2. Name the repo explicitly:\n' >&2
+  printf '         ./corpus_pull.sh --repo OWNER/NAME\n' >&2
+  printf '    3. Set it in the environment:\n' >&2
+  printf '         REPO=OWNER/NAME ./corpus_pull.sh\n' >&2
+  exit 1
+fi
+GH_REPO_ARGS=(--repo "$REPO")
+
+if [[ "$LIST_ONLY" -eq 1 ]]; then
+  printf 'releases in %s:\n' "$REPO"
+  gh release list "${GH_REPO_ARGS[@]}" --limit 30
+  exit 0
+fi
+
+# ---------------------------------------------------------------- which tag
 if [[ -z "$TAG" ]]; then
-  TAG=$(gh release list --limit 50 --json tagName -q '[.[].tagName | select(startswith("corpus-"))] | .[0]' 2>/dev/null || true)
-  [[ -n "$TAG" && "$TAG" != "null" ]] || die "no corpus-* release found - list them with --list"
+  # Do not hide gh's stderr here: a version too old for `--json`, a permissions
+  # problem, or a network failure all look like "no releases" if suppressed.
+  LIST_ERR=$(mktemp)
+  TAG=$(gh release list "${GH_REPO_ARGS[@]}" --limit 50 --json tagName \
+          -q '[.[].tagName | select(startswith("corpus-"))] | .[0]' 2>"$LIST_ERR" || true)
+  if [[ -s "$LIST_ERR" ]]; then
+    printf 'gh reported a problem listing releases in %s:\n' "$REPO" >&2
+    sed 's/^/  /' "$LIST_ERR" >&2
+    rm -f "$LIST_ERR"
+    exit 1
+  fi
+  rm -f "$LIST_ERR"
+  if [[ -z "$TAG" || "$TAG" == "null" ]]; then
+    printf 'error: %s has no release tagged corpus-*\n\n' "$REPO" >&2
+    printf '  Releases that do exist:\n' >&2
+    gh release list "${GH_REPO_ARGS[@]}" --limit 10 2>&1 | sed 's/^/    /' >&2
+    printf '\n  Create one from the machine holding the data:  ./corpus_push.sh\n' >&2
+    exit 1
+  fi
   printf 'using most recent snapshot: %s\n' "$TAG"
 fi
 
-gh release view "$TAG" >/dev/null 2>&1 || die "release '$TAG' not found (try --list)"
+gh release view "$TAG" "${GH_REPO_ARGS[@]}" >/dev/null 2>&1 \
+  || die "release '$TAG' not found in $REPO (list them with --list)"
 
 # Refuse to clobber an existing corpus without the user saying so.
 for d in downloaded state; do
@@ -61,13 +114,14 @@ for d in downloaded state; do
 done
 
 printf '=======================================================================\n'
+printf ' repo    : %s\n' "$REPO"
 printf ' release : %s\n' "$TAG"
 printf ' target  : %s\n' "$SCRIPT_DIR"
 printf '=======================================================================\n'
 
 printf '\n[1/4] downloading assets...\n'
 rm -rf "$STAGE_DIR"; mkdir -p "$STAGE_DIR"
-gh release download "$TAG" --dir "$STAGE_DIR"
+gh release download "$TAG" "${GH_REPO_ARGS[@]}" --dir "$STAGE_DIR"
 
 cd "$STAGE_DIR"
 [[ -f SHA256SUMS ]] || die "SHA256SUMS missing from the release - cannot verify"
