@@ -15,6 +15,12 @@ logs/
 extracted/**/.cache/
 extracted/.cache/
 
+# Staging areas for corpus_push.sh / corpus_pull.sh. These hold multi-GB split
+# archive parts - a single part is ~1.9 GB, far over GitHub's 100 MB file cap,
+# so staging one would make the push fail and leave the object in history.
+.corpus_upload/
+.corpus_download/
+
 # --------------------------------------------------------------------------
 # Python
 # --------------------------------------------------------------------------
