@@ -1,17 +1,22 @@
 
 Goal:
-I would like to build WebTool to conveniently look at each of the reported fraud cases.  My goal is to find some insight concerning how to identify ways to identify fraud 
-by tracking some derived features.  I will describe the details later.
+I would like to analyze the summary file by looking at the SchemeSummary  and other info. Based on what the fraudsters do and design some features to monitor
+For relevant providers.
 
-Instruction:
-Input: 
- - There should be 2 input folders: 
-      - rawdata "./downloaded/webtools/rawFiles"
-      - summary data: ""./downloaded/webtoolssummaryFiles"
- - Each fraud case has 2 files. One corresponding file for each of the folder above.
+Here are two cases you may use as examples:
+ - When I see some cases of providers in the domain of Home Health, Physical THerapy, speech therapy, TeleHealth, who charged insurance companies way more hours of service
+   much more than it could,  I want to track the weekly hours of service for all clinic with one billing NPI.  This way, I may be able to identify clinics that has abrupt increase
+   in service hours. This is to track the over-capacity issue.
+ - When I see many cases of certain providers cheated on Medicare/ Medicaid by not having the treat=ment records.  I want to ask for medical records.patient receipts for these kind
+   of services such as DME or prescription, proof of delivery.  For this, I will need to know what kind of services may have this kind of issue.
+ - When I se a few cases where payer paid the fraudsters got paid even at times when their licenses expired or suspended,  I would like to have a feature called "Check License" 
+   before paying the claims. 
+
+Input file: /Users/max-imac/MaxWork/AgentWork/Download_FraudCases/downloaded/webtool/extractedSummary_2025_DOJ.csv
+
+These are just a few examples.  You are encouraged to create your own features for tracking and monitoring based on your observations of the reported fraud cases.   Please try your best to create about 10 features.  Each feature should have these elements:
+ - Desired service groups such as Home Health, Telehealth, Physicial therapy, DEM etc.
+ - Features to be created.
+ - 
+
  
-What to SHow on the web tool:
- - There should be 2 panels: Left panel shows the raw data, and right panel shows the summary of teh case.
- - I want the schmeaSummary to be shown on the top of the right panel. And the rest of the summary columns to be shown on the bottom of the right panel.
- - I want to have the file name and fraudCategory to be show as the title of the right panel.
-

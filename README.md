@@ -7,6 +7,11 @@ Two pipelines:
 2. **Extract patterns** (`instruction_extractInfo.md`) — turn a folder of case PDFs
    into a structured feature table plus an analysis of the recurring fraud schemes.
    See [Part 2](#part-2--extracting-case-features-and-fraud-patterns) below.
+3. **Review cases** (`instruction_APIAnalisys.md`) — a two-panel web tool for reading
+   cases one at a time. See [`webtool/`](webtool/).
+4. **Design monitoring features** (`instruction_designFeatures.md`) — turn the case
+   corpus into ~10 computable provider-monitoring features. See
+   [`designFeatures/monitoring_features.md`](designFeatures/monitoring_features.md).
 
 ---
 

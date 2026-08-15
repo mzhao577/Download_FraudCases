@@ -1,0 +1,1028 @@
+{
+  "source": "downloaded/webtool/extractedSummary_2025_DOJ.csv",
+  "cases": 679,
+  "mechanics": {
+    "medically_unnecessary": {
+      "cases": 127,
+      "pct": 18.7,
+      "top_services": [
+        [
+          "DME",
+          41
+        ],
+        [
+          "PhysicianPractice",
+          38
+        ],
+        [
+          "Laboratory",
+          37
+        ],
+        [
+          "Pharmacy",
+          24
+        ],
+        [
+          "Telehealth",
+          24
+        ],
+        [
+          "GeneticTesting",
+          21
+        ],
+        [
+          "Other",
+          11
+        ],
+        [
+          "Hospice",
+          10
+        ]
+      ],
+      "examples": [
+        "11-defendants-indicted-in-multi-billion-health-care-fraud-scheme-the-largest-case-by-loss-amount-ever-charged-_ec7a233deffb.pdf",
+        "acting-united-states-attorney-fondren-announces-federal-indictment-against-gynecologist-for-sexually-abusing-p_2605d3593af0.pdf",
+        "alabama-doctor-charged-with-6-million-telemedicine-health-care-fraud-scheme_cbaef0d83924.pdf",
+        "alabama-doctor-pleads-guilty-to-6-million-telemedicine-health-care-fraud-scheme_8435d6b83c17.pdf"
+      ]
+    },
+    "not_delivered": {
+      "cases": 110,
+      "pct": 16.2,
+      "top_services": [
+        [
+          "BehavioralHealth",
+          28
+        ],
+        [
+          "Pharmacy",
+          19
+        ],
+        [
+          "Laboratory",
+          16
+        ],
+        [
+          "PhysicianPractice",
+          16
+        ],
+        [
+          "HomeHealth",
+          16
+        ],
+        [
+          "DME",
+          14
+        ],
+        [
+          "PersonalCare",
+          9
+        ],
+        [
+          "SubstanceUseTreatment",
+          6
+        ]
+      ],
+      "examples": [
+        "11-defendants-indicted-in-multi-billion-health-care-fraud-scheme-the-largest-case-by-loss-amount-ever-charged-_ec7a233deffb.pdf",
+        "acting-u-s-attorney-announces-5-million-false-claims-act-settlement-with-providers-of-programs-for-adults-with_0528d9bb4cf3.pdf",
+        "amtrak-employee-admits-participating-in-11-million-health-care-fraud-scheme_96ecb08e7c8a.pdf",
+        "amtrak-employee-admits-participating-in-11-million-health-care-fraud-scheme_973374cd4843.pdf"
+      ]
+    },
+    "telemarketing_leads": {
+      "cases": 55,
+      "pct": 8.1,
+      "top_services": [
+        [
+          "DME",
+          32
+        ],
+        [
+          "Telehealth",
+          28
+        ],
+        [
+          "GeneticTesting",
+          17
+        ],
+        [
+          "Laboratory",
+          15
+        ],
+        [
+          "Pharmacy",
+          9
+        ],
+        [
+          "PhysicianPractice",
+          4
+        ],
+        [
+          "Dental",
+          4
+        ],
+        [
+          "Other",
+          1
+        ]
+      ],
+      "examples": [
+        "alabama-doctor-charged-with-6-million-telemedicine-health-care-fraud-scheme_cbaef0d83924.pdf",
+        "alabama-doctor-pleads-guilty-to-6-million-telemedicine-health-care-fraud-scheme_8435d6b83c17.pdf",
+        "amidst-the-government-shutdown-the-united-states-attorneys-office-continues-efforts-to-combat-waste-fraud-and-_f39af0eba083.pdf",
+        "california-man-admits-role-in-10-million-health-care-kickback-scheme_3ec546e529c2.pdf"
+      ]
+    },
+    "telehealth_signoff": {
+      "cases": 55,
+      "pct": 8.1,
+      "top_services": [
+        [
+          "Telehealth",
+          49
+        ],
+        [
+          "DME",
+          26
+        ],
+        [
+          "Laboratory",
+          21
+        ],
+        [
+          "GeneticTesting",
+          21
+        ],
+        [
+          "Pharmacy",
+          14
+        ],
+        [
+          "PhysicianPractice",
+          9
+        ],
+        [
+          "BehavioralHealth",
+          7
+        ],
+        [
+          "SubstanceUseTreatment",
+          3
+        ]
+      ],
+      "examples": [
+        "11-defendants-indicted-in-multi-billion-health-care-fraud-scheme-the-largest-case-by-loss-amount-ever-charged-_ec7a233deffb.pdf",
+        "alabama-doctor-charged-with-6-million-telemedicine-health-care-fraud-scheme_cbaef0d83924.pdf",
+        "ashland-city-doctor-sentenced-to-3-years-for-conspiracy-to-commit-health-care-fraud_2f479d57ccab.pdf",
+        "beckley-medical-clinic-and-physician-agree-to-pay-152-382-70-to-resolve-false-claims-act-allegations_88a8b6df55ec.pdf"
+      ]
+    },
+    "covid_addon": {
+      "cases": 50,
+      "pct": 7.4,
+      "top_services": [
+        [
+          "Laboratory",
+          33
+        ],
+        [
+          "PhysicianPractice",
+          9
+        ],
+        [
+          "DME",
+          8
+        ],
+        [
+          "GeneticTesting",
+          7
+        ],
+        [
+          "Other",
+          5
+        ],
+        [
+          "Pharmacy",
+          4
+        ],
+        [
+          "NursingHome",
+          4
+        ],
+        [
+          "BehavioralHealth",
+          4
+        ]
+      ],
+      "examples": [
+        "austin-emergency-center-and-affiliates-to-pay-429-231-to-settle-civil-false-claims-act-allegations_957108fe3044.pdf",
+        "broward-county-man-sentenced-to-prison-for-filing-thousands-of-fraudulent-covid-19-testing-reimbursement-claim_2cf34a236b31.pdf",
+        "california-company-and-three-employees-sentenced-for-conspiring-to-sell-misbranded-n95-masks-to-hospital-in-ea_744a99b61b09.pdf",
+        "ceo-and-medical-director-charged-in-500m-covid-19-test-billing-fraud_f0e87b209b8c.pdf"
+      ]
+    },
+    "nominee_shell": {
+      "cases": 40,
+      "pct": 5.9,
+      "top_services": [
+        [
+          "DME",
+          15
+        ],
+        [
+          "Laboratory",
+          10
+        ],
+        [
+          "Hospice",
+          8
+        ],
+        [
+          "Telehealth",
+          7
+        ],
+        [
+          "Pharmacy",
+          5
+        ],
+        [
+          "BehavioralHealth",
+          5
+        ],
+        [
+          "GeneticTesting",
+          4
+        ],
+        [
+          "HomeHealth",
+          3
+        ]
+      ],
+      "examples": [
+        "11-defendants-indicted-in-multi-billion-health-care-fraud-scheme-the-largest-case-by-loss-amount-ever-charged-_ec7a233deffb.pdf",
+        "arizona-ceo-sentenced-to-14-years-in-prison-for-embezzling-33-million-dollars-from-tribal-healthcare-provider_987eb6402c35.pdf",
+        "blood-test-lab-owner-pleads-guilty-to-evading-over-11-2-million-in-federal-taxes-by-using-shill-to-illegally-c_8241e8a619ac.pdf",
+        "bonita-man-pleads-guilty-in-5-8-million-medicare-fraud-scheme_a91e0f076136.pdf"
+      ]
+    },
+    "genetic_cancer_screen": {
+      "cases": 32,
+      "pct": 4.7,
+      "top_services": [
+        [
+          "GeneticTesting",
+          32
+        ],
+        [
+          "Telehealth",
+          21
+        ],
+        [
+          "Laboratory",
+          20
+        ],
+        [
+          "DME",
+          14
+        ],
+        [
+          "PhysicianPractice",
+          4
+        ],
+        [
+          "Pharmacy",
+          4
+        ],
+        [
+          "Other",
+          2
+        ],
+        [
+          "SubstanceUseTreatment",
+          1
+        ]
+      ],
+      "examples": [
+        "alabama-doctor-charged-with-6-million-telemedicine-health-care-fraud-scheme_cbaef0d83924.pdf",
+        "alabama-doctor-pleads-guilty-to-6-million-telemedicine-health-care-fraud-scheme_8435d6b83c17.pdf",
+        "amidst-the-government-shutdown-the-united-states-attorneys-office-continues-efforts-to-combat-waste-fraud-and-_f39af0eba083.pdf",
+        "ashland-city-doctor-sentenced-to-3-years-for-conspiracy-to-commit-health-care-fraud_2f479d57ccab.pdf"
+      ]
+    },
+    "deceased_or_inpatient": {
+      "cases": 25,
+      "pct": 3.7,
+      "top_services": [
+        [
+          "Laboratory",
+          9
+        ],
+        [
+          "BehavioralHealth",
+          7
+        ],
+        [
+          "DME",
+          4
+        ],
+        [
+          "PhysicianPractice",
+          4
+        ],
+        [
+          "GeneticTesting",
+          3
+        ],
+        [
+          "Telehealth",
+          3
+        ],
+        [
+          "HomeHealth",
+          3
+        ],
+        [
+          "Hospice",
+          2
+        ]
+      ],
+      "examples": [
+        "amidst-the-government-shutdown-the-united-states-attorneys-office-continues-efforts-to-combat-waste-fraud-and-_f39af0eba083.pdf",
+        "aprn-and-medical-practice-to-pay-over-600k-and-cease-connecticut-medicaid-participation-to-settle-false-claims_cd475168d62d.pdf",
+        "broward-county-man-sentenced-to-prison-for-filing-thousands-of-fraudulent-covid-19-testing-reimbursement-claim_2cf34a236b31.pdf",
+        "california-man-sentenced-to-12-years-imprisonment-in-connection-with-17m-medicare-fraud-schemes_f8793f20d538.pdf"
+      ]
+    },
+    "sham_consulting": {
+      "cases": 24,
+      "pct": 3.5,
+      "top_services": [
+        [
+          "Laboratory",
+          15
+        ],
+        [
+          "GeneticTesting",
+          7
+        ],
+        [
+          "Telehealth",
+          6
+        ],
+        [
+          "BehavioralHealth",
+          4
+        ],
+        [
+          "Device, DME",
+          3
+        ],
+        [
+          "Other",
+          3
+        ],
+        [
+          "SubstanceUseTreatment",
+          3
+        ],
+        [
+          "PhysicianPractice",
+          3
+        ]
+      ],
+      "examples": [
+        "aesculap-implant-systems-agrees-to-pay-38-5-million-to-resolve-false-claims-act-allegations-related-to-knee-im_c1e4cdf18dd0.pdf",
+        "aesculap-implant-systems-agrees-to-pay-38-5m-to-resolve-false-claims-act-allegations-related-to-knee-implant-f_97daec5b24b8.pdf",
+        "austin-emergency-center-and-affiliates-to-pay-429-231-to-settle-civil-false-claims-act-allegations_957108fe3044.pdf",
+        "doctor-arrested-for-multimillion-dollar-covid-19-insurance-scheme_58de3d74d6b5.pdf"
+      ]
+    },
+    "excluded_or_unlicensed": {
+      "cases": 22,
+      "pct": 3.2,
+      "top_services": [
+        [
+          "BehavioralHealth",
+          11
+        ],
+        [
+          "Pharmacy",
+          4
+        ],
+        [
+          "Telehealth",
+          4
+        ],
+        [
+          "DME",
+          3
+        ],
+        [
+          "SubstanceUseTreatment",
+          3
+        ],
+        [
+          "PhysicianPractice",
+          3
+        ],
+        [
+          "HomeHealth",
+          2
+        ],
+        [
+          "Laboratory",
+          1
+        ]
+      ],
+      "examples": [
+        "11-defendants-indicted-in-multi-billion-health-care-fraud-scheme-the-largest-case-by-loss-amount-ever-charged-_ec7a233deffb.pdf",
+        "aprn-and-medical-practice-to-pay-over-600k-and-cease-connecticut-medicaid-participation-to-settle-false-claims_cd475168d62d.pdf",
+        "cape-coral-man-indicted-for-running-fraudulent-all-virtual-pain-clinic-that-dispensed-more-than-100-000-tablet_10f29bef114c.pdf",
+        "cumberland-county-drug-and-alcohol-rehabilitation-center-agrees-to-pay-19-75-million-to-resolve-false-claims-a_3a3ca298a93a.pdf"
+      ]
+    },
+    "no_records": {
+      "cases": 17,
+      "pct": 2.5,
+      "top_services": [
+        [
+          "DME",
+          8
+        ],
+        [
+          "PhysicianPractice",
+          8
+        ],
+        [
+          "Telehealth",
+          5
+        ],
+        [
+          "BehavioralHealth",
+          4
+        ],
+        [
+          "Pharmacy",
+          4
+        ],
+        [
+          "Hospital",
+          3
+        ],
+        [
+          "GeneticTesting",
+          2
+        ],
+        [
+          "Laboratory",
+          2
+        ]
+      ],
+      "examples": [
+        "alabama-doctor-pleads-guilty-to-6-million-telemedicine-health-care-fraud-scheme_8435d6b83c17.pdf",
+        "aprn-and-medical-practice-to-pay-over-600k-and-cease-connecticut-medicaid-participation-to-settle-false-claims_cd475168d62d.pdf",
+        "arizona-couple-that-ran-medical-clinic-business-plead-guilty-to-conspiracy-to-commit-fraud-and-to-violate-the-_154da187919f.pdf",
+        "couple-charged-in-cross-border-identity-theft-and-immigration-fraud-scheme_dcfb06f4296a.pdf"
+      ]
+    },
+    "urine_drug_testing": {
+      "cases": 16,
+      "pct": 2.4,
+      "top_services": [
+        [
+          "Laboratory",
+          16
+        ],
+        [
+          "PhysicianPractice",
+          7
+        ],
+        [
+          "SubstanceUseTreatment",
+          4
+        ],
+        [
+          "BehavioralHealth",
+          3
+        ],
+        [
+          "DME",
+          1
+        ],
+        [
+          "HyperbaricOxygenTherapy",
+          1
+        ]
+      ],
+      "examples": [
+        "austin-pain-management-doctor-and-pain-medicine-practice-to-pay-13-625-000-to-settle-civil-false-claims-act-al_b38853c294d5.pdf",
+        "connecticut-lab-its-owners-and-officers-to-pay-more-than-1-2-million-to-settle-false-claims-act-allegations_263df8f50cc2.pdf",
+        "doctor-sentenced-for-health-care-fraud-and-money-laundering_334b51d8e2a4.pdf",
+        "federal-and-state-officials-announce-efforts-to-crack-down-on-healthcare-fraud-schemes_6dfc9433af3b.pdf"
+      ]
+    },
+    "identity_misuse": {
+      "cases": 11,
+      "pct": 1.6,
+      "top_services": [
+        [
+          "Pharmacy",
+          4
+        ],
+        [
+          "Hospice",
+          3
+        ],
+        [
+          "DME",
+          2
+        ],
+        [
+          "HomeHealth",
+          2
+        ],
+        [
+          "BehavioralHealth",
+          2
+        ],
+        [
+          "SubstanceUseTreatment",
+          1
+        ],
+        [
+          "Laboratory",
+          1
+        ],
+        [
+          "Hospital",
+          1
+        ]
+      ],
+      "examples": [
+        "11-defendants-indicted-in-multi-billion-health-care-fraud-scheme-the-largest-case-by-loss-amount-ever-charged-_ec7a233deffb.pdf",
+        "california-man-sentenced-to-12-years-imprisonment-in-connection-with-17m-medicare-fraud-schemes_f8793f20d538.pdf",
+        "eastern-nc-man-sentenced-to-over-four-years-for-role-in-1-million-covid-fraud-scheme_227b851f8c0b.pdf",
+        "hendersonville-doctor-and-her-office-manager-husband-indicted-as-part-of-the-department-of-justice-039-s-2025-_46f32fb85e72.pdf"
+      ]
+    },
+    "compound_or_expensive_rx": {
+      "cases": 11,
+      "pct": 1.6,
+      "top_services": [
+        [
+          "Pharmacy",
+          10
+        ],
+        [
+          "PhysicianPractice",
+          2
+        ],
+        [
+          "Telehealth",
+          1
+        ],
+        [
+          "DME",
+          1
+        ]
+      ],
+      "examples": [
+        "edinburg-doctor-and-son-guilty-in-kickback-conspiracy_b3fa298aa2b4.pdf",
+        "florida-man-pleads-guilty-to-health-care-fraud-and-kickback-conspiracy_00dc8934fd32.pdf",
+        "four-sentenced-in-110-million-dollar-kickback-conspiracy_9bfd7222fb24.pdf",
+        "michigan-pharmacist-sentenced-to-46-months-in-prison-for-4m-health-care-fraud-scheme_4b48bd8ea077.pdf"
+      ]
+    },
+    "impossible_volume": {
+      "cases": 10,
+      "pct": 1.5,
+      "top_services": [
+        [
+          "BehavioralHealth",
+          5
+        ],
+        [
+          "Laboratory",
+          2
+        ],
+        [
+          "HomeHealth",
+          2
+        ],
+        [
+          "SubstanceUseTreatment",
+          1
+        ],
+        [
+          "Other",
+          1
+        ],
+        [
+          "Hospital",
+          1
+        ],
+        [
+          "Chiropractic",
+          1
+        ]
+      ],
+      "examples": [
+        "addiction-treatment-center-supervisor-sentenced-in-scheme-to-defraud-federal-state-and-private-health-care-ins_b5af4625582b.pdf",
+        "adult-residential-group-homes-operator-settles-healthcare-fraud-claims_3a684b2e6be0.pdf",
+        "aprn-and-medical-practice-to-pay-over-600k-and-cease-connecticut-medicaid-participation-to-settle-false-claims_cd475168d62d.pdf",
+        "chicago-lab-owner-sentenced-to-seven-years-in-prison-in-connection-with-14-million-covid-19-testing-fraud-sche_21fe36af460f.pdf"
+      ]
+    },
+    "unqualified_staff": {
+      "cases": 9,
+      "pct": 1.3,
+      "top_services": [
+        [
+          "BehavioralHealth",
+          3
+        ],
+        [
+          "HomeHealth",
+          2
+        ],
+        [
+          "DME",
+          1
+        ],
+        [
+          "Telehealth",
+          1
+        ],
+        [
+          "Podiatry",
+          1
+        ],
+        [
+          "Drug_Prescriptions",
+          1
+        ],
+        [
+          "MedSpa",
+          1
+        ],
+        [
+          "PhysicalTherapy",
+          1
+        ]
+      ],
+      "examples": [
+        "former-d-c-public-official-sentenced-to-15-months-for-bank-fraud_9f6d58980439.pdf",
+        "former-nurse-practitioner-agrees-to-50-000-settlement-in-alleged-false-claims-act-violations_395fd5226e86.pdf",
+        "fresno-county-podiatrist-and-sales-representative-plead-guilty-to-conspiracy-to-submit-false-claims-related-to_86684ababa25.pdf",
+        "irondequoit-man-claiming-to-be-a-physician-charged-with-fraud-and-illegally-dispensing-controlled-substances_d611bf74c617.pdf"
+      ]
+    },
+    "upcode_level": {
+      "cases": 7,
+      "pct": 1.0,
+      "top_services": [
+        [
+          "PhysicianPractice",
+          4
+        ],
+        [
+          "BehavioralHealth",
+          2
+        ],
+        [
+          "Laboratory",
+          2
+        ],
+        [
+          "Telehealth",
+          2
+        ],
+        [
+          "Other",
+          1
+        ],
+        [
+          "Pharmacy",
+          1
+        ],
+        [
+          "GeneticTesting",
+          1
+        ],
+        [
+          "Hospital",
+          1
+        ]
+      ],
+      "examples": [
+        "behavioral-healthcare-company-executive-sentenced-for-healthcare-fraud_da16e1b7f433.pdf",
+        "dermatology-providers-agree-to-pay-nearly-850-000-to-resolve-allegations-of-false-wound-repair-claims_81868526afd5.pdf",
+        "middle-district-of-florida-u-s-attorneys-office-collects-more-than-47-million-in-civil-and-criminal-actions-in_9c6596085ad2.pdf",
+        "richmond-psychotherapist-convicted-of-healthcare-fraud-to-pay-over-1m_3d3d36d1ad94.pdf"
+      ]
+    },
+    "beneficiary_bribes": {
+      "cases": 5,
+      "pct": 0.7,
+      "top_services": [
+        [
+          "Laboratory",
+          3
+        ],
+        [
+          "SubstanceUseTreatment",
+          2
+        ],
+        [
+          "GeneticTesting",
+          1
+        ],
+        [
+          "BehavioralHealth",
+          1
+        ],
+        [
+          "DME",
+          1
+        ],
+        [
+          "HomeHealth",
+          1
+        ]
+      ],
+      "examples": [
+        "agendia-inc-knoxville-comprehensive-breast-center-pllc-and-knoxville-dermatopathology-laboratory-llc-agree-to-_c08a958a4e84.pdf",
+        "compliance-director-and-office-manager-of-substance-abuse-company-convicted-in-scheme-to-pay-medicaid-kickback_07f58d26a006.pdf",
+        "multiple-eastern-north-carolina-healthcare-professionals-charged-in-connection-with-2025-national-healthcare-f_e971713206d9.pdf",
+        "philadelphia-businesswoman-sentenced-to-20-months-in-prison-for-multiple-fraud-schemes-that-caused-over-600-00_93f4743ecd19.pdf"
+      ]
+    },
+    "rapid_enrollment_spike": {
+      "cases": 1,
+      "pct": 0.1,
+      "top_services": [
+        [
+          "DME",
+          1
+        ],
+        [
+          "Pharmacy",
+          1
+        ],
+        [
+          "SubstanceUseTreatment",
+          1
+        ],
+        [
+          "Laboratory",
+          1
+        ]
+      ],
+      "examples": [
+        "11-defendants-indicted-in-multi-billion-health-care-fraud-scheme-the-largest-case-by-loss-amount-ever-charged-_ec7a233deffb.pdf"
+      ]
+    },
+    "proof_of_delivery": {
+      "cases": 1,
+      "pct": 0.1,
+      "top_services": [
+        [
+          "Pharmacy",
+          1
+        ]
+      ],
+      "examples": [
+        "vra-enterprises-agrees-to-pay-over-17-million-for-allegedly-billing-medicare-for-over-the-counter-covid-19-tes_50ef0facc43a.pdf"
+      ]
+    }
+  },
+  "service_counts": [
+    [
+      "PhysicianPractice",
+      118
+    ],
+    [
+      "Pharmacy",
+      108
+    ],
+    [
+      "DME",
+      95
+    ],
+    [
+      "Laboratory",
+      93
+    ],
+    [
+      "BehavioralHealth",
+      65
+    ],
+    [
+      "Telehealth",
+      58
+    ],
+    [
+      "Other",
+      54
+    ],
+    [
+      "GeneticTesting",
+      39
+    ],
+    [
+      "Hospital",
+      33
+    ],
+    [
+      "HomeHealth",
+      30
+    ],
+    [
+      "NursingHome",
+      27
+    ],
+    [
+      "SubstanceUseTreatment",
+      26
+    ],
+    [
+      "Hospice",
+      20
+    ],
+    [
+      "Device, DME",
+      14
+    ],
+    [
+      "PersonalCare",
+      14
+    ],
+    [
+      "Chiropractic",
+      10
+    ],
+    [
+      "Transportation",
+      7
+    ],
+    [
+      "Optometry",
+      7
+    ],
+    [
+      "Drug_Prescriptions",
+      6
+    ],
+    [
+      "Podiatry",
+      6
+    ],
+    [
+      "Dental",
+      6
+    ],
+    [
+      "AdultDayCare",
+      3
+    ],
+    [
+      "PhysicalTherapy",
+      3
+    ],
+    [
+      "WoundCare",
+      3
+    ],
+    [
+      "Ambulance",
+      2
+    ],
+    [
+      "Acupuncture",
+      2
+    ],
+    [
+      "PrenatalCareCoordination",
+      2
+    ],
+    [
+      "UrgentCare",
+      2
+    ],
+    [
+      "SleepDisorderCenter",
+      1
+    ],
+    [
+      "HousingStabilizationServices",
+      1
+    ],
+    [
+      "HyperbaricOxygenTherapy",
+      1
+    ],
+    [
+      "DiagnosticImaging",
+      1
+    ],
+    [
+      "NursingEducation",
+      1
+    ],
+    [
+      "MassageTherapy",
+      1
+    ],
+    [
+      "MedSpa",
+      1
+    ],
+    [
+      "MedicalImaging",
+      1
+    ],
+    [
+      "PainManagement",
+      1
+    ],
+    [
+      "VeterinaryPractice",
+      1
+    ],
+    [
+      "RemotePatientMonitoring",
+      1
+    ]
+  ],
+  "fraudtype_counts": [
+    [
+      "Falsify certificate",
+      263
+    ],
+    [
+      "Phantom Claims",
+      226
+    ],
+    [
+      "kickback_Bribery For Referral",
+      209
+    ],
+    [
+      "FakeEncounter",
+      200
+    ],
+    [
+      "Wire Fraud",
+      182
+    ],
+    [
+      "Drug_Prescriptions",
+      157
+    ],
+    [
+      "IdentityFraud",
+      123
+    ],
+    [
+      "Benefit & Eligibility Fraud",
+      112
+    ],
+    [
+      "Device, DME",
+      108
+    ],
+    [
+      "Upcoding",
+      79
+    ],
+    [
+      "Covid or General Loan Fraud",
+      75
+    ],
+    [
+      "Tax, Payroll or Coupon Fraud",
+      56
+    ],
+    [
+      "Other - Unknown",
+      51
+    ],
+    [
+      "Unbundling",
+      21
+    ],
+    [
+      "Retention of Overpayment",
+      12
+    ],
+    [
+      "Other - FDA Submission Fraud",
+      10
+    ],
+    [
+      "Other - Embezzlement of federal grant funds",
+      8
+    ]
+  ]
+}
