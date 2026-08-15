@@ -51,3 +51,6 @@ downloaded/webtools/
 *.swo
 *~
 .*.sw?
+
+# v2 pipeline artefacts (regenerate with the three steps)
+designFeatures_v2/.cache/

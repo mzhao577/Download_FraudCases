@@ -1,0 +1,152 @@
+[
+  {
+    "id": "ownership_identity_graph_enrolment",
+    "name": "Enrolment Ownership Identity Graph",
+    "definition": "Entity-resolution and link-analysis screening at enrolment or revalidation that clusters applicants by owners, officers, addresses, phones, bank/EFT accounts, IPs, notaries and billing agents to detect shells, nominees and undisclosed common control.",
+    "control_point": "enrolment"
+  },
+  {
+    "id": "exclusion_adverse_action_screening",
+    "name": "Exclusion And Adverse Action Screening",
+    "definition": "Continuous or periodic matching of providers, owners, managing employees and staff against exclusion lists, criminal-conviction, licence-board and indictment feeds to deny enrolment or trigger credible-allegation payment suspension.",
+    "control_point": "credentialing"
+  },
+  {
+    "id": "credential_primary_source_verification",
+    "name": "Primary Source Credential Verification",
+    "definition": "Automated primary-source verification of licences, degrees, certifications, DEA registration, taxonomy and roster affiliation, with claim rejection when the rendering or supervising clinician is unverified, unlicensed or out of scope.",
+    "control_point": "credentialing"
+  },
+  {
+    "id": "new_provider_velocity_throttle",
+    "name": "New Provider Velocity Throttle",
+    "definition": "Payment caps, prepay holds, site visits and ramp-rate monitoring applied to newly enrolled or newly transferred providers whose early billing volume, dollars or beneficiary counts exceed peer-calibrated norms.",
+    "control_point": "prepay_analytics"
+  },
+  {
+    "id": "beneficiary_eligibility_conflict_edits",
+    "name": "Eligibility And Impossible Day Edits",
+    "definition": "Hard prepay edits denying claims whose service dates postdate death, fall in incarceration, inpatient or institutional spans, precede enrolment, or otherwise conflict with eligibility and facility status files.",
+    "control_point": "prepay_edit"
+  },
+  {
+    "id": "provider_day_capacity_edits",
+    "name": "Provider Day Capacity Edits",
+    "definition": "Accumulators that sum time-based units or implied minutes per rendering clinician per date across all sites and payers and deny, pend or downcode when totals exceed a feasible workday, overlap, or defy travel feasibility.",
+    "control_point": "prepay_edit"
+  },
+  {
+    "id": "staffing_payroll_reconciliation",
+    "name": "Staffing And Payroll Reconciliation",
+    "definition": "Comparison of billed service hours, units or census against payroll, roster, FTE, licensed-capacity or payroll-based-journal data to detect hours or attendance that no staffed workforce could deliver.",
+    "control_point": "postpay_audit"
+  },
+  {
+    "id": "evv_visit_verification",
+    "name": "EVV And Attendance Verification",
+    "definition": "Reconciliation of home-, community- and centre-based service claims to electronic visit verification, GPS geofence, biometric sign-in or attendance records, denying units with no matching verified visit.",
+    "control_point": "prepay_edit"
+  },
+  {
+    "id": "treating_relationship_order_edits",
+    "name": "Treating Relationship Order Edits",
+    "definition": "Prepay edits requiring a qualifying encounter by the ordering provider within a lookback window, plus a supporting diagnosis, before paying order-driven items such as braces, genetic panels, DME and compounds.",
+    "control_point": "prepay_edit"
+  },
+  {
+    "id": "ordering_prescriber_fanout_analytics",
+    "name": "Ordering Prescriber Fan-Out Analytics",
+    "definition": "Surveillance of ordering or signing NPIs on orders per day, distinct downstream suppliers and labs, beneficiary state dispersion and share of orders lacking any encounter, with suspension of downstream claims from outlier prescribers.",
+    "control_point": "prepay_analytics"
+  },
+  {
+    "id": "medical_necessity_frequency_edits",
+    "name": "Necessity And Frequency Edits",
+    "definition": "Prepay clinical-criteria, prior-authorization, frequency-cap, laterality and repeat-interval edits requiring qualifying diagnosis, prior conservative care or documented indication for specific procedures, tests and products.",
+    "control_point": "prepay_edit"
+  },
+  {
+    "id": "coding_bundling_upcoding_edits",
+    "name": "Coding, Bundling And Upcoding Edits",
+    "definition": "Claim-level rebundling, NCCI pair, modifier-25, panel-versus-component, unit/charge sanity, site-of-service and level-distribution edits that deny, reprice or downcode inflated or unbundled coding.",
+    "control_point": "prepay_edit"
+  },
+  {
+    "id": "inventory_acquisition_reconciliation",
+    "name": "Inventory Acquisition Reconciliation",
+    "definition": "Comparison of billed drug, device or single-use-supply units against wholesaler, ARCOS, distributor or invoice acquisition records at provider-product-period level, suspending payment on unexplained excess.",
+    "control_point": "postpay_audit"
+  },
+  {
+    "id": "device_product_registry_validation",
+    "name": "Device And Product Registry Validation",
+    "definition": "Validation of UDI, NDC, serial, lot, NIOSH or FDA registration identifiers on claims against authoritative registries, recall feeds and authorized-distributor lists, with denial of unapproved, counterfeit or unlisted products.",
+    "control_point": "prepay_edit"
+  },
+  {
+    "id": "controlled_substance_member_edits",
+    "name": "Controlled Substance Point Of Sale Edits",
+    "definition": "Member-level pharmacy edits and lock-in using MME, early refill, days-supply overlap, dangerous-combination, multi-prescriber and multi-pharmacy counts to reject or force prior authorization at the point of sale.",
+    "control_point": "prepay_edit"
+  },
+  {
+    "id": "prescriber_diversion_profiling",
+    "name": "Prescriber Diversion Profiling",
+    "definition": "Prescriber- and pharmacy-level controlled-substance profiling on volume, MME, patient distance, cash share, baseline step-changes and prescriber authentication, driving prepay holds and DEA or board referral.",
+    "control_point": "prepay_analytics"
+  },
+  {
+    "id": "referral_concentration_kickback_analytics",
+    "name": "Referral Concentration And Kickback Analytics",
+    "definition": "Analytics on referrer-to-entity concentration, dyad revenue share, marketer and recruiter linkage, Open Payments correlation and disclosed financial arrangements, holding claims for Stark/AKS review.",
+    "control_point": "referral_network"
+  },
+  {
+    "id": "beneficiary_cohort_recruitment_graph",
+    "name": "Beneficiary Cohort And Recruitment Graph",
+    "definition": "Detection of shared or compromised beneficiary cohorts across unrelated providers, address clustering, burst arrivals and identity misuse, triggering beneficiary verification outreach and coordinated suspension.",
+    "control_point": "referral_network"
+  },
+  {
+    "id": "documentation_authenticity_review",
+    "name": "Documentation Authenticity Review",
+    "definition": "Records requests paired with authenticity testing of submitted documentation, including note near-duplicate hashing, signature-image reuse, metadata and physician attestation of forged orders.",
+    "control_point": "documentation_request"
+  },
+  {
+    "id": "facility_quality_certification_review",
+    "name": "Facility Certification And Quality Review",
+    "definition": "Prepay medical review or payment suspension driven by facility-level certification, licensure scope, survey deficiency, hospice or SNF length-of-stay, live-discharge, level-of-care and admission-provenance indicators.",
+    "control_point": "postpay_audit"
+  },
+  {
+    "id": "cost_report_related_party_audit",
+    "name": "Cost Report And Related Party Audit",
+    "definition": "Post-payment audit of cost reports, related-party vendor disclosures, chain financial viability, trust-account reconciliations and unreturned identified overpayments, holding settlement or escrowing payment.",
+    "control_point": "postpay_audit"
+  },
+  {
+    "id": "payee_banking_disbursement_controls",
+    "name": "Payee And Disbursement Controls",
+    "definition": "Controls on payment routing and internal disbursement: EFT change callback verification, payee-account dedup and employee matching, dual approval, adjudicator override monitoring and vendor-master change holds.",
+    "control_point": "enrolment"
+  },
+  {
+    "id": "benefit_program_eligibility_verification",
+    "name": "Benefit Eligibility Data Matching",
+    "definition": "Application-time and recertification identity, income, wage, death and duplicate-identity matching for member, benefit, subsidy, broker-driven and representative-payee enrolment decisions.",
+    "control_point": "enrolment"
+  },
+  {
+    "id": "grant_loan_disbursement_screening",
+    "name": "Grant And Loan Disbursement Screening",
+    "definition": "Pre-disbursement verification of payroll, affiliation size, ownership graphs, deliverables and conflicts for loan, grant, procurement and contract payments outside the health claim stream.",
+    "control_point": "no_payer_control"
+  },
+  {
+    "id": "no_payer_control_out_of_scope",
+    "name": "No Payer Control Applicable",
+    "definition": "Cases where no payer-side claim or enrolment control applies, including tax, obstruction, embezzlement and non-case press items to be excluded from rule mining.",
+    "control_point": "no_payer_control"
+  }
+]
