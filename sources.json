@@ -1,6 +1,6 @@
 {
   "_comment": "Canonical list of websites used to find major medical / health care fraud cases (Medicare, Medicaid and commercial payers). Edit this file to add, remove or disable a source; the scrapers read it at run time. 'key' maps to a discovery module in fraudscrape/discovery/ and to the folder name used under ./downloaded/.",
-  "generated_for": "instruction_download.txt",
+  "generated_for": "instruction_download.md",
   "coverage_start": "2021-01-01",
   "sources": [
     {

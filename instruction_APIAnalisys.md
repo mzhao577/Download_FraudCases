@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| **Project** | Download_FraudCases (part 3 of 3) |
+| **Project** | Download_FraudCases (part 3 of 4) |
 | **Status** | Final — consolidates the original brief and the tool as built |
 | **Last updated** | 2026-08-14 |
 | **Implementation** | [`webtool/`](webtool/) |
 | **Earlier drafts** | `instruction_APIAnalisys_v0.txt` |
-| **Related** | [`instruction_download.txt`](instruction_download.txt) (part 1) · [`instruction_extractInfo.md`](instruction_extractInfo.md) (part 2) |
+| **Related** | [`instruction_download.md`](instruction_download.md) (part 1) · [`instruction_extractInfo.md`](instruction_extractInfo.md) (part 2) · [`instruction_designFeatures.md`](instruction_designFeatures.md) (part 4) |
 
 ---
 

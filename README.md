@@ -2,7 +2,7 @@
 
 Two pipelines:
 
-1. **Download** (`instruction_download.txt`) — find and download major medical /
+1. **Download** (`instruction_download.md`) — find and download major medical /
    health care fraud cases and reports from U.S. federal sources since 1 Jan 2021.
 2. **Extract patterns** (`instruction_extractInfo.md`) — turn a folder of case PDFs
    into a structured feature table plus an analysis of the recurring fraud schemes.

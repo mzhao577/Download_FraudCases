@@ -8,7 +8,7 @@
 | **Deliverable** | [`designFeatures/monitoring_features.md`](designFeatures/monitoring_features.md) |
 | **Implementation** | [`designFeatures/`](designFeatures/) |
 | **Earlier draft** | `instruction_designFeatures_v0.txt` |
-| **Related** | [`instruction_download.txt`](instruction_download.txt) (1) · [`instruction_extractInfo.md`](instruction_extractInfo.md) (2) · [`instruction_APIAnalisys.md`](instruction_APIAnalisys.md) (3) |
+| **Related** | [`instruction_download.md`](instruction_download.md) (1) · [`instruction_extractInfo.md`](instruction_extractInfo.md) (2) · [`instruction_APIAnalisys.md`](instruction_APIAnalisys.md) (3) |
 
 ---
 

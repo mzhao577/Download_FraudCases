@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| **Project** | Download_FraudCases (part 2 of 3) |
+| **Project** | Download_FraudCases (part 2 of 4) |
 | **Status** | Final — consolidates the original brief, the 18-type taxonomy added in revision 2, and everything learned building the code |
 | **Last updated** | 2026-08-14 |
 | **Implementation** | [`fraudextract/`](fraudextract/), [`extract_patterns.py`](extract_patterns.py), [`ExtractedAll_in1InputFolder.sh`](ExtractedAll_in1InputFolder.sh) |
 | **Earlier drafts** | `instruction_findpattern_v0.txt`, `instruction_findpattern.original.txt` |
-| **Related** | [`instruction_download.txt`](instruction_download.txt) (part 1) · [`instruction_APIAnalisys.md`](instruction_APIAnalisys.md) (part 3) |
+| **Related** | [`instruction_download.md`](instruction_download.md) (part 1) · [`instruction_APIAnalisys.md`](instruction_APIAnalisys.md) (part 3) · [`instruction_designFeatures.md`](instruction_designFeatures.md) (part 4) |
 
 ---
 
