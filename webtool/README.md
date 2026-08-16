@@ -6,22 +6,47 @@ input and display spec in [`../instruction_APIAnalisys.md`](../instruction_APIAn
 
 ## Run it
 
+Point it straight at a summary CSV:
+
 ```bash
-python webtool/setup_input.py --key DOJ_2025    # build the input folder (once)
-python webtool/app.py                           # http://127.0.0.1:8000
+python webtool/app.py path/to/summary.csv
+```
+
+The PDF folder is found for you: a subfolder next to the CSV, or under
+`./downloaded/`, whose name appears in the CSV name — so
+`extractedSummary_2025_DOJ_withFeatures.csv` finds `DOJ_2025/`. Name it yourself
+when that fails:
+
+```bash
+python webtool/app.py path/to/summary.csv --pdf-dir path/to/pdfs
+```
+
+Or use the folder convention, where a directory holds `<KEY>/` plus a matching
+CSV (see [Input layout](#input-layout)):
+
+```bash
+python webtool/setup_input.py --key DOJ_2025    # build such a folder
+python webtool/app.py                           # default ./downloaded/webtools
+python webtool/app.py --input-dir SOME/DIR
 ```
 
 Options:
 
 | Flag | Effect |
 |---|---|
-| `--input-dir DIR` | where to look for datasets (default `./downloaded/webtools`) |
+| *(positional)* or `--csv FILE` | the summary CSV to read |
+| `--pdf-dir DIR` | the case PDFs, when they cannot be found from the CSV name |
+| `--input-dir DIR` | folder-convention mode (default `./downloaded/webtools`) |
 | `--port N` | serve on another port (default 8000) |
+| `--host H` | bind address (default `127.0.0.1`) |
 | `--no-browser` | don't open a browser automatically |
+
+A CSV and `--input-dir` are mutually exclusive.
 
 Binds to `127.0.0.1` only — nothing is exposed off the machine.
 
 ## Input layout
+<a id="input-layout"></a>
 
 ```
 downloaded/webtools/

@@ -126,6 +126,62 @@ def discover(input_dir: Path) -> list[Dataset]:
     return found
 
 
+def find_pdf_dir(csv_path: Path, project_root: Path | None = None) -> Path | None:
+    """Locate the PDFs that go with a CSV given only the CSV.
+
+    Tried in order: a sibling folder of the CSV whose name tokens all appear in
+    the CSV name, then the same under ./downloaded/. Returns None if neither
+    finds a folder that actually contains PDFs.
+    """
+    csv_path = csv_path.expanduser().resolve()
+    want = tokens(csv_path.stem)
+
+    def candidates(d: Path):
+        if not d.is_dir():
+            return
+        for sub in sorted(p for p in d.iterdir() if p.is_dir()):
+            if tokens(sub.name) <= want and any(sub.glob("*.pdf")):
+                yield sub
+
+    for sub in candidates(csv_path.parent):
+        return sub
+
+    root = project_root or Path(__file__).resolve().parent.parent
+    for base in (root / "downloaded", root):
+        for sub in candidates(base):
+            return sub
+    return None
+
+
+def from_files(csv_path: Path, pdf_dir: Path | None = None,
+               key: str | None = None) -> Dataset:
+    """Build a dataset from an explicit CSV (and optionally an explicit PDF folder).
+
+    This is the terminal-friendly path: point the tool at a summary file and it
+    works out where the documents live, instead of requiring the
+    <input dir>/<KEY>/ + matching-CSV layout.
+    """
+    csv_path = csv_path.expanduser().resolve()
+    if not csv_path.is_file():
+        raise FileNotFoundError(f"summary CSV not found: {csv_path}")
+
+    if pdf_dir is None:
+        pdf_dir = find_pdf_dir(csv_path)
+        if pdf_dir is None:
+            raise FileNotFoundError(
+                f"could not work out which PDF folder goes with {csv_path.name}.\n"
+                f"  Looked for a subfolder whose name appears in the CSV name, in:\n"
+                f"    {csv_path.parent}\n"
+                f"    {Path(__file__).resolve().parent.parent / 'downloaded'}\n"
+                f"  Name it explicitly:  --pdf-dir /path/to/pdfs")
+    else:
+        pdf_dir = pdf_dir.expanduser().resolve()
+        if not pdf_dir.is_dir():
+            raise FileNotFoundError(f"PDF folder not found: {pdf_dir}")
+
+    return Dataset(key=key or pdf_dir.name, pdf_dir=pdf_dir, csv_path=csv_path).load()
+
+
 def describe_problem(input_dir: Path) -> str:
     """A specific message for why discovery found nothing."""
     input_dir = input_dir.expanduser().resolve()

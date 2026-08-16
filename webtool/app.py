@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Case review web tool - raw PDF on the left, extracted summary on the right.
 
-    python webtool/app.py                         # ./downloaded/webtools
-    python webtool/app.py --input-dir SOME/DIR
+Point it at a summary CSV, or at a folder laid out by the input convention:
+
+    python webtool/app.py SOME/summary.csv              # a CSV, PDFs found for you
+    python webtool/app.py SOME/summary.csv --pdf-dir DIR
+    python webtool/app.py --input-dir SOME/DIR          # <DIR>/<KEY>/ + matching CSV
+    python webtool/app.py                               # default ./downloaded/webtools
     python webtool/app.py --port 8080 --no-browser
 
 Open http://127.0.0.1:8000 . Binds to localhost only; the PDFs are served from
@@ -30,10 +34,7 @@ app = FastAPI(title="Fraud case review")
 DATASETS: dict[str, ds.Dataset] = {}
 
 
-def load(input_dir: Path) -> None:
-    found = ds.discover(input_dir)
-    if not found:
-        raise SystemExit(ds.describe_problem(input_dir))
+def _report(found: list[ds.Dataset]) -> None:
     DATASETS.clear()
     for d in found:
         DATASETS[d.key] = d
@@ -42,6 +43,21 @@ def load(input_dir: Path) -> None:
             print(f"  {'':18} {len(d.missing_pdf):>5} rows have no PDF")
         if d.orphan_pdfs:
             print(f"  {'':18} {len(d.orphan_pdfs):>5} PDFs have no CSV row")
+
+
+def load_dir(input_dir: Path) -> None:
+    found = ds.discover(input_dir)
+    if not found:
+        raise SystemExit(ds.describe_problem(input_dir))
+    _report(found)
+
+
+def load_csv(csv_path: Path, pdf_dir: Path | None) -> None:
+    try:
+        d = ds.from_files(csv_path, pdf_dir)
+    except FileNotFoundError as exc:
+        raise SystemExit(str(exc))
+    _report([d])
 
 
 def _get(key: str | None) -> ds.Dataset:
@@ -147,15 +163,30 @@ def pdf(dataset: str, filename: str) -> FileResponse:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--input-dir", type=Path, default=DEFAULT_INPUT,
+    ap.add_argument("csv", nargs="?", type=Path, default=None,
+                    help="summary CSV to read; the PDF folder is found automatically")
+    ap.add_argument("--csv", dest="csv_opt", type=Path, default=None,
+                    help="same as the positional argument")
+    ap.add_argument("--pdf-dir", type=Path, default=None,
+                    help="folder of case PDFs, when it cannot be worked out from the CSV name")
+    ap.add_argument("--input-dir", type=Path, default=None,
                     help=f"folder holding <KEY>/ and its summary CSV (default: {DEFAULT_INPUT})")
     ap.add_argument("--host", default="127.0.0.1")
     ap.add_argument("--port", type=int, default=8000)
     ap.add_argument("--no-browser", action="store_true", help="do not open a browser")
     args = ap.parse_args()
 
-    print(f"loading from {args.input_dir}")
-    load(args.input_dir)
+    csv_path = args.csv or args.csv_opt
+    if csv_path and args.input_dir:
+        raise SystemExit("give either a CSV or --input-dir, not both")
+
+    if csv_path:
+        print(f"loading {csv_path}")
+        load_csv(csv_path, args.pdf_dir)
+    else:
+        input_dir = args.input_dir or DEFAULT_INPUT
+        print(f"loading from {input_dir}")
+        load_dir(input_dir)
 
     url = f"http://{args.host}:{args.port}"
     print(f"\n  ready -> {url}   (ctrl-c to stop)\n")
