@@ -8,7 +8,8 @@ Two pipelines:
    into a structured feature table plus an analysis of the recurring fraud schemes.
    See [Part 2](#part-2--extracting-case-features-and-fraud-patterns) below.
 3. **Review cases** (`instruction_APIAnalisys.md`) — a two-panel web tool for reading
-   cases one at a time. See [`webtool/`](webtool/).
+   cases one at a time. See [`webtool/`](webtool/) and [`webtool2/`](webtool2/);
+   start both with [`./start_services.sh`](start_services.sh).
 4. **Design monitoring features** (`instruction_designFeatures.md`) — turn the case
    corpus into ~10 computable provider-monitoring features. See
    [`designFeatures/monitoring_features.md`](designFeatures/monitoring_features.md).
@@ -256,6 +257,42 @@ extract_patterns.py   the CLI
   document count.
 - Refusals and API errors are handled per document — one bad document never fails
   the run, and `stop_reason` is checked before any content is read.
+
+---
+
+# Running the review tools — `start_services.sh`
+
+Both web tools in one command, instead of two terminals and two `python3` lines.
+
+```bash
+./start_services.sh              # start both, print the links
+./start_services.sh status       # what is running, and on which dataset
+./start_services.sh stop         # stop both
+./start_services.sh restart      # stop, then start (how you load a different CSV)
+```
+
+| | Port | Shows |
+|---|---|---|
+| `webtool`  | 8000 | `SchemeSummary` at the top, the other extracted fields below |
+| `webtool2` | 8001 | the same, with the four **prevention-design** columns rendered directly under the summary |
+
+Useful options:
+
+```bash
+./start_services.sh --only webtool2                 # just one of them
+./start_services.sh --csv designFeatures_v2/extractedSummary_2025_DOJ_withFeatures.csv \
+                    --pdf-dir downloaded/DOJ_2025   # point webtool at a summary file
+./start_services.sh --port 9000 --port2 9001        # when 8000/8001 are taken
+./start_services.sh --only webtool --foreground     # run in this terminal, ctrl-c to stop
+```
+
+`--csv` applies to **webtool** only — `webtool2` reads its input folder, prepared
+by `python3 webtool2/setup_input.py --key DOJ_2025`. `--pdf-dir` is optional
+whenever the PDF folder name can be worked out from the CSV name.
+
+Starting is idempotent: a tool already answering on its port is left running, and
+the script says so rather than starting a second copy. Each instance logs to
+`logs/<tool>-<port>.log`; a tool that fails to start prints the tail of its log.
 
 ---
 
