@@ -2,3 +2,5 @@
 # A lower floor resolves an incompatible pair and the PDF pane falls back to an iframe.
 streamlit[pdf]>=1.61
 pandas>=2.0
+# Renders PDF pages when the streamlit-pdf component is unavailable.
+pypdfium2>=4.0

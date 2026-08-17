@@ -22,14 +22,23 @@ See README.md in this folder for the deployment routes.
 """
 from __future__ import annotations
 
-import base64
 import html
+import io
 import os
 import re
 from pathlib import Path
 
 import pandas as pd
 import streamlit as st
+
+# st.pdf renders through the optional streamlit-pdf package. When that package
+# is missing or mismatched it does NOT raise - it draws a broken-document
+# placeholder - so probe it up front and use the browser's own viewer instead.
+try:
+    import streamlit_pdf as _pdf_component  # noqa: F401
+    HAVE_PDF_COMPONENT = True
+except Exception:  # noqa: BLE001
+    HAVE_PDF_COMPONENT = False
 
 HERE = Path(__file__).resolve().parent
 DATA_DIR = next((p for p in (HERE / "data", Path("data")) if p.is_dir()), HERE / "data")
@@ -185,8 +194,47 @@ def render_fields(row: pd.Series, cols: list[str], q: str) -> str:
     return f'<div class="fields">{rows}</div>'
 
 
-def show_pdf(name: str, height: int = 780) -> None:
-    """Render the source document, from a local folder or a static host."""
+@st.cache_data(show_spinner=False, max_entries=4)
+def render_pages(data: bytes, scale: float = 1.7, max_pages: int = 20) -> list[bytes]:
+    """PDF bytes -> one PNG per page, for the no-component fallback.
+
+    PDFium is not thread-safe, which is why the pipeline reads PDFs on one
+    thread; a Streamlit session runs its script serially, so rendering here is
+    safe. Capped at max_pages - these press releases are a few pages each.
+    """
+    try:
+        import pypdfium2 as pdfium
+    except ImportError:
+        return []
+    out: list[bytes] = []
+    try:
+        doc = pdfium.PdfDocument(data)
+        for i in range(min(len(doc), max_pages)):
+            buf = io.BytesIO()
+            doc[i].render(scale=scale).to_pil().save(buf, format="PNG")
+            out.append(buf.getvalue())
+    except Exception:  # noqa: BLE001 - a corrupt file must not kill the page
+        return out
+    return out
+
+
+@st.cache_data(show_spinner=False, max_entries=8)
+def fetch_pdf(url: str) -> bytes | None:
+    """Pull a PDF from PDF_BASE_URL so it can be rendered like a local one."""
+    from urllib.request import urlopen
+    try:
+        with urlopen(url, timeout=20) as r:  # noqa: S310 - operator-supplied host
+            return r.read()
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def show_pdf(name: str, height: int | str = 780) -> None:
+    """Render the source document, from a local folder or a static host.
+
+    height is a pixel count, or "stretch" to grow with the document rather than
+    scrolling inside a fixed box.
+    """
     local = (PDF_DIR / name) if PDF_DIR else None
     source: object | None = None
     if local is not None and local.is_file():
@@ -203,18 +251,31 @@ def show_pdf(name: str, height: int = 780) -> None:
             unsafe_allow_html=True)
         return
 
-    try:
-        st.pdf(source, height=height)
-    except Exception:  # noqa: BLE001
-        # st.pdf needs the streamlit-pdf package; fall back to the browser's own
-        # viewer so a missing optional dependency cannot break the page.
-        if isinstance(source, bytes):
-            src = "data:application/pdf;base64," + base64.b64encode(source).decode()
-        else:
-            src = str(source)
-        st.components.v1.html(
-            f'<iframe src="{html.escape(src)}#view=FitH" width="100%" height="{height}" '
-            'style="border:1px solid #dfe3e9;border-radius:6px"></iframe>', height=height + 10)
+    if HAVE_PDF_COMPONENT:
+        try:
+            st.pdf(source, height=height)
+            return
+        except Exception:  # noqa: BLE001
+            pass  # fall through to the page images below
+
+    # No streamlit-pdf. An <embed> is not an option either: Streamlit's HTML
+    # component is a sandboxed iframe, and Chrome refuses to load the PDF plugin
+    # inside one. Rendering the pages to images sidesteps the plugin entirely.
+    px = 1400 if height == "stretch" else int(height)
+    data = source if isinstance(source, bytes) else fetch_pdf(str(source))
+    pages = render_pages(data) if data else []
+
+    if not pages:
+        st.warning("Could not render this PDF here. Install `streamlit[pdf]` for the "
+                   "built-in viewer, or use the download button below.")
+    else:
+        with st.container(height=px, border=True):
+            for img in pages:
+                st.image(img, width="stretch")
+    if data:
+        st.download_button("Download the source PDF", data, file_name=name,
+                           mime="application/pdf", width="stretch",
+                           key=f"dl{name}")
 
 
 # ----------------------------------------------------------------------- page
@@ -281,6 +342,21 @@ def jump(to: int) -> None:
 
 
 with st.sidebar:
+    # Streamlit has no drag-resizable panes, so the PDF height is a control.
+    # It persists across cases and reruns because the widget carries a key.
+    st.divider()
+    fit = st.checkbox("Fit PDF to page length", key="pdffit",
+                      help="Grow the pane to the whole document instead of scrolling "
+                           "inside a fixed box. The page itself then scrolls.")
+    # Rendered even when unused: a widget that stops rendering loses its state,
+    # which would reset a chosen height every time "fit" is toggled.
+    chosen = st.slider(
+        "PDF pane height", min_value=300, max_value=2000, value=780, step=20, key="pdfh",
+        disabled=fit,
+        help="Taller shows more of the page; shorter puts the summary alongside it.")
+    pdf_height: int | str = "stretch" if fit else chosen
+    st.divider()
+
     st.caption(f"Showing **{total}** of {len(df)}")
     listing = view[[doc_col]].reset_index(drop=True)
     listing.insert(0, "#", range(1, total + 1))
@@ -305,7 +381,7 @@ for col, (label, fn) in zip(nav, [
         ("← Previous", lambda: step(-1)), ("Next →", lambda: step(1)),
         ("+10", lambda: step(10)), ("+50", lambda: step(50)),
         ("Last ⇥", lambda: jump(total - 1))]):
-    col.button(label, on_click=fn, use_container_width=True, key=f"nav{label}",
+    col.button(label, on_click=fn, width="stretch", key=f"nav{label}",
                disabled=total == 1)
 nav[8].markdown(f'<div class="pos">{st.session_state.idx + 1} '
                 f'<span class="of">of {total}</span></div>', unsafe_allow_html=True)
@@ -316,7 +392,7 @@ row = view.iloc[st.session_state.idx]
 left, right = st.columns([1, 1], gap="medium")
 
 with left:
-    show_pdf(str(row[doc_col]).strip())
+    show_pdf(str(row[doc_col]).strip(), pdf_height)
 
 with right:
     st.markdown(

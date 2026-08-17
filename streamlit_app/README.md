@@ -17,7 +17,7 @@ streamlit run streamlit_app/app.py
 
 | Where | Contents |
 |---|---|
-| **Sidebar** | Search, the tab dimension, the tab value, and the case list |
+| **Sidebar** | Search, the tab dimension, the tab value, the **PDF pane height**, and the case list |
 | **Top** | `⇤ First │ −50 │ −10 │ ← Previous │ Next → │ +10 │ +50 │ Last ⇥`, position, progress |
 | **Main, left** | The source PDF |
 | **Main, right** | Title and chips, `SchemeSummary`, the prevention design, then the remaining fields |
@@ -27,6 +27,18 @@ with matches highlighted, and **tab counts taken after the search but before the
 tab filter**, so selecting one tab does not blank the others. The prevention
 block is data-driven — every column after `SchemeSummary` renders there, so a
 fifth analysis column needs no code change.
+
+## Sizing the PDF pane
+
+Streamlit has no drag-resizable panes, so the height is a control in the sidebar:
+
+| Control | Effect |
+|---|---|
+| **PDF pane height** | 300–2000 px. Taller shows more of the page; shorter brings the summary alongside it. |
+| **Fit PDF to page length** | Drops the fixed box and grows to the whole document — the page itself then scrolls. |
+
+The setting persists as you move between cases. The slider stays visible but
+greyed while *fit* is on, so switching back does not lose your height.
 
 ## Where the PDFs come from
 
@@ -109,9 +121,19 @@ For a pixel-identical copy of the local tool, see
 ## Notes
 
 `st.pdf` needs the `streamlit-pdf` package, which requires the `components.v2`
-API added in Streamlit **1.61** — hence the floor in `requirements.txt`. If the
-pair ever resolves incompatibly, the PDF pane falls back to the browser's own
-viewer in an iframe rather than failing.
+API added in Streamlit **1.61** — hence the floor in `requirements.txt`. When
+that package is missing or mismatched, `st.pdf` does not raise: it draws a
+broken-document placeholder. The app therefore probes for the component at
+import and, if it is unavailable, **renders the pages to images with
+`pypdfium2`** instead, inside a scrollable box of the chosen height, with a
+download button beneath.
+
+That fallback is what runs on a machine with an older Streamlit — including
+this repo's own environment, which is pinned at 1.54 for the scraping pipeline.
+It is not an `<embed>` or an iframe on purpose: Streamlit's HTML component is a
+**sandboxed** iframe, and Chrome refuses to load the PDF plugin inside one, so
+every in-frame approach shows a broken-document icon regardless of the URL
+scheme used.
 
 The case text is summarised from public DOJ press releases. The prevention
 designs are model-generated reconstructions of what *would* have been visible in
