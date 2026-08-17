@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Fraud Case Review — Prevention Design</title>
+<!--
+  The same Streamlit app as app.py, run in the browser by stlite (Streamlit on
+  Pyodide/WebAssembly). Hugging Face retired the server-side Streamlit SDK and
+  its Docker replacement needs a paid plan, so the app runs client-side on a
+  free static Space instead. No server, no API key, nothing leaves the browser.
+-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/browser@1.8.1/build/stlite.css" />
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; }
+  streamlit-app { display: block; height: 100%; }
+  #boot { position: fixed; inset: 0; display: grid; place-items: center; z-index: 1;
+          font: 15px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; color: #5b6472;
+          background: #f6f7f9; text-align: center; padding: 24px; }
+  #boot b { color: #14181f; font-size: 17px; display: block; margin-bottom: 6px; }
+  #boot small { color: #8a94a3; }
+</style>
+</head>
+<body>
+<div id="boot">
+  <div>
+    <b>Fraud case review — prevention design</b>
+    Starting the Streamlit runtime in your browser…
+    <br /><small>First load fetches the Python runtime and pandas; it takes a few
+    seconds and is cached afterwards.</small>
+  </div>
+</div>
+
+<streamlit-app>
+  <app-file name="app.py" url="./app.py" entrypoint></app-file>
+  <app-file name="data/extractedSummary_2025_DOJ_withFeatures.csv"
+            url="./data/extractedSummary_2025_DOJ_withFeatures.csv"></app-file>
+  <app-requirements>
+pandas
+  </app-requirements>
+</streamlit-app>
+
+<script type="module" src="https://cdn.jsdelivr.net/npm/@stlite/browser@1.8.1/build/stlite.js"></script>
+<script>
+  // Drop the placeholder once Streamlit has painted its first frame.
+  const boot = document.getElementById("boot");
+  const seen = new MutationObserver(() => {
+    if (document.querySelector('[data-testid="stAppViewContainer"]')) {
+      boot.remove();
+      seen.disconnect();
+    }
+  });
+  seen.observe(document.body, { childList: true, subtree: true });
+  setTimeout(() => boot && boot.remove(), 60000);
+</script>
+</body>
+</html>

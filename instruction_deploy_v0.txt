@@ -1,0 +1,4 @@
+
+Goal:
+Please deploy the web tool to huggingface, using streamlit.
+
