@@ -7,7 +7,7 @@
 | **Last updated** | 2026-08-17 |
 | **Implementation** | [`hfspace_webtool2/`](hfspace_webtool2/) (current) · [`hfspace/`](hfspace/) (Streamlit port, superseded) |
 | **Earlier drafts** | `instruction_deploy_v0.txt` |
-| **Related** | [`instruction_APIAnalisys.md`](instruction_APIAnalisys.md) (the tool being hosted) · [`instruction_designFeatures_v2.txt`](instruction_designFeatures_v2.txt) (the data it shows) |
+| **Related** | [`instruction_APIAnalisys.md`](instruction_APIAnalisys.md) (the tool being hosted) · [`instruction_designFeatures_v2.md`](instruction_designFeatures_v2.md) (the data it shows) |
 
 ---
 

@@ -12,7 +12,7 @@ source of truth, and this README is the map.
 | 1 | **Download** the case corpus | [`instruction_download.md`](instruction_download.md) | `discover.py`, `download.py`, `fraudscrape/` | `downloaded/` — 9,741 documents |
 | 2 | **Extract** a record per case | [`instruction_extractInfo.md`](instruction_extractInfo.md) | `extract_patterns.py`, `fraudextract/` | `extracted/` — `cases.csv`, `patterns.md` |
 | 3 | **Review** cases side by side | [`instruction_APIAnalisys.md`](instruction_APIAnalisys.md) | [`webtool/`](webtool/), [`webtool2/`](webtool2/) | local tools on ports 8000 / 8001 |
-| 4 | **Design monitoring features** | [`instruction_designFeatures.md`](instruction_designFeatures.md) · [`instruction_designFeatures_v2.txt`](instruction_designFeatures_v2.txt) | [`designFeatures/`](designFeatures/), [`designFeatures_v2/`](designFeatures_v2/) | 10 corpus-wide features · 679 per-case designs |
+| 4 | **Design monitoring features** | [`instruction_designFeatures.md`](instruction_designFeatures.md) · [`instruction_designFeatures_v2.md`](instruction_designFeatures_v2.md) | [`designFeatures/`](designFeatures/), [`designFeatures_v2/`](designFeatures_v2/) | 10 corpus-wide features · 679 per-case designs |
 | 5 | **Deploy** the review tool | [`instruction_deploy.md`](instruction_deploy.md) | [`hfspace_webtool2/`](hfspace_webtool2/), [`hfspace/`](hfspace/) | public Hugging Face Spaces |
 
 Stages 1 and 2 are scrapers and extraction; 4 is the analysis the whole thing is
@@ -361,7 +361,7 @@ Output: [`designFeatures/monitoring_features.md`](designFeatures/monitoring_feat
 ## 4.2 v2 — one design per case
 
 [`designFeatures_v2/`](designFeatures_v2/) implements
-[`instruction_designFeatures_v2.txt`](instruction_designFeatures_v2.txt): where v1
+[`instruction_designFeatures_v2.md`](instruction_designFeatures_v2.md): where v1
 produced 10 features for the corpus, v2 produces **one design per case — 679 of
 them** — then groups them into 25 categories.
 

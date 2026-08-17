@@ -1,6 +1,6 @@
 # designFeatures_v2 — Per-Case Prevention Design
 
-Implements [`instruction_designFeatures_v2.txt`](../instruction_designFeatures_v2.txt): for
+Implements [`instruction_designFeatures_v2.md`](../instruction_designFeatures_v2.md): for
 **every** case in the summary file, work out how it could have been caught
 *before the claims were paid*, and what to build so it is caught automatically
 next time. Then group those controls into categories.
