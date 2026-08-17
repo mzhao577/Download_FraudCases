@@ -4,42 +4,42 @@
 
 | Category | Control point | Cases | Definition |
 |---|---|---:|---|
-| **Necessity And Frequency Edits** | `prepay_edit` | 53 | Prepay clinical-criteria, prior-authorization, frequency-cap, laterality and repeat-interval edits requiring qualifying diagnosis, prior conservative care or documented indication for specific procedures, tests and products. |
-| **Referral Concentration And Kickback Analytics** | `referral_network` | 46 | Analytics on referrer-to-entity concentration, dyad revenue share, marketer and recruiter linkage, Open Payments correlation and disclosed financial arrangements, holding claims for Stark/AKS review. |
-| **No Payer Control Applicable** | `no_payer_control` | 46 | Cases where no payer-side claim or enrolment control applies, including tax, obstruction, embezzlement and non-case press items to be excluded from rule mining. |
-| **Treating Relationship Order Edits** | `prepay_edit` | 44 | Prepay edits requiring a qualifying encounter by the ordering provider within a lookback window, plus a supporting diagnosis, before paying order-driven items such as braces, genetic panels, DME and compounds. |
-| **Grant And Loan Disbursement Screening** | `no_payer_control` | 43 | Pre-disbursement verification of payroll, affiliation size, ownership graphs, deliverables and conflicts for loan, grant, procurement and contract payments outside the health claim stream. |
-| **Provider Day Capacity Edits** | `prepay_edit` | 40 | Accumulators that sum time-based units or implied minutes per rendering clinician per date across all sites and payers and deny, pend or downcode when totals exceed a feasible workday, overlap, or defy travel feasibility. |
-| **Coding, Bundling And Upcoding Edits** | `prepay_edit` | 38 | Claim-level rebundling, NCCI pair, modifier-25, panel-versus-component, unit/charge sanity, site-of-service and level-distribution edits that deny, reprice or downcode inflated or unbundled coding. |
-| **Inventory Acquisition Reconciliation** | `postpay_audit` | 35 | Comparison of billed drug, device or single-use-supply units against wholesaler, ARCOS, distributor or invoice acquisition records at provider-product-period level, suspending payment on unexplained excess. |
-| **Prescriber Diversion Profiling** | `prepay_analytics` | 33 | Prescriber- and pharmacy-level controlled-substance profiling on volume, MME, patient distance, cash share, baseline step-changes and prescriber authentication, driving prepay holds and DEA or board referral. |
-| **Benefit Eligibility Data Matching** | `enrolment` | 31 | Application-time and recertification identity, income, wage, death and duplicate-identity matching for member, benefit, subsidy, broker-driven and representative-payee enrolment decisions. |
-| **Primary Source Credential Verification** | `credentialing` | 29 | Automated primary-source verification of licences, degrees, certifications, DEA registration, taxonomy and roster affiliation, with claim rejection when the rendering or supervising clinician is unverified, unlicensed or out of scope. |
-| **Ordering Prescriber Fan-Out Analytics** | `prepay_analytics` | 29 | Surveillance of ordering or signing NPIs on orders per day, distinct downstream suppliers and labs, beneficiary state dispersion and share of orders lacking any encounter, with suspension of downstream claims from outlier prescribers. |
-| **Enrolment Ownership Identity Graph** | `enrolment` | 28 | Entity-resolution and link-analysis screening at enrolment or revalidation that clusters applicants by owners, officers, addresses, phones, bank/EFT accounts, IPs, notaries and billing agents to detect shells, nominees and undisclosed common control. |
-| **Device And Product Registry Validation** | `prepay_edit` | 24 | Validation of UDI, NDC, serial, lot, NIOSH or FDA registration identifiers on claims against authoritative registries, recall feeds and authorized-distributor lists, with denial of unapproved, counterfeit or unlisted products. |
-| **Exclusion And Adverse Action Screening** | `credentialing` | 23 | Continuous or periodic matching of providers, owners, managing employees and staff against exclusion lists, criminal-conviction, licence-board and indictment feeds to deny enrolment or trigger credible-allegation payment suspension. |
-| **Eligibility And Impossible Day Edits** | `prepay_edit` | 21 | Hard prepay edits denying claims whose service dates postdate death, fall in incarceration, inpatient or institutional spans, precede enrolment, or otherwise conflict with eligibility and facility status files. |
-| **EVV And Attendance Verification** | `prepay_edit` | 16 | Reconciliation of home-, community- and centre-based service claims to electronic visit verification, GPS geofence, biometric sign-in or attendance records, denying units with no matching verified visit. |
-| **Payee And Disbursement Controls** | `enrolment` | 16 | Controls on payment routing and internal disbursement: EFT change callback verification, payee-account dedup and employee matching, dual approval, adjudicator override monitoring and vendor-master change holds. |
-| **Controlled Substance Point Of Sale Edits** | `prepay_edit` | 14 | Member-level pharmacy edits and lock-in using MME, early refill, days-supply overlap, dangerous-combination, multi-prescriber and multi-pharmacy counts to reject or force prior authorization at the point of sale. |
-| **Facility Certification And Quality Review** | `postpay_audit` | 14 | Prepay medical review or payment suspension driven by facility-level certification, licensure scope, survey deficiency, hospice or SNF length-of-stay, live-discharge, level-of-care and admission-provenance indicators. |
-| **Cost Report And Related Party Audit** | `postpay_audit` | 14 | Post-payment audit of cost reports, related-party vendor disclosures, chain financial viability, trust-account reconciliations and unreturned identified overpayments, holding settlement or escrowing payment. |
-| **Staffing And Payroll Reconciliation** | `postpay_audit` | 13 | Comparison of billed service hours, units or census against payroll, roster, FTE, licensed-capacity or payroll-based-journal data to detect hours or attendance that no staffed workforce could deliver. |
-| **New Provider Velocity Throttle** | `prepay_analytics` | 12 | Payment caps, prepay holds, site visits and ramp-rate monitoring applied to newly enrolled or newly transferred providers whose early billing volume, dollars or beneficiary counts exceed peer-calibrated norms. |
-| **Beneficiary Cohort And Recruitment Graph** | `referral_network` | 12 | Detection of shared or compromised beneficiary cohorts across unrelated providers, address clustering, burst arrivals and identity misuse, triggering beneficiary verification outreach and coordinated suspension. |
-| **Documentation Authenticity Review** | `documentation_request` | 5 | Records requests paired with authenticity testing of submitted documentation, including note near-duplicate hashing, signature-image reuse, metadata and physician attestation of forged orders. |
+| **Order Without Treating Encounter** | `prepay_edit` | 63 | Edits computing the gap between an ordered or prescribed item and the nearest qualifying E/M or telehealth encounter between the ordering provider and the beneficiary. |
+| **No Claims System Nexus** | `no_payer_control` | 53 | Cases whose conduct has no claims-adjudication footprint at all, handled through law-enforcement intake, watchlist routing, restitution tracking or other non-payer channels. |
+| **Impossible Day and Capacity Limits** | `prepay_analytics` | 52 | Analytics summing billed time-based minutes, overlapping service intervals, travel time between locations, licensed beds, instrument throughput or staffing ratios against physically or contractually possible limits. |
+| **Product Provenance and Inventory Reconciliation** | `postpay_audit` | 51 | Reconciliation of billed drug, device, graft or reagent units against wholesaler pedigree, ARCOS, purchase invoices and dispensing or administration records, plus registry matching of UDI, serial, clearance, recall and NDC validity. |
+| **Referral Concentration and Remuneration** | `referral_network` | 46 | Graph analysis of referral concentration, self-referral and ownership overlap between orderers and performing entities, joined to Open Payments, marketing-vendor, lease or per-claim payment flows. |
+| **Coverage, Indication and Prior Auth Edits** | `prepay_edit` | 38 | Edits testing whether the billed service has a covered diagnosis, supporting clinical history, required frequency interval or a truthfully substantiated prior-authorisation assertion. |
+| **Licence and Scope Verification** | `credentialing` | 32 | Primary-source verification that the rendering, prescribing or certifying identity holds an active licence, DEA registration, CLIA certificate, taxonomy, reassignment or credential covering the billed service on the date of service. |
+| **Code Intensity and Upcoding Outliers** | `prepay_analytics` | 30 | Peer and self-baseline comparison of code-mix distributions such as high-level E/M shares, long-session psychotherapy, add-on attach rates, therapy tiers and highest-analyte panels. |
+| **Enrolment Identity and Ownership Screening** | `enrolment` | 27 | Screening of enrolment applications for nominee or straw owners, undisclosed common control, synthetic identities and shared bank accounts, addresses or phones linking multiple billing NPIs or TINs. |
+| **Fiduciary and Bank Account Monitoring** | `no_payer_control` | 25 | Cases with no payer-side control where funds are diverted from trusts, benefit plans, resident or vendor accounts, elderly customers or investors and only bank, treasury or fiduciary monitoring applies. |
+| **Controlled Substance Prescriber Analytics** | `prepay_analytics` | 24 | Peer and trailing-baseline analytics on prescriber controlled-substance volume, MME per patient, schedule mix, patient travel radius, pharmacy channelling and prescribing-without-encounter rates. |
+| **Relief Loan and Affiliation Screening** | `no_payer_control` | 24 | Cases with no payer-side control where the nearest check verifies loan or forgiveness payroll attestations against tax and wage filings and aggregates affiliated entities against programme size standards. |
+| **Applicant Eligibility Verification** | `enrolment` | 23 | Identity, income, dependency and household verification of benefit applicants against SSA, vital records, wage files and shared-contact clustering before eligibility or benefit issuance. |
+| **EVV, Attendance and Payroll Reconciliation** | `prepay_edit` | 23 | Reconciliation of billed visit units against electronic visit verification records, sign-in sheets, timesheets, payroll hours and prior-authorised units for in-home and facility-based services. |
+| **Grant and Contract Award Integrity** | `no_payer_control` | 23 | Cases with no payer-side control where the nearest check sits in grant or procurement administration, covering disclosure and misconduct screens, deliverable and specification verification, conflicts and subrecipient payee checks. |
+| **Bundling and Unit Limit Edits** | `prepay_edit` | 22 | Claim-line edits detecting unbundled panels or components, NCCI code-pair and modifier violations, medically unlikely unit ceilings, duplicate or split billing and group-service billed as individual. |
+| **Employment Tax Withholding Gap** | `no_payer_control` | 21 | Cases with no payer-side control where the nearest check reconciles W-2 or payroll withholding against Form 941 filings and federal deposits for an employer or successor entity. |
+| **Decedent and Ineligible Date Edits** | `prepay_edit` | 20 | Claim-level edits comparing the date of service against Death Master File dates, incarceration spans, inpatient or hospice periods, coverage termination and anatomical or sex contradictions. |
+| **Controlled Substance Dispensing Edits** | `prepay_edit` | 18 | Pharmacy-claim edits on early refills, overlapping days supply, dangerous combination therapy, daily MME ceilings, prescriber-identity validation and multi-pharmacy or multi-prescriber shopping. |
+| **Exclusion and Sanction Screening** | `credentialing` | 17 | Matching providers, owners, managing employees and submitters against OIG LEIE, state exclusion, preclusion, prior-revocation and indictment feeds at enrolment, revalidation and adjudication. |
+| **Beneficiary Recruitment and Steering** | `referral_network` | 14 | Detection of patient brokering and enrolment steering through shared beneficiary addresses or phones, congregate-site clustering, out-of-area new-patient surges, recruiter graphs and broker or agent enrolment patterns. |
+| **Cost Report and Risk Adjustment Audit** | `postpay_audit` | 13 | Post-payment review of cost reports, related-party and chain transfers, staffing and care-spend ratios, medical loss ratio reconciliation and risk-adjusting diagnoses unsupported by encounters. |
+| **Orderer Dispersion and Signing Throughput** | `referral_network` | 11 | Network and velocity measures on ordering NPIs, counting distinct beneficiary states, supplier or lab NPIs, payers and signed orders per day relative to physically feasible review time. |
+| **New Enrollee Billing Ramp** | `prepay_analytics` | 7 | Analytics on paid dollars or volume relative to a provider's own trailing baseline since enrolment or ownership change, including rapid ramps, post-acquisition spikes and same-week sweep-out of remittances. |
+| **Record Authenticity and Cloning Review** | `documentation_request` | 2 | Requested-record review detecting duplicated or templated note text, reused signature and delivery-proof image hashes, backdated entries and documentation absent for billed time or units. |
 
 ## By control point
 
 | Control point | Categories | Cases |
 |---|---:|---:|
-| `prepay_edit` | 8 | 250 |
-| `no_payer_control` | 2 | 89 |
-| `postpay_audit` | 4 | 76 |
-| `enrolment` | 3 | 75 |
-| `prepay_analytics` | 3 | 74 |
-| `referral_network` | 2 | 58 |
-| `credentialing` | 2 | 52 |
-| `documentation_request` | 1 | 5 |
+| `prepay_edit` | 6 | 184 |
+| `no_payer_control` | 5 | 146 |
+| `prepay_analytics` | 4 | 113 |
+| `referral_network` | 3 | 71 |
+| `postpay_audit` | 2 | 64 |
+| `enrolment` | 2 | 50 |
+| `credentialing` | 2 | 49 |
+| `documentation_request` | 1 | 2 |
 
