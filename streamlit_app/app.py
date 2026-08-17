@@ -90,6 +90,20 @@ CSS = f"""
            color: {MUTED}; font-size: 13.5px; line-height: 1.6; background: #fbfcfd; }}
   div[data-testid="stHorizontalBlock"] div[data-testid="column"] .stButton button {{ width: 100%; }}
   mark {{ background: #ffe9a8; padding: 0 1px; }}
+
+  /* The PDF must fill its panel. Streamlit sets an inline pixel width on the
+     image but caps it with max-width:100%, and every wrapper between is a flex
+     item that shrinks to the image's natural size - so a wide panel just gains
+     whitespace instead of a bigger page. The whole chain has to be stretched,
+     not only the image. The same applies to the st.pdf component's iframe.
+     If a future Streamlit renames these test ids the page still works; the
+     image simply stops growing past its natural width again. */
+  div[data-testid="stFullScreenFrame"] > div,
+  div[data-testid="stImage"],
+  div[data-testid="stImageContainer"] {{ width: 100% !important; max-width: 100% !important; }}
+  div[data-testid="stImage"] img {{ width: 100% !important; height: auto; }}
+  div[data-testid="stCustomComponentV1"] iframe,
+  iframe[title*="pdf" i] {{ width: 100% !important; }}
 </style>
 """
 
@@ -195,7 +209,7 @@ def render_fields(row: pd.Series, cols: list[str], q: str) -> str:
 
 
 @st.cache_data(show_spinner=False, max_entries=4)
-def render_pages(data: bytes, scale: float = 1.7, max_pages: int = 20) -> list[bytes]:
+def render_pages(data: bytes, scale: float = 2.4, max_pages: int = 20) -> list[bytes]:
     """PDF bytes -> one PNG per page, for the no-component fallback.
 
     PDFium is not thread-safe, which is why the pipeline reads PDFs on one
