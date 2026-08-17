@@ -1,0 +1,17 @@
+
+Goal:
+I would like to build WebTool to conveniently look at each of the reported fraud cases.  My goal is to find some insight concerning how to identify ways to identify fraud 
+by tracking some derived features.  I will describe the details later.
+
+Instruction:
+Input: 
+ - There should be 2 input folders: 
+      - rawdata "./downloaded/webtools/rawFiles"
+      - summary data: ""./downloaded/webtoolssummaryFiles"
+ - Each fraud case has 2 files. One corresponding file for each of the folder above.
+ 
+What to SHow on the web tool:
+ - There should be 2 panels: Left panel shows the raw data, and right panel shows the summary of teh case.
+ - I want the schmeaSummary to be shown on the top of the right panel. And the rest of the summary columns to be shown on the bottom of the right panel.
+ - I want to have the file name and fraudCategory to be show as the title of the right panel.
+
