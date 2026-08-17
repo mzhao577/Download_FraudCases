@@ -452,6 +452,20 @@ is faster and has no 2 GiB chunking. If you only need *a* corpus rather than
 
 ---
 
+# License
+
+The code and documentation in this repository are released under the
+[MIT License](LICENSE) — © 2026 Max Zhao.
+
+The data is a separate matter. The source documents are **public U.S. government
+works** (DOJ, HHS-OIG, FBI, CMS, GAO), and are not covered by the copyright above;
+they are also not redistributed here — `downloaded/` is gitignored, and the
+scrapers fetch them from the original sites. The extracted summaries and the
+prevention designs are **model-generated derivatives** of those documents; MIT
+governs their reuse, with the accuracy caveats immediately below.
+
+---
+
 # What this output is and is not
 
 - **Press releases are not claims data.** Every control in Part 4 is a
