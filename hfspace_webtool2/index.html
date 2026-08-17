@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fraud Case Review v2</title>
+<style>
+  :root {
+    --bg:#f6f7f9; --panel:#fff; --ink:#14181f; --muted:#5b6472; --line:#dfe3e9;
+    --accent:#1f5fa9; --accent-soft:#eaf1fa;
+    --prev:#0f7a5a; --prev-soft:#e8f6f1; --prev-line:#bfe3d6;
+    --warn:#9a3412; --warn-soft:#fef3e7;
+  }
+  * { box-sizing:border-box; }
+  html, body { height:100%; margin:0; }
+  body {
+    font:14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color:var(--ink); background:var(--bg); display:flex; flex-direction:column;
+  }
+  header, #tabs, #nav { flex:0 0 auto; background:var(--panel); border-bottom:1px solid var(--line); }
+  header { display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:8px 12px; }
+  header .grow { flex:1 1 auto; }
+  select, input[type=search], input[type=number], button {
+    font:inherit; padding:5px 9px; border:1px solid var(--line); border-radius:6px;
+    background:#fff; color:var(--ink);
+  }
+  input[type=search] { min-width:250px; }
+  button { cursor:pointer; }
+  button:hover:not(:disabled) { background:var(--accent-soft); border-color:var(--accent); }
+  button:disabled { opacity:.45; cursor:default; }
+  .counter { color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  kbd { font:11px/1 ui-monospace,Menlo,monospace; background:#eef1f5; border:1px solid var(--line);
+        border-bottom-width:2px; border-radius:4px; padding:2px 5px; }
+
+  /* tabs */
+  #tabs { display:flex; align-items:stretch; gap:4px; overflow-x:auto; padding:0 12px; min-height:42px; }
+  #tabs::-webkit-scrollbar { height:6px; }
+  #tabs::-webkit-scrollbar-thumb { background:var(--line); border-radius:3px; }
+  .tab { flex:0 0 auto; cursor:pointer; white-space:nowrap; padding:9px 12px 8px; border:0;
+         background:none; color:var(--muted); border-bottom:3px solid transparent;
+         border-radius:0; font:inherit; }
+  .tab:hover { color:var(--ink); background:#f7f9fb; }
+  .tab.active { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+  .tab .n { font-size:11px; font-variant-numeric:tabular-nums; margin-left:6px; background:#eef1f5;
+            color:var(--muted); border-radius:999px; padding:1px 7px; }
+  .tab.active .n { background:var(--accent-soft); color:var(--accent); }
+
+  /* nav */
+  #nav { display:flex; align-items:center; gap:0; flex-wrap:wrap; padding:6px 12px 9px; }
+  .navgroup { display:flex; }
+  .navgroup button { border-radius:0; border-right-width:0; white-space:nowrap; }
+  .navgroup button:first-child { border-radius:6px 0 0 6px; }
+  .navgroup button:last-child { border-radius:0 6px 6px 0; border-right-width:1px; }
+  .navgroup button.step { font-variant-numeric:tabular-nums; color:var(--muted); }
+  .navgroup button.main { font-weight:600; color:var(--accent); }
+  .navgroup button.edge { color:var(--muted); }
+  #position { margin:0 14px; font-variant-numeric:tabular-nums; white-space:nowrap; font-weight:600; }
+  #position .of { color:var(--muted); font-weight:400; }
+  #goto { width:74px; text-align:center; }
+  #nav .hint { color:var(--muted); font-size:12px; margin-left:auto; }
+  #progress { height:3px; background:var(--line); flex:0 0 100%; margin:6px 0 -6px;
+              border-radius:2px; overflow:hidden; }
+  #progress > div { height:100%; background:var(--accent); width:0; transition:width .15s; }
+
+  /* layout */
+  main { flex:1 1 auto; display:flex; min-height:0; }
+  #list { width:320px; flex:0 0 320px; overflow-y:auto; background:var(--panel);
+          border-right:1px solid var(--line); }
+  #list.hidden { display:none; }
+  .case { padding:8px 12px; border-bottom:1px solid var(--line); cursor:pointer; }
+  .case:hover { background:var(--accent-soft); }
+  .case.active { background:var(--accent-soft); box-shadow:inset 3px 0 0 var(--accent); }
+  .case .name { font-size:12px; word-break:break-word; margin-bottom:3px; }
+  .case .meta { font-size:11px; color:var(--muted); }
+  .case.nopdf .name::after { content:" (no PDF)"; color:var(--warn); }
+
+  #panels { flex:1 1 auto; display:flex; min-width:0; }
+  #left { flex:1 1 55%; min-width:0; border-right:1px solid var(--line); background:#525659; }
+  #right { flex:1 1 45%; min-width:0; overflow-y:auto; background:var(--panel); }
+  #left iframe { width:100%; height:100%; border:0; display:block; }
+  #left .empty { height:100%; display:grid; place-items:center; color:#cfd4da; padding:24px; text-align:center; }
+
+  /* right panel */
+  .title { padding:14px 18px 12px; border-bottom:1px solid var(--line); }
+  .title h1 { font-size:15px; margin:0 0 6px; word-break:break-word; line-height:1.35; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; }
+  .chip { font-size:11px; padding:2px 9px; border-radius:999px; background:var(--accent-soft);
+          color:var(--accent); border:1px solid #cfe0f2; white-space:nowrap; }
+  .chip.k { background:#f1f3f6; color:var(--muted); border-color:var(--line); }
+
+  section { padding:14px 18px; }
+  section h2 { font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin:0 0 8px; }
+  #summary p { margin:0; font-size:15px; line-height:1.62; background:#fbfcfd; border:1px solid var(--line);
+               border-left:3px solid var(--accent); border-radius:6px; padding:12px 14px; }
+  #summary p.none { color:var(--muted); font-style:italic; border-left-color:var(--line); }
+
+  /* the prevention block, directly under the summary */
+  #highlight { background:var(--prev-soft); border-top:1px solid var(--prev-line);
+               border-bottom:1px solid var(--prev-line); }
+  #highlight h2 { color:var(--prev); }
+  .hl { margin-bottom:12px; }
+  .hl:last-child { margin-bottom:0; }
+  .hl .k { font-size:11px; font-weight:700; letter-spacing:.03em; color:var(--prev);
+           text-transform:uppercase; margin-bottom:3px; }
+  .hl .v { background:#fff; border:1px solid var(--prev-line); border-radius:6px;
+           padding:10px 12px; line-height:1.58; }
+  .hl .v.inline { display:flex; flex-wrap:wrap; gap:6px; background:none; border:0; padding:0; }
+  .pill { font-size:12px; padding:2px 10px; border-radius:999px; background:#fff;
+          border:1px solid var(--prev-line); color:var(--prev); white-space:nowrap; }
+  .pill.cat { background:var(--prev); color:#fff; border-color:var(--prev); font-weight:600; }
+
+  #fields { border-top:1px solid var(--line); }
+  table { width:100%; border-collapse:collapse; }
+  th, td { text-align:left; vertical-align:top; padding:7px 8px; border-bottom:1px solid #edf0f3; }
+  th { width:38%; font-weight:600; color:var(--muted); font-size:12px; white-space:nowrap; }
+  td { word-break:break-word; }
+  td.empty { color:#aab1ba; }
+  td.num { font-variant-numeric:tabular-nums; }
+  mark { background:#ffe9a8; padding:0 1px; }
+  .banner { margin:12px 18px; padding:9px 12px; border-radius:6px; background:var(--warn-soft);
+            color:var(--warn); border:1px solid #f5d8bd; font-size:13px; }
+</style>
+</head>
+<body>
+
+<header>
+  <button id="toggleList" title="Show/hide the case list">&#9776; Cases</button>
+  <select id="dataset"></select>
+  <input type="search" id="q" placeholder="Search every field…" autocomplete="off">
+  <label class="counter">tabs by
+    <select id="tabcol"></select>
+  </label>
+  <span class="grow"></span>
+  <span class="counter" id="counter">—</span>
+</header>
+
+<div id="tabs"></div>
+
+<div id="nav">
+  <div class="navgroup">
+    <button data-jump="first" class="edge" title="First case (Home)">&#8676; First</button>
+    <button data-jump="-50" class="step" title="Back 50 (shift+PageUp)">&minus;50</button>
+    <button data-jump="-10" class="step" title="Back 10 (K or PageUp)">&minus;10</button>
+    <button data-jump="-1" class="main" title="Previous case (k)">&#8592; Previous</button>
+    <button data-jump="1" class="main" title="Next case (j)">Next &#8594;</button>
+    <button data-jump="10" class="step" title="Forward 10 (J or PageDown)">+10</button>
+    <button data-jump="50" class="step" title="Forward 50 (shift+PageDown)">+50</button>
+    <button data-jump="last" class="edge" title="Last case (End)">Last &#8677;</button>
+  </div>
+  <span id="position">—</span>
+  <input type="number" id="goto" min="1" placeholder="go to #" title="Jump to a case number, then Enter">
+  <span class="hint">
+    <kbd>j</kbd>/<kbd>k</kbd> &plusmn;1 &nbsp; <kbd>J</kbd>/<kbd>K</kbd> &plusmn;10 &nbsp;
+    <kbd>shift</kbd>+<kbd>PgDn</kbd>/<kbd>PgUp</kbd> &plusmn;50 &nbsp;
+    <kbd>g</kbd> go to &nbsp; <kbd>/</kbd> search
+  </span>
+  <div id="progress"><div></div></div>
+</div>
+
+<main>
+  <div id="list"></div>
+  <div id="panels">
+    <div id="left"><div class="empty">Select a case to view its source document</div></div>
+    <div id="right"><div style="padding:24px;color:var(--muted)">No case selected.</div></div>
+  </div>
+</main>
+
+<script src="static-api.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+let state = { dataset:null, cases:[], pos:-1, q:"", tabcol:null, tabval:"" };
+
+function hl(text) {
+  const t = esc(text);
+  if (!state.q) return t;
+  try {
+    return t.replace(new RegExp(state.q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"gi"), m => `<mark>${m}</mark>`);
+  } catch { return t; }
+}
+
+// "DesiredServiceGroups" -> "Desired Service Groups"; uppercased CamelCase runs
+// together and is hard to read as a label.
+const label = n => String(n).replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/_/g, " ");
+
+const MONEY = /Amt$/i, NUMERIC = /Amt$|Time$/i;
+function fmt(name, value) {
+  if (value === "" || value == null) return '<td class="empty">—</td>';
+  if (MONEY.test(name) && !isNaN(parseFloat(value)))
+    return `<td class="num">$${Number(value).toLocaleString(undefined,{maximumFractionDigits:0})}</td>`;
+  return `<td class="${NUMERIC.test(name) ? "num" : ""}">${hl(value)}</td>`;
+}
+
+// Short, list-like values render as pills; prose renders as a block.
+const PILL = /Group|Categor|Type|Service/i;
+function highlightBlock(items) {
+  if (!items.length) return "";
+  return `<section id="highlight">
+    <h2>Prevention design</h2>
+    ${items.map(it => {
+      const isPill = PILL.test(it.name) && (it.value || "").length < 90;
+      const body = isPill
+        ? `<div class="v inline">${(it.value || "—").split(";").map(p =>
+             `<span class="pill ${/Categor/i.test(it.name) ? "cat" : ""}">${hl(p.trim())}</span>`).join("")}</div>`
+        : `<div class="v">${it.value ? hl(it.value) : "—"}</div>`;
+      return `<div class="hl"><div class="k">${esc(label(it.name))}</div>${body}</div>`;
+    }).join("")}
+  </section>`;
+}
+
+async function loadDatasets() {
+  const sets = await (await fetch("/api/datasets")).json();
+  $("#dataset").innerHTML = sets.map(s =>
+    `<option value="${esc(s.key)}">${esc(s.key)} — ${s.cases} cases</option>`).join("");
+  state.dataset = sets[0]?.key ?? null;
+  if (sets.length < 2) $("#dataset").style.display = "none";
+  const tabs = sets[0]?.tab_columns ?? [];
+  $("#tabcol").innerHTML = tabs.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
+  state.tabcol = tabs[0] ?? null;
+  await loadCases();
+}
+
+async function loadCases() {
+  const p = new URLSearchParams({ dataset: state.dataset });
+  if (state.q) p.set("q", state.q);
+  if (state.tabcol) p.set("tab_column", state.tabcol);
+  if (state.tabval) p.set("tab_value", state.tabval);
+  const data = await (await fetch("/api/cases?" + p)).json();
+  state.cases = data.cases;
+
+  const total = data.searched_total ?? data.total;
+  $("#tabs").innerHTML = [
+    `<button class="tab ${state.tabval ? "" : "active"}" data-v="">All<span class="n">${total}</span></button>`,
+    ...data.tabs.map(t => `<button class="tab ${state.tabval === t.value ? "active" : ""}"
+      data-v="${esc(t.value)}" title="${esc(t.value)}">${esc(t.value)}<span class="n">${t.count}</span></button>`),
+    ...(state.tabval && !data.tabs.some(t => t.value === state.tabval)
+        ? [`<button class="tab active" data-v="${esc(state.tabval)}">${esc(state.tabval)}<span class="n">0</span></button>`] : [])
+  ].join("");
+  const act = $("#tabs .tab.active"); if (act) act.scrollIntoView({block:"nearest", inline:"nearest"});
+
+  $("#list").innerHTML = state.cases.map((c,i) => `
+    <div class="case ${c.has_pdf ? "" : "nopdf"}" data-i="${i}">
+      <div class="name">${hl(c.doc)}</div>
+      <div class="meta">${esc(c.tab || c.FraudType || "")}</div>
+    </div>`).join("") || '<div style="padding:16px;color:var(--muted)">No cases match.</div>';
+
+  $("#counter").textContent = (state.q || state.tabval)
+    ? `${data.count} of ${data.total}` : `${data.total} cases`;
+
+  state.pos = state.cases.length ? 0 : -1;
+  render();
+}
+
+function syncNav() {
+  const n = state.cases.length, at = state.pos;
+  $("#position").innerHTML = n ? `${at+1} <span class="of">/ ${n}</span>` : `<span class="of">no cases</span>`;
+  $("#progress > div").style.width = n ? `${((at+1)/n)*100}%` : "0";
+  $("#goto").max = n || 1;
+  document.querySelectorAll("#nav button[data-jump]").forEach(b => {
+    const j = b.dataset.jump;
+    if (!n || at < 0) { b.disabled = true; return; }
+    if (j === "first") b.disabled = at === 0;
+    else if (j === "last") b.disabled = at === n-1;
+    else b.disabled = (+j < 0) ? at === 0 : at === n-1;
+  });
+}
+
+async function render() {
+  document.querySelectorAll(".case").forEach(e => e.classList.toggle("active", +e.dataset.i === state.pos));
+  syncNav();
+  if (state.pos < 0) return;
+  const active = document.querySelector(".case.active");
+  if (active) active.scrollIntoView({ block:"nearest" });
+
+  const c = await (await fetch(
+    `/api/case/${state.cases[state.pos].index}?dataset=${encodeURIComponent(state.dataset)}`)).json();
+
+  $("#left").innerHTML = c.pdf_url
+    ? `<iframe src="${esc(c.pdf_url)}#view=FitH" title="Source document"></iframe>`
+    : `<div class="empty">No PDF found for<br><strong>${esc(c.doc)}</strong></div>`;
+
+  const titleName = c.title.find(t => /document/i.test(t.name))?.value ?? c.doc;
+  const chips = c.title.filter(t => !/document/i.test(t.name));
+
+  $("#right").innerHTML = `
+    <div class="title">
+      <h1>${hl(titleName)}</h1>
+      <div class="chips">
+        ${chips.map(t => `<span class="chip">${esc(t.value || "—")}</span>`).join("")}
+        <span class="chip k">case ${state.pos+1} of ${state.cases.length}</span>
+      </div>
+    </div>
+    ${c.has_pdf ? "" : '<div class="banner">This row has no matching PDF in the dataset folder.</div>'}
+    <section id="summary">
+      <h2>${esc(label(c.summary_column ?? "Summary"))}</h2>
+      ${c.summary_text ? `<p>${hl(c.summary_text)}</p>`
+                       : '<p class="none">No summary text for this case.</p>'}
+    </section>
+    ${highlightBlock(c.highlight)}
+    <section id="fields">
+      <h2>All other fields</h2>
+      <table><tbody>
+        ${c.fields.map(f => `<tr><th>${esc(label(f.name))}</th>${fmt(f.name, f.value)}</tr>`).join("")}
+      </tbody></table>
+    </section>`;
+}
+
+function goTo(i) {
+  if (!state.cases.length) return;
+  const n = Math.max(0, Math.min(state.cases.length-1, i));
+  if (n !== state.pos) { state.pos = n; render(); }
+}
+const move = d => goTo(state.pos + d);
+function jump(w) {
+  if (w === "first") return goTo(0);
+  if (w === "last") return goTo(state.cases.length-1);
+  move(+w);
+}
+
+$("#list").addEventListener("click", e => {
+  const el = e.target.closest(".case");
+  if (el) { state.pos = +el.dataset.i; render(); }
+});
+$("#toggleList").addEventListener("click", () => $("#list").classList.toggle("hidden"));
+$("#nav").addEventListener("click", e => {
+  const b = e.target.closest("button[data-jump]");
+  if (b) jump(b.dataset.jump);
+});
+$("#goto").addEventListener("keydown", e => {
+  if (e.key !== "Enter") return;
+  const v = parseInt(e.target.value, 10);
+  if (!isNaN(v)) { goTo(v-1); e.target.value = ""; e.target.blur(); }
+});
+$("#tabs").addEventListener("click", e => {
+  const t = e.target.closest(".tab");
+  if (t) { state.tabval = t.dataset.v; loadCases(); }
+});
+$("#tabcol").addEventListener("change", e => {
+  state.tabcol = e.target.value; state.tabval = ""; loadCases();
+});
+$("#dataset").addEventListener("change", e => {
+  state.dataset = e.target.value; state.tabval = ""; loadCases();
+});
+let timer;
+$("#q").addEventListener("input", e => {
+  clearTimeout(timer);
+  timer = setTimeout(() => { state.q = e.target.value.trim(); loadCases(); }, 220);
+});
+document.addEventListener("keydown", e => {
+  if (e.target.matches("input, select, textarea")) { if (e.key === "Escape") e.target.blur(); return; }
+  const k = e.key;
+  if (k === "j" || k === "ArrowDown" || k === "ArrowRight") { e.preventDefault(); move(1); }
+  else if (k === "k" || k === "ArrowUp" || k === "ArrowLeft") { e.preventDefault(); move(-1); }
+  else if (k === "J") { e.preventDefault(); move(10); }
+  else if (k === "K") { e.preventDefault(); move(-10); }
+  else if (k === "PageDown") { e.preventDefault(); move(e.shiftKey ? 50 : 10); }
+  else if (k === "PageUp") { e.preventDefault(); move(e.shiftKey ? -50 : -10); }
+  else if (k === "Home") { e.preventDefault(); jump("first"); }
+  else if (k === "End") { e.preventDefault(); jump("last"); }
+  else if (k === "g") { e.preventDefault(); $("#goto").focus(); }
+  else if (k === "/") { e.preventDefault(); $("#q").focus(); }
+});
+
+loadDatasets();
+</script>
+</body>
+</html>

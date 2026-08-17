@@ -54,3 +54,8 @@ downloaded/webtools/
 
 # v2 pipeline artefacts (regenerate with the three steps)
 designFeatures_v2/.cache/
+
+# Case PDFs staged for the Hugging Face Space - 227 MB of copies of
+# downloaded/DOJ_2025, rebuilt by `python hfspace_webtool2/build.py --pdfs`.
+# The corpus itself is shipped as a Release asset, not in git history.
+hfspace_webtool2/pdf/

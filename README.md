@@ -1,35 +1,67 @@
 # Download_FraudCases
 
-Two pipelines:
+A pipeline that goes from **public U.S. federal fraud enforcement documents** to
+**payer-side controls that could have caught those cases before the claims were
+paid** — and two web tools for reading the result one case at a time.
 
-1. **Download** (`instruction_download.md`) — find and download major medical /
-   health care fraud cases and reports from U.S. federal sources since 1 Jan 2021.
-2. **Extract patterns** (`instruction_extractInfo.md`) — turn a folder of case PDFs
-   into a structured feature table plus an analysis of the recurring fraud schemes.
-   See [Part 2](#part-2--extracting-case-features-and-fraud-patterns) below.
-3. **Review cases** (`instruction_APIAnalisys.md`) — a two-panel web tool for reading
-   cases one at a time. See [`webtool/`](webtool/) and [`webtool2/`](webtool2/);
-   start both with [`./start_services.sh`](start_services.sh).
-4. **Design monitoring features** (`instruction_designFeatures.md`) — turn the case
-   corpus into ~10 computable provider-monitoring features. See
-   [`designFeatures/monitoring_features.md`](designFeatures/monitoring_features.md).
+Each stage has a written specification in `instruction_*.md`; those files are the
+source of truth, and this README is the map.
+
+| # | Stage | Specification | Code | Output |
+|---|---|---|---|---|
+| 1 | **Download** the case corpus | [`instruction_download.md`](instruction_download.md) | `discover.py`, `download.py`, `fraudscrape/` | `downloaded/` — 9,741 documents |
+| 2 | **Extract** a record per case | [`instruction_extractInfo.md`](instruction_extractInfo.md) | `extract_patterns.py`, `fraudextract/` | `extracted/` — `cases.csv`, `patterns.md` |
+| 3 | **Review** cases side by side | [`instruction_APIAnalisys.md`](instruction_APIAnalisys.md) | [`webtool/`](webtool/), [`webtool2/`](webtool2/) | local tools on ports 8000 / 8001 |
+| 4 | **Design monitoring features** | [`instruction_designFeatures.md`](instruction_designFeatures.md) · [`instruction_designFeatures_v2.txt`](instruction_designFeatures_v2.txt) | [`designFeatures/`](designFeatures/), [`designFeatures_v2/`](designFeatures_v2/) | 10 corpus-wide features · 679 per-case designs |
+| 5 | **Deploy** the review tool | [`instruction_deploy.md`](instruction_deploy.md) | [`hfspace_webtool2/`](hfspace_webtool2/), [`hfspace/`](hfspace/) | public Hugging Face Spaces |
+
+Stages 1 and 2 are scrapers and extraction; 4 is the analysis the whole thing is
+for; 3 and 5 are how a human reads it.
 
 ---
 
-## Part 1 — Downloading the cases
+## Live tools
+
+| | Where | Shows |
+|---|---|---|
+| **Hosted** | [fraud-case-review-webtool2](https://huggingface.co/spaces/mzhao577/fraud-case-review-webtool2) | webtool2 at parity — PDF pane, prevention design, keyboard shortcuts |
+| **Hosted** | [fraud-case-review](https://huggingface.co/spaces/mzhao577/fraud-case-review) | the Streamlit port — no PDF pane; superseded, kept as the answer to the original brief |
+| **Local** | `./start_services.sh` | both tools, ports 8000 and 8001 |
+
+---
+
+## Quick start
+
+```bash
+pip install -r requirements.txt          # also needs Google Chrome (headless)
+export ANTHROPIC_API_KEY=...             # stages 2 and 4
+
+python run_all.py                                              # 1. download (hours)
+./ExtractedAll_in1InputFolder.sh DOJ_2025                      # 2. extract
+python designFeatures_v2/step1_per_case.py \
+    downloaded/webtool/extractedSummary_2025_DOJ.csv           # 4. design (~$8–10)
+python designFeatures_v2/step2_categories.py --rederive
+python designFeatures_v2/step3_build_csv.py \
+    downloaded/webtool/extractedSummary_2025_DOJ.csv
+python webtool2/setup_input.py --key DOJ_2025 && ./start_services.sh   # 3. read it
+```
+
+Every stage is **resumable** — reruns skip what is already on disk or cached.
+
+---
+
+# Part 1 — Downloading the cases
 
 Python scripts that find and download **major medical / health care fraud cases and
 reports** published by U.S. federal sources since **1 January 2021** — cases involving
 Medicare, Medicaid, TRICARE and commercial/private payers.
 
-Every document lands under `./downloaded/<Source>/<year>/`. Web pages are saved
+Every document lands under `./downloaded/<year>/<Source>/`. Web pages are saved
 **both as `.html` and as a `.pdf` rendering of that same saved page**, exactly as the
 instructions ask. Documents that are already PDFs (report full texts, indictments,
 settlement agreements) are saved as-is.
 
----
-
-## 1. Sources
+## 1.1 Sources
 
 The list of websites used for the search lives in **[`sources.json`](sources.json)** —
 it is the canonical, machine-readable registry the scrapers read at run time, and it
@@ -48,7 +80,7 @@ A human-readable rendering of the same list is reproduced at the bottom of
 `sources.json` also records the sources that were **considered but not scraped**
 (NHCAA, individual state MFCU sites, PACER) and the reason for each.
 
-## 2. Install
+## 1.2 Install
 
 ```bash
 pip install -r requirements.txt
@@ -59,7 +91,7 @@ Also required: **Google Chrome** (used headless). Three of the five sites
 HTTP clients, and Chrome is what turns saved HTML into PDF. Selenium downloads its
 own driver automatically.
 
-## 3. Run
+## 1.3 Run
 
 ```bash
 python run_all.py                 # discover -> download -> summarize (several hours)
@@ -91,7 +123,7 @@ Everything is **resumable**: rerunning skips files that already exist, listing p
 and API responses are cached under `state/cache/`, and a fresh run only picks up
 what is new. Interrupting with Ctrl-C is safe.
 
-## 4. Output layout
+## 1.4 Output layout
 
 Organised **year first, then source** (`downloaded/2026/FBI/`):
 
@@ -121,7 +153,7 @@ offices without colliding. Each saved `.html` starts with a provenance comment
 recording the source, original URL, publication date and retrieval timestamp, and
 carries a `<base href>` so the local copy still renders.
 
-## 5. Summary file
+## 1.5 Summary file
 
 `summarize.py` writes the required counts — documents per **year** and per
 **source** — to `summary/summary.md` (plus `.csv` and `.json`, and a copy at
@@ -129,7 +161,7 @@ carries a `<base href>` so the local copy still renders.
 (HTML / PDF / data files / attachments), document categories, and the list of
 websites searched.
 
-## 6. How documents are identified as medical fraud
+## 1.6 How documents are identified as medical fraud
 
 `fraudscrape/config.py` holds a four-tier matcher, deliberately built to avoid both
 "every fraud case" and "every Medicare press release":
@@ -142,7 +174,7 @@ websites searched.
 For DOJ this runs *in addition to* the official `Healthcare Fraud` topic tag, which
 catches only about half of the relevant releases on its own.
 
-## 7. Layout of the code
+## 1.7 Layout of the code
 
 ```
 sources.json               the website list (edit this to add/remove a source)
@@ -169,7 +201,7 @@ Adding a source means writing one `discover(since, limit=None) -> list[Doc]`
 function, registering it in `fraudscrape/discovery/__init__.py`, and adding the
 entry to `sources.json`.
 
-## 8. Notes and limits
+## 1.8 Notes and limits
 
 - All five sources are public U.S. government sites; requests are rate-limited per
   host and pages are cached so reruns do not re-fetch.
@@ -202,7 +234,7 @@ python extract_patterns.py --no-analysis        # fields only, skip the narrativ
 
 Requires `ANTHROPIC_API_KEY` (or an `ant auth login` profile). Uses `claude-opus-5`.
 
-## Output — `./extracted/`
+## 2.1 Output — `./extracted/`
 
 | File | Contents |
 |---|---|
@@ -211,7 +243,7 @@ Requires `ANTHROPIC_API_KEY` (or an `ant auth login` profile). Uses `claude-opus
 | `patterns.md` | Counts, a case table, and the pattern analysis |
 | `errors.json` | Written only if a document failed |
 
-## Extracted fields
+## 2.2 Extracted fields
 
 `DocumentName`, `ReportDT`, `JurisdictionName`, `OccurDt`, `FraudEntity`,
 `Service`, `State_County`, `PayerName`, `FraudAmt`, `SettlementAmt`, `JailTime`,
@@ -228,7 +260,7 @@ cannot be returned; anything that fits none of them is `Other - Unknown`. That f
 is the source of truth — when the taxonomy changes there, update `FRAUD_TYPES` and
 `FRAUD_TYPE_GUIDE` in `fraudextract/schema.py` to match.
 
-## How it works
+## 2.3 How it works
 
 ```
 fraudextract/
@@ -260,9 +292,11 @@ extract_patterns.py   the CLI
 
 ---
 
-# Running the review tools — `start_services.sh`
+# Part 3 — Reading the cases
 
-Both web tools in one command, instead of two terminals and two `python3` lines.
+Two local tools, both two-panel readers: the source PDF on the left, the extracted
+summary on the right. `webtool2` adds the prevention design from Part 4 directly
+under the summary.
 
 ```bash
 ./start_services.sh              # start both, print the links
@@ -294,6 +328,98 @@ Starting is idempotent: a tool already answering on its port is left running, an
 the script says so rather than starting a second copy. Each instance logs to
 `logs/<tool>-<port>.log`; a tool that fails to start prints the tail of its log.
 
+> `webtool2/setup_input.py` **copies** the CSV into `downloaded/webtool2/`. Rerun it
+> after regenerating the Part 4 output, or the tool shows stale categories.
+
+Search, the tab strip, navigation and the keyboard map are specified in
+[`instruction_APIAnalisys.md`](instruction_APIAnalisys.md) §3.
+
+---
+
+# Part 4 — Designing monitoring features
+
+The point of the corpus: turn prosecuted cases into checks a payer could actually
+compute. Two generations, both kept.
+
+## 4.1 v1 — ten features for the corpus as a whole
+
+[`designFeatures/`](designFeatures/) implements
+[`instruction_designFeatures.md`](instruction_designFeatures.md): read the 679-case
+summary, find the mechanics that recur, and write **10 computable
+provider-monitoring features**, each with its service groups, the cases behind it
+and a priority.
+
+```bash
+python designFeatures/analyze.py      # cluster the corpus
+python designFeatures/design_features.py
+python designFeatures/render_features.py
+```
+
+Output: [`designFeatures/monitoring_features.md`](designFeatures/monitoring_features.md)
+(plus `.json`, and a per-case labelled CSV/XLSX).
+
+## 4.2 v2 — one design per case
+
+[`designFeatures_v2/`](designFeatures_v2/) implements
+[`instruction_designFeatures_v2.txt`](instruction_designFeatures_v2.txt): where v1
+produced 10 features for the corpus, v2 produces **one design per case — 679 of
+them** — then groups them into 25 categories.
+
+```bash
+python designFeatures_v2/step1_per_case.py <summary.csv>   # ~$8–10, the slow step
+python designFeatures_v2/step2_categories.py --rederive    # derive + assign categories
+python designFeatures_v2/step3_build_csv.py <summary.csv>  # write the CSV + catalogue
+```
+
+Adds four columns to the summary CSV:
+
+| Column | Contents |
+|---|---|
+| `DesiredServiceGroups` | The provider types the control should cover — not only this defendant's |
+| `WaysToIdentify` | How a payer could have caught it pre-payment — **4–5 sentences, one signal each, ≤25 words**, each naming the data that carries it |
+| `FeaturesToCreate` | **2–3 numbered checks**: `on <unit of observation>, compute <quantity over named fields>; fires when <comparison>; action <prepay edit / suspension / ADR / …>` |
+| `FeatureCategory` | Which of the 25 categories the check belongs to |
+
+Step 1 is resumable and **cache-keyed on a hash of its own prompt**, so editing the
+prompt starts a fresh cache instead of serving answers written to the old spec. Every
+answer is checked against the required shape and re-asked up to twice.
+
+**165 of 679 cases (24%) have no payer-side control** — PPP loan fraud, tax fraud,
+street drug distribution, public corruption, and annual round-up press releases that
+are not single cases. Their `FeaturesToCreate` starts with the literal
+`No payer-side control applies.`, so they are filterable rather than forced into a
+category. See [`designFeatures_v2/README.md`](designFeatures_v2/README.md) and
+[`categories.md`](designFeatures_v2/categories.md).
+
+---
+
+# Part 5 — Deploying the review tool
+
+[`instruction_deploy.md`](instruction_deploy.md) is the full specification. In short:
+Hugging Face has **retired the Streamlit Space SDK**, and its Docker replacement
+requires a paid plan, so both Spaces run on the free `sdk: static` tier with the
+server moved into the browser.
+
+| Folder | Space | How |
+|---|---|---|
+| [`hfspace_webtool2/`](hfspace_webtool2/) | [fraud-case-review-webtool2](https://huggingface.co/spaces/mzhao577/fraud-case-review-webtool2) | `index.html` **copied verbatim** from `webtool2/static/`; `static-api.js` answers webtool2's four endpoints from the CSV in the browser; 679 PDFs ship as static files |
+| [`hfspace/`](hfspace/) | [fraud-case-review](https://huggingface.co/spaces/mzhao577/fraud-case-review) | the same tool rewritten as a Streamlit app, run client-side by [stlite](https://github.com/whitphx/stlite); no PDFs, no keyboard shortcuts — superseded |
+
+Rebuild and redeploy:
+
+```bash
+python webtool2/setup_input.py --key DOJ_2025    # refresh the input folder first
+python hfspace_webtool2/build.py --pdfs          # re-assemble from the live tool
+cd hfspace_webtool2 && python3 -m http.server 8700   # check it locally, then upload
+```
+
+The hosted UI is **copied, never hand-edited** — that is what keeps it identical to
+`127.0.0.1:8001`. An edit to the deployed `index.html` is lost on the next build.
+
+`hfspace/app.py` also runs as an ordinary Streamlit app (`pip install streamlit
+pandas && streamlit run app.py`); neither package is in `requirements.txt`, which
+covers the pipeline only.
+
 ---
 
 # Moving the corpus between machines
@@ -323,3 +449,20 @@ supplies the credentials, so a plain browser or `curl` download will not work.
 **Alternatives:** if both laptops are on the same network, `rsync -avh --progress`
 is faster and has no 2 GiB chunking. If you only need *a* corpus rather than
 *this exact* corpus, skip the transfer and re-run `discover.py && download.py`.
+
+---
+
+# What this output is and is not
+
+- **Press releases are not claims data.** Every control in Part 4 is a
+  reconstruction of what *would* have been visible to a payer. None has been tested
+  against real claim lines, and every threshold needs calibration against a control
+  population before use.
+- **These are schemes that got caught.** The corpus is prosecutions, so it describes
+  detected fraud and carries that selection bias.
+- **Charges are allegations.** `CaseStatus` is what separates a charge from a
+  finding; the tools show it on every case.
+- **Repeat coverage exists.** A case is often announced more than once (charge, plea,
+  sentencing), so consecutive rows may describe the same matter.
+- **The review tools are readers, not analysers.** They present cases; the judgement
+  is the reader's.
