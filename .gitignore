@@ -11,6 +11,17 @@ downloaded/
 state/
 logs/
 
+# The per-year corpus folders and the test set, listed explicitly. `downloaded/`
+# above already covers all of these - these lines are documentation of what is
+# in there, not additional rules.
+downloaded/2021/
+downloaded/2022/
+downloaded/2023/
+downloaded/2024/
+downloaded/2025/
+downloaded/2026/
+downloaded/testdata_DOJ_2026/
+
 # Per-document extraction caches (rebuilt on re-run; the results are kept)
 extracted/**/.cache/
 extracted/.cache/
@@ -59,3 +70,10 @@ designFeatures_v2/.cache/
 # downloaded/DOJ_2025, rebuilt by `python hfspace_webtool2/build.py --pdfs`.
 # The corpus itself is shipped as a Release asset, not in git history.
 hfspace_webtool2/pdf/
+
+# Same for the Streamlit build - a copy or a symlink of the corpus. Streamlit
+# Community Cloud only deploys what is committed, so remove this line if you
+# want the PDF pane there; see streamlit_app/README.md.
+# No trailing slash: for local development this is often a symlink, which git
+# treats as a file, and `streamlit_app/pdf/` would not match it.
+streamlit_app/pdf

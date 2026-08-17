@@ -1,0 +1,4 @@
+# st.pdf needs streamlit-pdf, which requires the components.v2 API added in 1.61.
+# A lower floor resolves an incompatible pair and the PDF pane falls back to an iframe.
+streamlit[pdf]>=1.61
+pandas>=2.0
