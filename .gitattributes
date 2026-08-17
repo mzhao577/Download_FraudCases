@@ -1,0 +1,5 @@
+# Case PDFs are binary: never try to diff or merge them, and never let a
+# checkout rewrite line endings inside them.
+*.pdf binary
+*.xlsx binary
+*.pptx binary
