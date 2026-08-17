@@ -389,7 +389,9 @@ nav[9].progress((st.session_state.idx + 1) / total)
 
 # --- the two panels ---------------------------------------------------------
 row = view.iloc[st.session_state.idx]
-left, right = st.columns([1, 1], gap="medium")
+# 6:4 - the PDF needs the width to stay legible; the summary and the prevention
+# design read fine in a narrower column.
+left, right = st.columns([6, 4], gap="medium")
 
 with left:
     show_pdf(str(row[doc_col]).strip(), pdf_height)
