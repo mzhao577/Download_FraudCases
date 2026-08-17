@@ -31,15 +31,6 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-# st.pdf renders through the optional streamlit-pdf package. When that package
-# is missing or mismatched it does NOT raise - it draws a broken-document
-# placeholder - so probe it up front and use the browser's own viewer instead.
-try:
-    import streamlit_pdf as _pdf_component  # noqa: F401
-    HAVE_PDF_COMPONENT = True
-except Exception:  # noqa: BLE001
-    HAVE_PDF_COMPONENT = False
-
 HERE = Path(__file__).resolve().parent
 DATA_DIR = next((p for p in (HERE / "data", Path("data")) if p.is_dir()), HERE / "data")
 PDF_DIR = next((p for p in (HERE / "pdf", Path("pdf")) if p.is_dir()), None)
@@ -243,11 +234,11 @@ def fetch_pdf(url: str) -> bytes | None:
         return None
 
 
-def show_pdf(name: str, height: int | str = 780) -> None:
+def show_pdf(name: str, height: int = 820) -> None:
     """Render the source document, from a local folder or a static host.
 
-    height is a pixel count, or "stretch" to grow with the document rather than
-    scrolling inside a fixed box.
+    The pages scroll inside a box of `height` pixels; the width comes from the
+    column this is called in, which the sidebar control sizes.
     """
     local = (PDF_DIR / name) if PDF_DIR else None
     source: object | None = None
@@ -265,25 +256,19 @@ def show_pdf(name: str, height: int | str = 780) -> None:
             unsafe_allow_html=True)
         return
 
-    if HAVE_PDF_COMPONENT:
-        try:
-            st.pdf(source, height=height)
-            return
-        except Exception:  # noqa: BLE001
-            pass  # fall through to the page images below
-
-    # No streamlit-pdf. An <embed> is not an option either: Streamlit's HTML
-    # component is a sandboxed iframe, and Chrome refuses to load the PDF plugin
-    # inside one. Rendering the pages to images sidesteps the plugin entirely.
-    px = 1400 if height == "stretch" else int(height)
+    # Pages are rendered to images rather than handed to st.pdf. st.pdf draws
+    # into its own component iframe and lays the page out at a width this app
+    # cannot reach from outside, so the page stayed small however wide the panel
+    # got. An <embed> is no better: Streamlit's HTML component is a sandboxed
+    # iframe and Chrome refuses to load the PDF plugin inside one. Images are
+    # the only route where the page actually follows the panel width.
     data = source if isinstance(source, bytes) else fetch_pdf(str(source))
     pages = render_pages(data) if data else []
 
     if not pages:
-        st.warning("Could not render this PDF here. Install `streamlit[pdf]` for the "
-                   "built-in viewer, or use the download button below.")
+        st.warning("Could not render this PDF. Use the download button below.")
     else:
-        with st.container(height=px, border=True):
+        with st.container(height=int(height), border=True):
             for img in pages:
                 st.image(img, width="stretch")
     if data:
@@ -356,19 +341,14 @@ def jump(to: int) -> None:
 
 
 with st.sidebar:
-    # Streamlit has no drag-resizable panes, so the PDF height is a control.
-    # It persists across cases and reruns because the widget carries a key.
+    # Streamlit has no drag-resizable panes, so the split is a control. It
+    # persists across cases and reruns because the widget carries a key.
     st.divider()
-    fit = st.checkbox("Fit PDF to page length", key="pdffit",
-                      help="Grow the pane to the whole document instead of scrolling "
-                           "inside a fixed box. The page itself then scrolls.")
-    # Rendered even when unused: a widget that stops rendering loses its state,
-    # which would reset a chosen height every time "fit" is toggled.
-    chosen = st.slider(
-        "PDF pane height", min_value=300, max_value=2000, value=780, step=20, key="pdfh",
-        disabled=fit,
-        help="Taller shows more of the page; shorter puts the summary alongside it.")
-    pdf_height: int | str = "stretch" if fit else chosen
+    pdf_width = st.slider(
+        "PDF pane width", min_value=30, max_value=85, value=60, step=5, key="pdfw",
+        format="%d%%",
+        help="Share of the main area given to the document. The page image grows "
+             "to fill whatever width you choose.")
     st.divider()
 
     st.caption(f"Showing **{total}** of {len(df)}")
@@ -403,12 +383,11 @@ nav[9].progress((st.session_state.idx + 1) / total)
 
 # --- the two panels ---------------------------------------------------------
 row = view.iloc[st.session_state.idx]
-# 6:4 - the PDF needs the width to stay legible; the summary and the prevention
-# design read fine in a narrower column.
-left, right = st.columns([6, 4], gap="medium")
+# The split follows the sidebar control; 60/40 by default.
+left, right = st.columns([pdf_width, 100 - pdf_width], gap="medium")
 
 with left:
-    show_pdf(str(row[doc_col]).strip(), pdf_height)
+    show_pdf(str(row[doc_col]).strip())
 
 with right:
     st.markdown(

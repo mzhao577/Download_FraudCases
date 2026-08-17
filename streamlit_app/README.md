@@ -17,7 +17,7 @@ streamlit run streamlit_app/app.py
 
 | Where | Contents |
 |---|---|
-| **Sidebar** | Search, the tab dimension, the tab value, the **PDF pane height**, and the case list |
+| **Sidebar** | Search, the tab dimension, the tab value, the **PDF pane width**, and the case list |
 | **Top** | `⇤ First │ −50 │ −10 │ ← Previous │ Next → │ +10 │ +50 │ Last ⇥`, position, progress |
 | **Main, left** | The source PDF |
 | **Main, right** | Title and chips, `SchemeSummary`, the prevention design, then the remaining fields |
@@ -30,15 +30,10 @@ fifth analysis column needs no code change.
 
 ## Sizing the PDF pane
 
-Streamlit has no drag-resizable panes, so the height is a control in the sidebar:
-
-| Control | Effect |
-|---|---|
-| **PDF pane height** | 300–2000 px. Taller shows more of the page; shorter brings the summary alongside it. |
-| **Fit PDF to page length** | Drops the fixed box and grows to the whole document — the page itself then scrolls. |
-
-The setting persists as you move between cases. The slider stays visible but
-greyed while *fit* is on, so switching back does not lose your height.
+Streamlit has no drag-resizable panes, so the split is a sidebar control:
+**PDF pane width**, 30–85% of the main area, 60% by default. The page image
+grows to fill whatever width you pick, and the setting persists as you move
+between cases. The pages scroll inside a fixed-height box.
 
 ## Where the PDFs come from
 
@@ -120,20 +115,21 @@ For a pixel-identical copy of the local tool, see
 
 ## Notes
 
-`st.pdf` needs the `streamlit-pdf` package, which requires the `components.v2`
-API added in Streamlit **1.61** — hence the floor in `requirements.txt`. When
-that package is missing or mismatched, `st.pdf` does not raise: it draws a
-broken-document placeholder. The app therefore probes for the component at
-import and, if it is unavailable, **renders the pages to images with
-`pypdfium2`** instead, inside a scrollable box of the chosen height, with a
-download button beneath.
+**The PDF is drawn as page images, not by `st.pdf`.** `pypdfium2` renders each
+page to a PNG, and the app scales those to the panel width. This is deliberate,
+after trying the alternatives:
 
-That fallback is what runs on a machine with an older Streamlit — including
-this repo's own environment, which is pinned at 1.54 for the scraping pipeline.
-It is not an `<embed>` or an iframe on purpose: Streamlit's HTML component is a
-**sandboxed** iframe, and Chrome refuses to load the PDF plugin inside one, so
-every in-frame approach shows a broken-document icon regardless of the URL
-scheme used.
+| Approach | Why it was dropped |
+|---|---|
+| `st.pdf` (the `streamlit-pdf` component) | Lays the page out inside its own iframe at a width the app cannot reach, so the page stays small however wide the panel gets. It also fails *silently* when the package is missing or version-mismatched, drawing a broken-document placeholder rather than raising. |
+| `<embed>` / `<iframe>` in `st.components.v1.html` | Streamlit's HTML component is a **sandboxed** iframe, and Chrome refuses to load the PDF plugin inside one — `data:` and `blob:` URLs alike. |
+
+Rendering to images is the only route where the page actually follows the panel
+width, which is why `streamlit-pdf` is not in `requirements.txt`.
+
+One consequence worth knowing: images carry no selectable text, so in-document
+`Ctrl-F` and copy-paste are not available. The **Download the source PDF**
+button under the pane opens the real file for that.
 
 The case text is summarised from public DOJ press releases. The prevention
 designs are model-generated reconstructions of what *would* have been visible in

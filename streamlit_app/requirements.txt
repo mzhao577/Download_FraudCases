@@ -1,6 +1,6 @@
-# st.pdf needs streamlit-pdf, which requires the components.v2 API added in 1.61.
-# A lower floor resolves an incompatible pair and the PDF pane falls back to an iframe.
-streamlit[pdf]>=1.61
+# The PDF pages are rendered to images with pypdfium2 rather than handed to
+# st.pdf, so streamlit-pdf is deliberately not required: its viewer lays the
+# page out inside its own iframe at a width this app cannot control.
+streamlit>=1.54
 pandas>=2.0
-# Renders PDF pages when the streamlit-pdf component is unavailable.
 pypdfium2>=4.0
